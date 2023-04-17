@@ -28,7 +28,8 @@ class PlantsResponse(BaseModel):
 class UserRequest(BaseModel):
 	username: str = None
 	birthday: Optional[datetime.date] = None
-	hashed_pass: str = None
+	hashed_pass1: str = None
+	hashed_pass2: str = None
 	province: str = None
 	city: str = None
 	is_active: bool = False
@@ -49,3 +50,16 @@ class UserResponse(BaseModel):
 
 	class Config:
 		orm_mode = True	
+
+
+class UserRequestUpdate(BaseModel):
+	birthday: Optional[datetime.date] = None
+	hashed_pass1: str = None
+	hashed_pass2: str = None
+	province: str = None
+	city: str = None
+	is_public: bool= True
+	plants: list[int]
+
+class UserReponseUpdate(BaseModel):
+	id

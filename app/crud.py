@@ -10,13 +10,16 @@ from .schemas import UserRequest, UserResponse
 
 def create_user(db:Session, user: UserRequest):
 	try:
+
+		print(user.hashed_pass1)
+		print(user.hashed_pass2)
+
 		db_user = User(
 			username = user.username,
 			birthday = user.birthday,
-			hashed_pass = user.hashed_pass,
+			hashed_pass = user.hashed_pass1,
 			province = user.province,
 			city = user.city,
-			is_active = user.is_active,
 			is_public = user.is_public
 			)
 		db.add(db_user)
@@ -48,8 +51,6 @@ def format_user(db_user: User):
     for i in plants:
         if plants is not None:
             _plants.append(i.description)
-    # print(_symptoms) 
-
 
     return UserResponse(
 		id = db_user.id,

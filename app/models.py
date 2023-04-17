@@ -9,18 +9,6 @@ from sqlalchemy import Boolean, Column, ForeignKey, Integer, String, Enum, DateT
 from sqlalchemy.orm import relationship, backref
 from .database import Base
 
-
-# class Status(enum.Enum):
-#     """BMI status?"""
-#     underweight = "underweight"
-#     normal = "normal"
-#     overweight = "overweight"
-#     obesity_class_1 = "obesity_class_1"
-#     obesity_class_2 = "obesity_class_2"
-#     obesity_class_3 = "obesity_class_3"
-
-
-
 # MANY TO MANY RELATIONSHIP
 # USER PLANTS IS THE ASSOCIATION TABLE
 

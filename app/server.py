@@ -65,7 +65,6 @@ populate_table()
 def index():
     return {"Hello": "World"}
 
-
 @app.post("/create_user", response_model = schemas.UserResponse)
 def create_user(user: schemas.UserRequest, db:Session = Depends(get_db)):
     created_user = crud.create_user(db=db, user=user)
