@@ -9,7 +9,6 @@ import datetime
 from typing import Optional
 from pydantic import BaseModel
 
-
 class PlantsResponse(BaseModel):
 	id: int
 	name: str = None
@@ -37,6 +36,21 @@ class UserRequest(BaseModel):
 	plants: list[int]
 
 
+class PlantRequest(BaseModel):
+	name: str = None     
+	p_info = str
+    min_temp = 
+    max_temp = 
+    min_humidity = 
+    max_humidity = 
+    rain_tolerance = 
+    planting_time = 
+    summer = 
+    rainy_season = 
+
+
+
+# same for update
 class UserResponse(BaseModel):
 	id: int
 	username: str = None
@@ -52,14 +66,12 @@ class UserResponse(BaseModel):
 		orm_mode = True	
 
 
-class UserRequestUpdate(BaseModel):
+class UserUpdateRequest(BaseModel):
 	birthday: Optional[datetime.date] = None
-	hashed_pass1: str = None
-	hashed_pass2: str = None
 	province: str = None
 	city: str = None
 	is_public: bool= True
 	plants: list[int]
 
-class UserReponseUpdate(BaseModel):
-	id
+
+

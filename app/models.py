@@ -34,6 +34,7 @@ class Plant(Base):
 
     id = Column(Integer, primary_key=True, index=True)
     name = Column(String, unique=True, index=True, nullable=False)
+    p_info = Column(String, nullable=False)
     min_temp = Column(Integer, nullable=False)
     max_temp = Column(Integer, nullable=False)
     min_humidity = Column(Integer, nullable=False)

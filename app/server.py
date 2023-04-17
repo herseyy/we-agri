@@ -68,9 +68,17 @@ def index():
 @app.post("/create_user", response_model = schemas.UserResponse)
 def create_user(user: schemas.UserRequest, db:Session = Depends(get_db)):
     created_user = crud.create_user(db=db, user=user)
-    print(crud.format_user(created_user))
-    return created_user
+    # print(crud.format_user(created_user))
+    return crud.format_user(created_user)
 
+@app.get("/get_user/{user_id}")
+def get_user(user_id:int, db:Session = Depends(get_db)):
+    db_user = crud.update_user(db=db, id=user_id)
+    return db_user
+
+# def get_user(user_id: int, user = schemas.UserUpdateRequest, db:Session = Depends(get_db)):
+#     user_ = crud.update_user(db = db, id = user_id, user = user)
+#     return crud.format_user(user_)
 
 
 # Ang ginagawa lang neto, sinasabe na yung response format ay galing sa schema na Symptoms

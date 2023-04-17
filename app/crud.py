@@ -5,12 +5,12 @@ from sqlalchemy import and_
 from sqlalchemy.exc import IntegrityError
 
 from .models import UserPlants, User, Plant
-from .schemas import UserRequest, UserResponse
+from .schemas import UserRequest, UserResponse, UserUpdateRequest
 
 
 def create_user(db:Session, user: UserRequest):
-	try:
 
+	try:
 		print(user.hashed_pass1)
 		print(user.hashed_pass2)
 
@@ -39,6 +39,32 @@ def create_user(db:Session, user: UserRequest):
 		raise HTTPException(status_code=401, detail="Some fields have constraints!")
 
 	return db_user
+
+
+def update_user(db: Session, id: int):
+
+	current_user = db.query(User).filter(User.id == id).first()
+
+	
+	# plants: list[int]
+
+
+	# if info.birthday != current_user.birthday:
+	# 	current_user.birthday = info.birthday
+	# if info.province != current_user.province:
+	# 	current_user.province = info.province
+	# if info.city != current_user.city:
+	# 	current_user.city = info.city
+	# if info.is_public != current_user.is_public:
+	# 	current_user.is_public = info.is_public
+	# if 
+	
+
+
+	return current_user
+
+
+
 
 
 
