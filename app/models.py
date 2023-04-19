@@ -5,7 +5,7 @@ Taken from: https://fastapi.tiangolo.com/tutorial/sql-databases/
 import enum
 import datetime
 
-from sqlalchemy import Boolean, Column, ForeignKey, Integer, String, Enum, DateTime, Date, Time
+from sqlalchemy import Boolean, Column, ForeignKey, Integer, String, Enum, DateTime, Date, Time, Float
 from sqlalchemy.orm import relationship, backref
 from .database import Base
 
@@ -35,11 +35,11 @@ class Plant(Base):
     id = Column(Integer, primary_key=True, index=True)
     name = Column(String, unique=True, index=True, nullable=False)
     p_info = Column(String, nullable=False)
-    min_temp = Column(Integer, nullable=False)
-    max_temp = Column(Integer, nullable=False)
-    min_humidity = Column(Integer, nullable=False)
-    max_humidity = Column(Integer, nullable=False)
-    rain_tolerance = Column(Integer, nullable=False)
+    min_temp = Column(Float, nullable=False)
+    max_temp = Column(Float, nullable=False)
+    min_humidity = Column(Float, nullable=False)
+    max_humidity = Column(Float, nullable=False)
+    rain_tolerance = Column(Float, nullable=False)
     planting_time = Column(Integer, nullable=False)
     summer = Column(Boolean, nullable=False)
     rainy_season = Column(Boolean, nullable=False)

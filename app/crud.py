@@ -5,7 +5,7 @@ from sqlalchemy import and_
 from sqlalchemy.exc import IntegrityError
 
 from .models import UserPlants, User, Plant
-from .schemas import UserRequest, UserResponse, UserUpdateRequest
+from .schemas import UserRequest, UserResponse, UserUpdateRequest, PlantRequest
 
 
 def create_user(db:Session, user: UserRequest):
@@ -39,6 +39,28 @@ def create_user(db:Session, user: UserRequest):
 		raise HTTPException(status_code=401, detail="Some fields have constraints!")
 
 	return db_user
+
+def create_plant(db:Session, plant: PlantRequest):
+     
+    try:
+     	db_plant = Plant(
+			name = plant.name,
+			p_info = plant.p_info,
+			min_temp = plant.min_temp,
+            max_temp = plant.max_temp,
+            min_humidity = plant.min_humidity,
+            max_humidity = plant.max_humidity,
+            rain_tolerance = plant.rain_tolerance,
+            planting_time = plant.planting_time,
+            summer = plant.summer,
+            rainy_season = plant.rainy_season,
+			)
+     	db.add(db_plant)
+     	db.commit()
+    except IntegrityError:
+     	db.rollback()
+     	raise HTTPException(status_code=401, detail="Some fields have constraints!")
+    return db_plant
 
 
 def update_user(db: Session, id: int):

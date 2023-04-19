@@ -71,6 +71,11 @@ def create_user(user: schemas.UserRequest, db:Session = Depends(get_db)):
     # print(crud.format_user(created_user))
     return crud.format_user(created_user)
 
+@app.post("/create_plant", response_model = schemas.PlantsResponse)
+def create_plant(plant: schemas.PlantRequest, db:Session = Depends(get_db)):
+    created_plant = crud.create_plant(db=db, plant=plant)
+    return created_plant
+
 @app.get("/get_user/{user_id}")
 def get_user(user_id:int, db:Session = Depends(get_db)):
     db_user = crud.update_user(db=db, id=user_id)

@@ -38,15 +38,15 @@ class UserRequest(BaseModel):
 
 class PlantRequest(BaseModel):
 	name: str = None     
-	p_info = str
-    min_temp = 
-    max_temp = 
-    min_humidity = 
-    max_humidity = 
-    rain_tolerance = 
-    planting_time = 
-    summer = 
-    rainy_season = 
+	p_info: str = None 
+	min_temp: float = None
+	max_temp: float = None
+	min_humidity: float = None
+	max_humidity: float = None
+	rain_tolerance: float = None 
+	planting_time: int = None
+	summer: bool = None
+	rainy_season: bool = None
 
 
 
