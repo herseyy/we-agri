@@ -6,7 +6,7 @@ from fastapi.middleware.cors import CORSMiddleware
 from sqlalchemy.orm import Session
 # from fastapi.templating import Jinja2Templates
 
-from . import crud, models, schemas
+from . import crud, models, schemas, owm
 from .database import SessionLocal, engine
 
 from pydantic import BaseModel
@@ -80,6 +80,11 @@ def create_plant(plant: schemas.PlantRequest, db:Session = Depends(get_db)):
 def get_user(user_id:int, db:Session = Depends(get_db)):
     db_user = crud.update_user(db=db, id=user_id)
     return db_user
+
+@app.get("/get_api_data")
+def get_api():
+    return owm.get_api_data()
+
 
 # def get_user(user_id: int, user = schemas.UserUpdateRequest, db:Session = Depends(get_db)):
 #     user_ = crud.update_user(db = db, id = user_id, user = user)
