@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="en" dir="ltr">
 
 <head>
     <meta charset="UTF-8">
@@ -78,76 +78,67 @@
             <div id ="signupcontent" style= "display: none;">
                 <div class="mb-md-5 mt-md-4 pb-5">
 
-                <h2 class="fw-bold mb-2 text-uppercase">Sign up</h2>
-                <p class="text-white-50 mb-5">Please enter your personal information to create an account!</p>
-
-                <div class="form-outline form-white mb-4">
-                  <input type="text" name= "username" id="typeNameX" class="form-control form-control-lg" />
-                  <label class="form-label" for="typeNameX">Username</label>
-                </div>
-
-                <div class="form-outline form-white mb-4">
-                  <input type="password" name= "password" id= "password" class="form-control form-control-lg" />
-                  <label class="form-label" for="typePasswordX">Password</label>
-                </div>
+                 <h2 class="fw-bold mb-2 text-uppercase">Sign up</h2>
+                  <p class="text-white-50 mb-5">Please enter your personal information to create an account!</p>
 
                   <div class="form-outline form-white mb-4">
-                  <input type="password" name= "confirm_password" id="confirm_password" class="form-control form-control-lg" />
-                  <label class="form-label" for="confirm_password">Confirm Password</label>
-                </div>
+                     <input type="text" name= "username" id="typeNameX" class="form-control form-control-lg" />
+                     <label class="form-label" for="typeNameX">Username</label>
+                  </div>
 
-                <div class="form-outline form-white mb-4">
-                  <input type="text" name= "birthday" id="birthday" class="form-control form-control-lg" />
-                  <label class="form-label" for="birthday">Birthday</label>
-                </div>
+                  <div class="form-outline form-white mb-4">
+                     <input type="password" name= "password" id= "password" class="form-control form-control-lg" />
+                     <label class="form-label" for="typePasswordX">Password</label>
+                  </div>
 
-                <div class="form-outline form-white mb-4">
+                   <div class="form-outline form-white mb-4">
+                      <input type="password" name= "confirm_password" id="confirm_password" class="form-control form-control-lg" />
+                      <label class="form-label" for="confirm_password">Confirm Password</label>
+                 </div>
+
+                  <div class="form-outline form-white mb-4">
+                       <input type="text" name= "birthday" id="birthday" class="form-control form-control-lg" />
+                       <label class="form-label" for="birthday">Birthday</label>
+                  </div>
+
+                  <div class="form-outline form-white mb-4">
                     <p> Click on Exact Location Button to get your location </p> 
-         <button onclick="getPreciseLocation()"> Precise Location </button> 
-         <p id="location"> </p> 
-         <script> 
-            var x = document.getElementById("location");
-            function getPreciseLocation(){
-                if(navigator.geolocation){
-                    navigator.geolocation.getCurrentPosition(showExactPosition)
-                }else{
-                    x.innerHTML = "Geolocation is not supported"
-                }
-            }
-            function showExactPosition(position){
-                x.innerHTML = "Latitude: "+position.coords.latitude+
-                " br Longitude: "+position.coords.longitude;
-            }
-         </script> 
-                  <input type="text" name= "province" id="province" class="form-control form-control-lg" />
-                  <label class="form-label" for="province">Province</label>
+                    <button onclick="getPreciseLocation()"> Precise Location </button> 
+                    <p id="location"> </p> 
+                      <script> 
+                          var x = document.getElementById("location");
+                          function getPreciseLocation(){
+                             if(navigator.geolocation){
+                                navigator.geolocation.getCurrentPosition(showExactPosition)
+                             }else{
+                                x.innerHTML = "Geolocation is not supported"
+                             }
+                          }
+                          function showExactPosition(position){
+                            x.innerHTML = "Latitude: "+position.coords.latitude+
+                          " <br> Longitude: "+position.coords.longitude;
+                         }
+                       </script> 
+                     <input type="text" name= "province" id="province" class="form-control form-control-lg" />
+                     <label class="form-label" for="province">Province</label>
+                  </div>
+
+                  <div class="form-outline form-white mb-4">
+                     <input type="text" name= "city" id="city" class="form-control form-control-lg" />
+                     <label class="form-label" for="city">City</label>
+                  </div>
+
+                  <div class="form-outline form-white mb-4">
+                     <input type="text" name="public" id="public" class="form-control form-control-lg" />
+                     <label class="form-label" for="public">Public</label>
+                  </div>
+
+
+                   <p id="missinginfo" style="display:none;">Please input a value!</p>
+
+                   <button class="btn btn-outline-light btn-lg px-5" type="submit" onclick="document.getElementById('logincontent').style.display='block'; document.getElementById('signupcontent').style.display='none'">Sign up</button>
                 </div>
-
-                <div class="form-outline form-white mb-4">
-                  <input type="text" name= "city" id="city" class="form-control form-control-lg" />
-                  <label class="form-label" for="city">City</label>
-                </div>
-
-                <div class="form-outline form-white mb-4">
-                  <input type="text" name="public" id="public" class="form-control form-control-lg" />
-                  <label class="form-label" for="public">Public</label>
-                </div>
-
-
-                <p id="missinginfo" style="display:none;">Please input a value!</p>
-
-                <button class="btn btn-outline-light btn-lg px-5" type="submit" onclick="document.getElementById('logincontent').style.display='block'; document.getElementById('signupcontent').style.display='none'">Sign up</button>
-                <script>
-                  document.getElementById('logincontent').style.display='block'
-                  document.getElementById('signupcontent').style.display='none'
-
-                 // if (document.getElementById(typeNameX).value. = ''){
-                 //     document.getElementById(typeNameX).style.display = "block"
-                 // }
-                 // else{}
-                </script>
-            </div>
-          </div>
+           </div>
 <!--         </div>
       </div> -->
     <!-- </div> -->
