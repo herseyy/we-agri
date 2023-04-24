@@ -134,9 +134,25 @@
                   </div>
 
 
-                   <p id="missinginfo" style="display:none;">Please input a value!</p>
+                   <p id="signupValue"></p>
 
-                   <button class="btn btn-outline-light btn-lg px-5" type="submit" onclick="document.getElementById('logincontent').style.display='block'; document.getElementById('signupcontent').style.display='none'">Sign up</button>
+                   <button class="btn btn-outline-light btn-lg px-5" type="submit" id="signupSubmit" onclick="submitForm()">Sign up</button>
+                    <script>
+                      var loginForm = document.getElementById('logincontent')
+                      var signupUname = document.getElementById('typeNameX');
+                      var signupPword = document.getElementById('password');
+                      var confirmPword = document.getElementById('confirm_password');
+                       function submitForm(){
+                         if (signupUname.value == "" || signupPword.value == "" || confirmPword.value == ""){
+                            document.getElementById('signupValue').innerText = "Please input a value."; 
+                        } else if (signupPword.value != confirmPword.value){
+                            document.getElementById('signupValue').innerText = "Certain values do not match.";
+                       } else{
+                            document.getElementById('signupcontent').submit();
+                            document.getElementById(loginForm).style.display='block'; 
+                       }
+                     }
+                   </script>  
                 </div>
            </div>
 <!--         </div>
