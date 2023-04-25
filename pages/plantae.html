@@ -14,17 +14,28 @@
 
     <body>
         <header>
-            <h2 class="logo">Logowr</h2>
-            <nav class="navigation">
-                <h2>
-                    <a href="#">Home</a>
-                    <a href="#">About</a>
-                    <a href="#">Contact</a>
-                    <button type="button" class="btn" data-bs-toggle="modal" data-bs-target="#exampleModal" >
-                        Login
-                    </button>
-                </h2>
-            </nav>
+          <nav class="navbar navbar-expand-sm">
+            <h2 class="logo m-auto px-3 navbar-brand">Logowr</h2>  
+            <button class="navbar-toggler btn" type="button" data-bs-toggle="collapse" data-bs-target="#we-agriNav" aria-controls="we-agriNav" aria-expanded="false" >
+              <span class="navbar-toggler-icon"></span>
+            </button>
+            <div class="collapse navbar-collapse justify-content-end" id="we-agriNav">
+              <ul class="navbar-nav align-items-center">
+                <li class="nav-item">
+                  <a class="nav-link" href="#">Home</a>
+                </li>
+                <li class="nav-item">
+                  <a class="nav-link" href="#">About</a>
+                </li>
+                <li class="nav-item">
+                  <a class="nav-link" href="#">Contact</a>
+                </li>
+                <button type="button" class="btn btn-primary-outline" data-bs-toggle="modal" data-bs-target="#exampleModal" onclick="document.getElementById('logincontent').style.display='block'; document.getElementById('signupcontent').style.display='none'; ">
+                  Login
+                </button>
+              </ul>
+            </div>
+          </nav>
         </header>
 
     <div class="modal fade" id="exampleModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
