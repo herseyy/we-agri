@@ -22,8 +22,6 @@ header {
 	left: 0;
 	width: 100%;
 	padding: 20 px 100 px;
-	display: flex;
-	flex-wrap:wrap;
 	justify-content: space-between;
 	align-items: center;
 	z-index: 99;
@@ -36,17 +34,20 @@ header {
 }
 
 nav {
+	display: flex;
+	flex-wrap:wrap;
 	position: relative;
 	font-size: 0.5cm;
 	color: #fff;
 	text-decoration: none;
 	font-weight: 500;
-	margin-left: 40em;
 }
-.navbar-brand {
-	padding-left:40px;
+
+header nav button {
+	margin-right: 2vw;
 }
-.modal-content {
+
+div.modal-content {
 	background: darkolivegreen;
 }
 
