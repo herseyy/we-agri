@@ -1,3 +1,6 @@
+//html include
+
+
 // signup precise location btn
 let x = document.getElementById("location");
 function getPreciseLocation(){
@@ -16,18 +19,37 @@ function showExactPosition(position){
 let signupUname = document.getElementById('typeNameX');
 let signupPword = document.getElementById('password');
 let confirmPword = document.getElementById('confirm_password');
+let signupBday = document.getElementById('birthday');
+let signupProv = document.getElementById('province');
+let signupCity = document.getElementById('city');
+let signupPublic = document.getElementById('public');
 let rTime = 3;
 
 function redirectLogin() {
     document.getElementById('signupcontent').style.display='none'; 
     document.getElementById('logincontent').style.display='block';
     document.getElementById('signupValue').innerText = "";
+    
+}
+
+function logIn() {
+    redirectLogin(); 
+    clearSigninInput();
+}
+
+function signUp(){
+    document.getElementById('logincontent').style.display='none'; 
+    document.getElementById('signupcontent').style.display='block';
 }
 
 function clearSigninInput(){
     signupUname.value = "";
     signupPword.value = "";
     confirmPword.value = "";
+    signupBday.value = "";
+    signupProv.value = "";
+    signupCity.value = "";
+    signupPublic.value = "";
 }
 
 function submitForm(){
@@ -42,4 +64,3 @@ function submitForm(){
         setTimeout(redirectLogin, rTime*1000);
     }
 }
-
