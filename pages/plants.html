@@ -149,7 +149,23 @@
                         Advanced Search 
                     </button>
                     <div id="advSearchCollapse" class="collapse card card-body">
-                        <div class="mb-2"><i class="fa-solid fa-filter"></i> Filters</div>
+                        <div class="my-2 d-flex align-items-center">
+                            <div class="col">Sort by: </div>
+                            <div class="col-8 dropdown">
+                                <button class="btn dropdown-toggle" type="button" id="dropdownplantSort" data-bs-toggle="dropdown" aria-haspopup="true" aria-expanded="false" >
+                                Name
+                                </button>
+                                <ul class="dropdown-menu" aria-labelledby="dropdownplantSort">
+                                    <li><a class="dropdown-item" href="">Name</a></li>
+                                    <li><a class="dropdown-item" href="">Category</a></li>
+                                    <li><a class="dropdown-item" href="">Temperature</a></li>
+                                    <li><a class="dropdown-item" href="">Humidity</a></li>
+                                    <li><a class="dropdown-item" href="">Rain Tolerance</a></li>
+                                    <li><a class="dropdown-item" href="">Plant Growth</a></li>
+                                </ul>
+                            </div>
+                        </div>
+                        <div class="my-2"><i class="fa-solid fa-filter"></i> Filters</div>
                         <div id="filterCbox">
                             <div class="mb-1">Season</div>
                             <div class="form-check">
@@ -183,7 +199,9 @@
             </div>
             <div class="row justify-content-md-center">
                 <div class="searchRight col-lg-9 mb-2">
-                    
+                    <div class="container">
+
+                    </div>
                 </div>
                 <div class="advSearchRight col mb-2">
                     

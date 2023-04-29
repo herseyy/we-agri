@@ -51,6 +51,13 @@ div.modal-content {
 	background: darkolivegreen;
 }
 
+.navbar-toggler[aria-expanded="false"] + #we-agriNav {
+	background:transparent;
+}
+.navbar-toggler[aria-expanded="true"] + #we-agriNav {
+	background:green;
+}
+
 #lo{
 	display: none;
 }
