@@ -24,18 +24,6 @@ class PlantsResponse(BaseModel):
 	class Config:
 		orm_mode = True
 
-class UserRequest(BaseModel):
-	username: str = None
-	birthday: Optional[datetime.date] = None
-	hashed_pass1: str = None
-	hashed_pass2: str = None
-	province: str = None
-	city: str = None
-	is_active: bool = False
-	is_public: bool = True
-	plants: list[int]
-
-
 class PlantRequest(BaseModel):
 	name: str = None     
 	p_info: str = None 
@@ -50,12 +38,24 @@ class PlantRequest(BaseModel):
 
 
 
+class UserRequest(BaseModel):
+	username: str = None
+	birthday: Optional[datetime.date] = None
+	hashed_pass1: str = None
+	hashed_pass2: str = None
+	province: str = None
+	city: str = None
+	is_active: bool = False
+	is_public: bool = True
+	plants: list[int]
+
+
 # same for update
 class UserResponse(BaseModel):
 	id: int
 	username: str = None
 	birthday: Optional[datetime.date] = None
-	hashed_pass: str = None
+	# hashed_pass: str = None
 	province: str = None
 	city: str = None
 	is_active: bool= False
@@ -66,12 +66,38 @@ class UserResponse(BaseModel):
 		orm_mode = True	
 
 
-class UserUpdateRequest(BaseModel):
-	birthday: Optional[datetime.date] = None
-	province: str = None
-	city: str = None
-	is_public: bool= True
-	plants: list[int]
+class UserFilterRequest(BaseModel):
+	upperAge: Optional[int] = None 
+	lowerAge: Optional[int] = None
+	province: Optional[str] = None
+	city: Optional[str] = None
+	is_active: Optional[bool] = None
+	is_public: Optional[bool] = None
 
 
+# class UserUpdateRequest(BaseModel):
+# 	birthday:
+	
 
+
+# 	username: str = None
+# 	birthday: Optional[datetime.date] = None
+# 	hashed_pass1: str = None
+# 	hashed_pass2: str = None
+# 	province: str = None
+# 	city: str = None
+# 	is_active: bool = False
+# 	is_public: bool = True
+# 	plants: list[int]
+
+
+# 	    date_positive: datetime.date = None
+#     age: int = None
+#     months: int = None
+#     days: int = None
+#     # birthday: datetime.date
+#     sex: str = None
+#     barangay: str = None
+#     contact_number: str = None
+#     asymptomatic: bool = True
+#     status: str = None
