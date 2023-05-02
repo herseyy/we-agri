@@ -6,8 +6,9 @@ Ang ibig sabihin lang neto, eto ung format nung mga marereturn or makukuhang dat
 
 """
 import datetime
-from typing import Optional
+from typing import Optional, Annotated, Union
 from pydantic import BaseModel
+from fastapi import Query
 
 class PlantsResponse(BaseModel):
 	id: int
@@ -37,7 +38,6 @@ class PlantRequest(BaseModel):
 	rainy_season: bool = None
 
 
-
 class UserRequest(BaseModel):
 	username: str = None
 	birthday: Optional[datetime.date] = None
@@ -47,7 +47,7 @@ class UserRequest(BaseModel):
 	city: str = None
 	is_active: bool = False
 	is_public: bool = True
-	plants: list[int]
+	plants: Optional[list[int]]
 
 
 # same for update
@@ -74,30 +74,17 @@ class UserFilterRequest(BaseModel):
 	is_active: Optional[bool] = None
 	is_public: Optional[bool] = None
 
-
-# class UserUpdateRequest(BaseModel):
-# 	birthday:
-	
-
-
-# 	username: str = None
-# 	birthday: Optional[datetime.date] = None
-# 	hashed_pass1: str = None
-# 	hashed_pass2: str = None
-# 	province: str = None
-# 	city: str = None
-# 	is_active: bool = False
-# 	is_public: bool = True
-# 	plants: list[int]
+class UserUpdateRequest(BaseModel):
+	birthday: datetime.date = None
+	province: str = None
+	city: str = None
+	is_public: bool = None
 
 
-# 	    date_positive: datetime.date = None
-#     age: int = None
-#     months: int = None
-#     days: int = None
-#     # birthday: datetime.date
-#     sex: str = None
-#     barangay: str = None
-#     contact_number: str = None
-#     asymptomatic: bool = True
-#     status: str = None
+class UserChangePass(BaseModel):
+	old_pass: str = None
+	new_pass1: str = None
+	new_pass2: str = None
+
+class UserChangePlants(BaseModel):
+	plants: list[int]
