@@ -86,5 +86,5 @@ class UserChangePass(BaseModel):
 	new_pass1: str = None
 	new_pass2: str = None
 
-class UserChangePlants(BaseModel):
-	plants: list[int]
+class AddUserPlant(BaseModel):
+	plant_id: int

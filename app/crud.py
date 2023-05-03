@@ -124,14 +124,18 @@ def change_pass(db: Session, id: int, pass_: UserChangePass):
 
 	return status
 
-def change_user_plants(db: Session, id: int):
-	return 0
+# def get_user_plants(db: Session, id: int):
+# 	current_plants = db.query(UserPlants).filter(UserPlants.user_id == id).all()
+
+# 	# for key, value in current_plants.items() :
+# 	# 	print (key, value)
+
+# 	return current_plants
 
 
 def update_user(db: Session, id: int, info: UserUpdateRequest):
 
 	current_user = db.query(User).filter(User.id == id).first()
-	current_plants = []
 
 	if current_user is None:
 		return current_user
@@ -155,7 +159,7 @@ def format_user(db_user: User):
     _plants = []
 
     plants = db_user.plants
-    # print(db_user.plants)
+    # print(plants)
 # 
     for i in plants:
         if plants is not None:

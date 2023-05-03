@@ -83,6 +83,7 @@ def filter_users(user_filter: schemas.UserFilterRequest = Depends(), q: Union[li
     #     print(crud.format_user(user))
     return [crud.format_user(user) for user in users]
 
+
 @app.patch("/update_user/{user_id}")
 def update_user(user_id: int, info: schemas.UserUpdateRequest, db: Session = Depends(get_db)):
     current_user = crud.update_user(db=db, id=user_id, info=info)
@@ -102,11 +103,12 @@ def change_pass(user_id: int, pass_:schemas.UserChangePass, db:Session = Depends
 
     return current_user
 
-@app.patch("/change_user_plants/{user_id}")
-def change_user_plants(plants: schemas.UserChangePlants):
-    current_plants = crud.change_user_plants(db=db, id=user_id)
 
-    return current_plants
+# @app.get("/get_user_plants/{user_id}")
+# def get_user_plants(user_id: int, db:Session = Depends(get_db)):
+#     current_plants = crud.get_user_plants(db=db, id=user_id)
+#     return current_plants
+# # , response_model=schemas.PlantsResponse
 
 
 
