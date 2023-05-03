@@ -12,6 +12,12 @@ from .database import Base
 # MANY TO MANY RELATIONSHIP
 # USER PLANTS IS THE ASSOCIATION TABLE
 
+class Category(enum.Enum):
+    """PLANTS CATEGORY"""
+    fruits = "fruits"
+    vegetables = "vegetables"
+    trees = "trees"
+
 class User(Base):
     __tablename__ = "user"
 
@@ -34,6 +40,7 @@ class Plant(Base):
 
     id = Column(Integer, primary_key=True, index=True)
     name = Column(String, unique=True, index=True, nullable=False)
+    # category = Column(Enum(Category), index=True)
     p_info = Column(String, nullable=False)
     min_temp = Column(Float, nullable=False)
     max_temp = Column(Float, nullable=False)
