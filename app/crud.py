@@ -206,5 +206,5 @@ def create_plant(db:Session, plant: PlantRequest):
      	db.commit()
     except IntegrityError:
      	db.rollback()
-     	raise HTTPException(status_code=401, detail="Some fields have constraints!")
+		raise HTTPException(status_code=401, detail="Some fields have constraints!")
     return db_plant

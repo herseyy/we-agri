@@ -1,6 +1,6 @@
 // for every plantItem
 
-var plantData = document.getElementsByClassName('plantItem');
+var plantData = document.getElementsByClassName('.plantItem');
 /* 
 for (var i=0; i<plantData.length;i++){
     var plantName = document.createElement("div");
