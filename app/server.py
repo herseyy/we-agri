@@ -70,10 +70,16 @@ def index():
 
 ##### USERS
 
+# , response_model = schemas.UserResponse
 @app.post("/create_user", response_model = schemas.UserResponse)
 def create_user(user: schemas.UserRequest, db:Session = Depends(get_db)):
     created_user = crud.create_user(db=db, user=user)
-    # print(crud.format_user(created_user))
+    # print(created_user)
+    if created_user == None:
+        raise HTTPException(404, detail="Username is already taken")
+        # return {"message": "username is taken"}
+
+
     return crud.format_user(created_user)
 
 @app.get("/filter_users", response_model = list[schemas.UserResponse])
@@ -104,34 +110,107 @@ def change_pass(user_id: int, pass_:schemas.UserChangePass, db:Session = Depends
     return current_user
 
 
-# @app.get("/get_user_plants/{user_id}")
-# def get_user_plants(user_id: int, db:Session = Depends(get_db)):
-#     current_plants = crud.get_user_plants(db=db, id=user_id)
-#     return current_plants
-# # , response_model=schemas.PlantsResponse
+@app.get("/get_all_user_plants")
+def get_all_user_plants(db: Session = Depends(get_db)):
+    user_plants = db.query(models.UserPlants).all()
+
+    plants = crud.get_user_plants(db=db, user_plants = user_plants)
+
+    print(user_plants)
+    return [crud.format_plants(plant) for plant in plants]
+
+@app.get("/get_user_plants/{user_id}")
+def get_user_plants(user_id: int, db:Session = Depends(get_db)):
+
+    user_plants = db.query(models.UserPlants).filter(models.UserPlants.user_id == user_id).all()
+    plants = crud.get_user_plants(db=db, user_plants=user_plants)
+
+    message = {
+        "message": "user no plants"
+    }
+
+    if plants is None or plants == []:
+        return message
+        # raise HTTPException(404, detail="No plant found!")
+
+    return [crud.format_plants(plant) for plant in plants]
 
 
+@app.delete("/delete_user_plant/{user_id}/{plant_id}")
+def delete_user_plant(user_id: int, plant_id: int, db:Session = Depends(get_db)):
+    plants = crud.delete_user_plant(db=db, user_id= user_id, plant_id= plant_id)
+
+    message = {
+        "message": "user no plants"
+    }
+
+    if plants is None or plants == []:
+        return message
+
+    return [crud.format_plants(plant) for plant in plants]
 
 
+@app.delete("/delete_user/{user_id}")
+def delete_user(user_id: int, db: Session = Depends(get_db)):
+    users = crud.delete_user(db = db, user_id = user_id)
 
+
+    return [crud.format_user(user) for user in users]
+
+@app.post("/add_user_plant/{user_id}/{plant_id}")
+def add_user_plant(user_id: int, plant_id: int, db:Session = Depends(get_db)):
+    plants = crud.add_user_plant(db=db, user_id= user_id, plant_id= plant_id)
+
+    message = {
+        "message": "user already has this plant"
+    }
+
+    if plants is False:
+        return {"message": "No user found"}
+
+    if plants is None or plants == []:
+        return message
+
+    return [crud.format_plants(plant) for plant in plants]
+
+
+    
 
 ##### PLANTS
 
 @app.post("/create_plant", response_model = schemas.PlantsResponse)
 def create_plant(plant: schemas.PlantRequest, db:Session = Depends(get_db)):
     created_plant = crud.create_plant(db=db, plant=plant)
-    return created_plant
+    return crud.format_plants(created_plant)
+
+@app.get("/filter_plants", response_model = list[schemas.PlantsResponse])
+def filter_plants(plant_filter: schemas.PlantFilterRequest = Depends (), db:Session = Depends(get_db)):
+    plants = crud.filter_plants(db=db, plant_filter=plant_filter)
+    print(plants)
+    return [crud.format_plants(plant) for plant in plants]
+
+
+@app.patch("/update_plant/{plant_id}", response_model=schemas.PlantsResponse)
+def update_plant(plant_id: int, info: schemas.PlantUpdate, db:Session = Depends(get_db)):
+    plant = crud.update_plant(db=db, plant_id=plant_id, info=info)
+
+    return crud.format_plants(plant)
+
+@app.delete("/delete_plant/{plant_id}", response_model=list[schemas.PlantsResponse])
+def delete_plant(plant_id: int, db:Session = Depends(get_db)):
+    plants = crud.delete_plant(db = db, plant_id = plant_id)
+    # print(plants)
+    return [crud.format_plants(plant) for plant in plants]
+
+
+
+
+
 
 
 @app.get("/get_api_data")
 def get_api():
     return owm.get_api_data()
-
-# @app.get("/items/")
-# async def read_items(q: Union[list[str], None] = Query(default=None)):
-#     query_items = {"q": q}
-#     return query_items
-
 
 
 # Ang ginagawa lang neto, sinasabe na yung response format ay galing sa schema na Symptoms

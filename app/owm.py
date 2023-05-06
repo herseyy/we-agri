@@ -42,8 +42,6 @@ def get_api_data():
 		tempo_date_str = plus_1.strftime('%Y-%m-%d')
 
 
-	print()
-
 	for i in range(len(response['list'])):
 		timestamp = response['list'][i]['dt']
 
@@ -74,7 +72,7 @@ def get_api_data():
 			tempo_date_str = date_str
 			# print(date_, "a")
 			# print(weekdays[date_.isoweekday() - 2])
-			print(sum_of_temp)
+			# print(sum_of_temp)
 			formatted_data.append({
 				"day_of_week": weekdays[date_.isoweekday() - 2],
 				"avg_temp": float(np.round((sum_of_temp / item_per_day) - 273.15, 2)),
@@ -87,7 +85,7 @@ def get_api_data():
 			sum_of_temp = 0
 			sum_of_humidity = 0
 			sum_of_rain = 0
-		print(sum_of_temp, "b")
+		# print(sum_of_temp, "b")
 		item_per_day += 1
 		sum_of_temp = sum_of_temp + response['list'][i]['main']['temp']
 		sum_of_humidity = sum_of_humidity + response['list'][i]['main']['humidity']
@@ -97,7 +95,7 @@ def get_api_data():
 		if 'rain' in response['list'][i]:
 			sum_of_rain = sum_of_rain + response['list'][i]['rain']['3h']
 
-	print(formatted_data) # use this to change the content of html
+	# print(formatted_data) # use this to change the content of html
 
 	training = {
 		"data": [
