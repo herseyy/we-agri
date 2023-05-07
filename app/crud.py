@@ -200,11 +200,13 @@ def create_plant(db:Session, plant: PlantRequest):
             rain_tolerance = plant.rain_tolerance,
             planting_time = plant.planting_time,
             summer = plant.summer,
-            rainy_season = plant.rainy_season,
+            rainy_season = plant.rainy_season
 			)
-     	db.add(db_plant)
+		db.add(db_plant)
      	db.commit()
+	
     except IntegrityError:
      	db.rollback()
 		raise HTTPException(status_code=401, detail="Some fields have constraints!")
+    
     return db_plant
