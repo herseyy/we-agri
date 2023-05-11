@@ -38,7 +38,7 @@ class Token(BaseModel):
 class TokenData(BaseModel):
     username: str or None = None
 
-# models.User()
+#User = models.User()
 
 class User(BaseModel):
     username:str
