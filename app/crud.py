@@ -5,7 +5,7 @@ from sqlalchemy import and_, or_
 from sqlalchemy.exc import IntegrityError
 
 from .models import UserPlants, User, Plant
-from .schemas import UserRequest, UserResponse, PlantRequest, UserFilterRequest, UserUpdateRequest, UserChangePass
+from .schemas import UserRequest, UserResponse, PlantRequest, PlantsResponse, UserFilterRequest, UserUpdateRequest, UserChangePass, CurrentUserPlants, PlantUpdate, PlantFilterRequest
 
 from datetime import datetime, date, timedelta
 from dateutil.relativedelta import relativedelta
@@ -14,8 +14,11 @@ from dateutil.relativedelta import relativedelta
 def create_user(db:Session, user: UserRequest):
 
 	try:
-		print(user.hashed_pass1)
-		print(user.hashed_pass2)
+		
+		users = db.query(User).filter(User.username == user.username).first()
+		if users:
+			# print('hehe')
+			return None
 
 		db_user = User(
 			username = user.username,
@@ -46,7 +49,9 @@ def create_user(db:Session, user: UserRequest):
 def filter_users(db:Session, user_filter: UserFilterRequest = None, q: int = None):
 	query = db.query(User)
 
+	print(user_filter)
 	if user_filter == None:
+		print('a')
 		return query.all()
 
 	if q is not None:
@@ -105,8 +110,7 @@ def change_pass(db: Session, id: int, pass_: UserChangePass):
 	}
 
 	if current_user is None:
-		status["status"] = "user not found!"
-		return status
+		return current_user
 	if pass_.old_pass is not None and pass_.old_pass == current_user.hashed_pass:
 		if pass_.old_pass == pass_.new_pass1:
 			status["status"] = "error new pass can't be the same as old"
@@ -124,13 +128,95 @@ def change_pass(db: Session, id: int, pass_: UserChangePass):
 
 	return status
 
-# def get_user_plants(db: Session, id: int):
-# 	current_plants = db.query(UserPlants).filter(UserPlants.user_id == id).all()
+def get_current_user(db: Session, id: int):
+	current_user = db.query(User).filter(User.id == id).first()
 
-# 	# for key, value in current_plants.items() :
-# 	# 	print (key, value)
+	return current_user
 
-# 	return current_plants
+def get_all_user_plants(db: Session):
+	all_user_plants = db.query(UserPlants).all()
+
+	plants = []
+
+	for i in all_user_plants:
+		plants.append(i.description)
+
+	return plants
+
+def get_user_plants(db: Session, user_plants: list):
+	# user_plants = db.query(UserPlants).filter(UserPlants.user_id == id).all()
+	# print(user_plants)
+	plants = []
+	for i in user_plants:
+		# print(i.description)
+		plants.append(i.description)
+	# print(plants)
+	return plants
+
+
+def delete_user_plant(db: Session, user_id: int, plant_id: int):
+	plant = db.query(UserPlants)\
+	.filter(UserPlants.user_id == user_id)\
+	.filter(UserPlants.plant_id == plant_id).delete()
+
+	db.commit()
+
+	remaining_plants = db.query(UserPlants).filter(UserPlants.user_id == user_id).all()
+
+	remaining_plants_lst = []
+	for i in remaining_plants:
+		# print(i.description)
+		remaining_plants_lst.append(i.description)
+	# print(plants)
+	return remaining_plants_lst
+
+
+def add_user_plant(db: Session, user_id: int, plant_id:int):
+
+	current_user = db.query(User).filter(User.id == user_id).first()
+
+	if current_user is None:
+		return False
+
+	plants_old = db.query(UserPlants).filter(UserPlants.user_id == user_id).all()
+	# print(plants_old)
+	for i in plants_old:
+		if plant_id == i.plant_id:
+			return None
+
+	db_plants = UserPlants(
+		user_id = user_id,
+		plant_id = plant_id
+		)
+	db.add(db_plants)
+	db.commit()
+
+	plants_new = db.query(UserPlants).filter(UserPlants.user_id == user_id).all()
+	# print(plant_)
+
+	plants_1 = []
+	for i in plants_new:
+		# print(i.description)
+		plants_1.append(i.description)
+
+	return plants_1
+
+def format_plants(db_plant: Plant):
+	# print(db_plant.id)
+	return PlantsResponse(
+		id = db_plant.id,
+		name = db_plant.name,
+		category = db_plant.category.value,
+		p_info = db_plant.p_info,
+		min_temp = db_plant.min_temp,
+		max_temp = db_plant.max_temp,
+		min_humidity = db_plant.min_humidity,
+		max_humidity = db_plant.max_humidity,
+		rain_tolerance = db_plant.rain_tolerance,
+		planting_time = db_plant.planting_time,
+		summer = db_plant.summer,
+		rainy_season = db_plant.rainy_season,
+	    )
 
 
 def update_user(db: Session, id: int, info: UserUpdateRequest):
@@ -154,18 +240,29 @@ def update_user(db: Session, id: int, info: UserUpdateRequest):
 	return current_user
 
 
+def delete_user(db:Session, user_id: int):
+	user_d = db.query(User).filter(User.id == user_id).delete()
+
+	user_d_plants = db.query(UserPlants).filter(UserPlants.user_id == user_id).delete()
+
+	db.commit()
+
+	remaining_users = db.query(User).all()
+
+	return remaining_users
+
 
 def format_user(db_user: User):
-    _plants = []
+	# print(db_user)
+	_plants = []
 
-    plants = db_user.plants
-    # print(plants)
-# 
-    for i in plants:
-        if plants is not None:
-            _plants.append(i.description)
+	plants = db_user.plants
 
-    return UserResponse(
+	for i in plants:
+	    if plants is not None:
+	    	_plants.append(i.description)
+
+	return UserResponse(
 		id = db_user.id,
 		username = db_user.username,
 		birthday = db_user.birthday,
@@ -174,24 +271,15 @@ def format_user(db_user: User):
 		city = db_user.city,
 		is_active = db_user.is_active,
 		is_public = db_user.is_public,
-		plants = _plants
-        )
-
-
-
-
-
-
-
-
-
+		plants = [format_plants(plant) for plant in _plants]
+	    )
 
 
 def create_plant(db:Session, plant: PlantRequest):
-     
     try:
      	db_plant = Plant(
 			name = plant.name,
+			category = plant.category,
 			p_info = plant.p_info,
 			min_temp = plant.min_temp,
             max_temp = plant.max_temp,
@@ -200,13 +288,77 @@ def create_plant(db:Session, plant: PlantRequest):
             rain_tolerance = plant.rain_tolerance,
             planting_time = plant.planting_time,
             summer = plant.summer,
-            rainy_season = plant.rainy_season
+            rainy_season = plant.rainy_season,
 			)
-		db.add(db_plant)
+     	db.add(db_plant)
      	db.commit()
-	
     except IntegrityError:
      	db.rollback()
-		raise HTTPException(status_code=401, detail="Some fields have constraints!")
-    
+     	raise HTTPException(status_code=401, detail="Some fields have constraints!")
     return db_plant
+
+
+def filter_plants(db: Session, plant_filter: PlantFilterRequest = None):
+	query = db.query(Plant)
+
+
+	if plant_filter.category is not None:
+		query = query.filter(Plant.category == plant_filter.category)
+	if plant_filter.upper_p_time is not None and plant_filter.lower_p_time is not None:
+		query = query.filter(
+					and_((Plant.planting_time >=  plant_filter.lower_p_time),
+						(Plant.planting_time <= plant_filter.upper_p_time)))
+	if plant_filter.summer is not None:
+		query = query.filter(Plant.summer == plant_filter.summer)
+	if plant_filter.rainy_season is not None:
+		query = query.filter(Plant.rainy_season == plant_filter.rainy_season)
+
+	return query.all()
+
+
+def update_plant(db: Session, plant_id: int, info: PlantUpdate):
+	plant = db.query(Plant).filter(Plant.id == plant_id).first()
+
+	if plant is None:
+		return plant
+
+	if info.name != plant.name:
+		plant.name = info.name
+	if info.category != plant.category:
+		plant.category = info.category
+	if info.p_info != plant.p_info:
+		plant.p_info = info.p_info
+	if info.min_temp != plant.min_temp:
+		plant.min_temp = info.min_temp
+	if info.max_temp != plant.max_temp:
+		plant.max_temp = info.max_temp
+	if info.min_humidity != plant.min_humidity:
+		plant.min_humidity = info.min_humidity
+	if info.max_humidity != plant.max_humidity:
+		plant.max_humidity = info.max_humidity
+	if info.rain_tolerance != plant.rain_tolerance:
+		plant.rain_tolerance = info.rain_tolerance
+	if info.planting_time != plant.planting_time:
+		plant.planting_time = info.planting_time
+	if info.summer != plant.summer:
+		plant.summer = info.summer
+	if info.rainy_season != plant.rainy_season:
+		plant.rainy_season = info.rainy_season
+
+	db.commit()
+
+	return plant
+
+
+
+
+def delete_plant(db: Session, plant_id: int):
+	plant_d = db.query(Plant).filter(Plant.id == plant_id).delete()
+	user_plant_d = db.query(UserPlants).filter(UserPlants.plant_id == plant_id).delete()
+	# print(user_plant_d)
+
+	db.commit()
+
+	remaining_plants = db.query(Plant).all()
+
+	return remaining_plants

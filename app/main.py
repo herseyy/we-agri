@@ -2,16 +2,17 @@
 from https://www.youtube.com/watch?v=5GxQ1rLTwaU&t=823s
 https://www.fastapitutorial.com/blog/authentication-in-fastapi/
 
-status: pending 
-internal server error
-
  """
+ 
 from fastapi import Depends, FastAPI, HTTPException, status
 from fastapi.security import OAuth2PasswordBearer, OAuth2PasswordRequestForm
-from pydantic import BaseModel
 from datetime import datetime, timedelta
-from jose import JWTError, jwt
+from jose import JWTError, jwt  
 from passlib.context import CryptContext
+from pydantic import BaseModel
+
+from sqlalchemy.orm import Session
+# from . import models, schemas
 
 SECRET_KEY = "4882fb01f85938a7b77a1cc157c84a4b3cee06e069ce6bc880235755f190de18"
 ALGORITHM = "HS256"
@@ -20,14 +21,13 @@ ACCESS_TOKEN_EXPIRE_MINUTES = 30
 # un: mysta, pw: mysta2434
 
 db = {
-    "mysta": {
+    "id": {
         "username":"mysta",
-        "full_name": "Mysta rias", 
-        "email": "myst@gmail.com",
         "hashed_password":"$2b$12$fBf2XvkMR/xB7e87iU9hUug3l3aOEkotENGPojoGMmIfLU2ZQJkqK",
         "disabled":False
     }
 }
+
 
 
 class Token(BaseModel):
@@ -38,12 +38,13 @@ class Token(BaseModel):
 class TokenData(BaseModel):
     username: str or None = None
 
+# models.User()
 
 class User(BaseModel):
     username:str
     email: str or None = None
     full_name: str or None = None
-    disabled: bool or None = None
+    disabled: bool or None = None 
 
 
 class UserinDB(User):
@@ -51,6 +52,7 @@ class UserinDB(User):
 
 
 pwd_context = CryptContext(schemes=["bcrypt"], deprecated="auto")
+
 oauth2_scheme = OAuth2PasswordBearer(tokenUrl="token")
 
 
@@ -60,25 +62,25 @@ app = FastAPI()
 def hello_world():
     print ("hello world")
 
-def verify_pw(plain_password, hashed_password):
+def verify_password(plain_password, hashed_password):
     return pwd_context.verify(plain_password, hashed_password)
 
 def get_password_hash(password):
     return pwd_context.hash(password)
 
-def get_user(db, username: str):
+def get_user(db:Session, username: str):
     if username in db:
         user_data = db[username]
         return UserinDB(**user_data)
 
-def authenticate_user(db, username: str, password: str):
+def authenticate_user(db:Session, username: str, password: str):
     user = get_user(db, username)
     if not user: 
         return False
-    if not verify_pw(password, user.hashed_password):
+    if not verify_password(password, user.hashed_password):
         return False
-    
     return user
+
 
 def create_access_token(data: dict, expires_delta: timedelta or None = None): 
     to_encode = data.copy()
@@ -110,7 +112,9 @@ async def get_current_user(token: str = Depends(oauth2_scheme)):
     
     return user
 
-async def get_current_active_user(current_user: UserinDB = Depends(get_current_user)):
+async def get_current_active_user(
+        current_user: UserinDB = Depends(get_current_user)
+):
     if current_user.disabled:
         raise HTTPException(status_code=400, detail= "Inactive user")
     
@@ -124,13 +128,13 @@ async def login_for_access_token(form_data: OAuth2PasswordRequestForm = Depends(
     access_token_expires = timedelta(minutes=ACCESS_TOKEN_EXPIRE_MINUTES)
     access_token = create_access_token(
         data= {"sub": user.username}, expires_delta=access_token_expires)
-    return {"access-token": access_token, "token_type": "bearer"}
+    return {"access_token": access_token, "token_type": "bearer"}
 
 @app.get("/users/me/", response_model=User)
 async def read_users_me(current_user : User = Depends(get_current_active_user)):
     return current_user
 
-""" @app.get("/users/me/items")
+@app.get("/users/me/items/")
 async def read_own_items(current_user : User = Depends(get_current_active_user)):
-    return [{"item_id": 1, "owner": current_user}] """
+    return [{"item_id": 1, "owner": current_user}]
 

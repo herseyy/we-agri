@@ -1,6 +1,7 @@
 import requests
 import math
 from datetime import date, datetime, timedelta
+import numpy as np
 
 def get_api_data():
 	base_url = "https://api.openweathermap.org/data/2.5/forecast?"
@@ -36,9 +37,12 @@ def get_api_data():
 	# convert tempo_date to string
 	tempo_date_str = tempo_date.strftime('%Y-%m-%d')
 
+	if tempo_date > after_11pm:
+		plus_1 = tempo_date.strptime(tempo_date_str, "%Y-%m-%d") + timedelta(days=1)
+		tempo_date_str = plus_1.strftime('%Y-%m-%d')
+
 
 	for i in range(len(response['list'])):
-
 		timestamp = response['list'][i]['dt']
 
 		# convert timestamp to date
@@ -47,26 +51,33 @@ def get_api_data():
 		# convert date to str
 		date_str = date_.strftime('%Y-%m-%d')
 
+		# print(date_)
+		# print(tempo_date_str)
 
-		# check if time is after 11pm
-		if tempo_date > after_11pm:
-			tempo_date_str = date_str
 
 		# check if time is before 2am
-		if tempo_date < before_2am:
-			end_date = date_.strptime(date_str, "%Y-%m-%d") + timedelta(days=1)
-			date_str = end_date.strftime('%m/%d/%Y')
 
-		# print(tempo_date_str, date_str)
+		# if i == 39:
+		# 	end_date = date_.strptime(date_str, "%Y-%m-%d") + timedelta(days=1)
+		# 	# # print(end_date)
+		# 	date_str = end_date.strftime('%Y-%m-%d')
 
+		# print(tempo_date_str)
+		# print(date_str)
+
+			# pass or ewan
+
+		# print(weekdays[date_.isoweekday() - 2])
 		if tempo_date_str != date_str:
 			tempo_date_str = date_str
-
+			# print(date_, "a")
+			# print(weekdays[date_.isoweekday() - 2])
+			# print(sum_of_temp)
 			formatted_data.append({
 				"day_of_week": weekdays[date_.isoweekday() - 2],
-				"avg_temp": (sum_of_temp/ item_per_day) - 273.15,
-				"avg_humidity": round(sum_of_humidity/ item_per_day),
-				"avg_rain": round(sum_of_rain / item_per_day),
+				"avg_temp": float(np.round((sum_of_temp / item_per_day) - 273.15, 2)),
+				"avg_humidity": float(np.round(sum_of_humidity / item_per_day, 2)),
+				"avg_rain": float(np.round(sum_of_rain / item_per_day, 2)),
 				"weather_string": 1
 			})
 
@@ -74,10 +85,12 @@ def get_api_data():
 			sum_of_temp = 0
 			sum_of_humidity = 0
 			sum_of_rain = 0
-
+		# print(sum_of_temp, "b")
 		item_per_day += 1
 		sum_of_temp = sum_of_temp + response['list'][i]['main']['temp']
 		sum_of_humidity = sum_of_humidity + response['list'][i]['main']['humidity']
+		# print(response['list'][i]['main']['temp'])
+		# print(sum_of_temp)
 
 		if 'rain' in response['list'][i]:
 			sum_of_rain = sum_of_rain + response['list'][i]['rain']['3h']
@@ -110,38 +123,56 @@ def get_api_data():
 		]
 	nth_month = datetime.now().month
 	current_month = months[nth_month - 1]
-	print(current_month)
 
 	predict = []
 	n_plants = 3
 
+
+
+	# check temp
 	for i in range(len(formatted_data)):
-		print(i)
 		predict.append(formatted_data[i]["avg_temp"])
+
+
+	for j in range(len(formatted_data)):
+		predict.append(formatted_data[i]["avg_humidity"])
+
+
+
+	# wag na muna isama??? di ko alam pano to AHHAHAHA
+	# check rain 
+	# for k in range(len(formatted_data)):
+	# 	sum_of_rain_5d = 
+	# predict.append(3)
+
+	# check season 
+	# jun to nov rainy season
+	# dec to may dry season
+
+	# eto pag dry season
+	if current_month == months[11] \
+		or current_month == months[0] \
+		or current_month == months[1] \
+		or current_month == months[2] \
+		or current_month == months[3] \
+		or current_month == months[4]:
+			predict.append(1)
+			predict.append(0)
+	else:
+		predict.append(0)
+		predict.append(1)
 
 	print(predict)
 
 
-	         #  for(var i = 0; i < formatted_data.length; i++) {
-          #   predict.push(formatted_data[i].avg_temp);
-          # }
 
-          # // Check rain here
-          #   predict.push(3);
-
-          #   // change true
-          #     if (month == 2 || month == 3 || month == 4 || month == 5 ) {
-          #       predict.push(1);
-          #       predict.push(0);
-          #     } 
-          #     else {
-          #       predict.push(0);
-          #       predict.push(1);
-          #     }
+	# veg = 
 
 
-
+	# ithrow na para itest
+	# pass yung training_data, predict_data, at number of plants
+	# var veg = window.predict(training, predict, number_of_plants);
+    # var plts = document.getElementById("plants");
 
 
 	return response
-
