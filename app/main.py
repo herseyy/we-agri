@@ -12,7 +12,9 @@ from passlib.context import CryptContext
 from pydantic import BaseModel
 
 from sqlalchemy.orm import Session
-# from . import models, schemas
+from fastapi.middleware.cors import CORSMiddleware
+from . import models, schemas
+
 
 SECRET_KEY = "4882fb01f85938a7b77a1cc157c84a4b3cee06e069ce6bc880235755f190de18"
 ALGORITHM = "HS256"
@@ -38,13 +40,14 @@ class Token(BaseModel):
 class TokenData(BaseModel):
     username: str or None = None
 
-# models.User()
-
 class User(BaseModel):
+    models.User()
+
+""" class User(BaseModel):
     username:str
     email: str or None = None
     full_name: str or None = None
-    disabled: bool or None = None 
+    disabled: bool or None = None  """
 
 
 class UserinDB(User):

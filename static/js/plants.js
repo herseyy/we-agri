@@ -1,48 +1,55 @@
-// for every plantItem
-
-var plantData = document.getElementsByClassName('.plantItem');
-/* 
-for (var i=0; i<plantData.length;i++){
-    var plantName = document.createElement("div");
-    var plantCat = document.createElement("div");
-    var plantTemp = document.createElement("div");
-    var plantHumid = document.createElement("div");
-    var plantRain = document.createElement("div");
-    var plantGrowth = document.createElement("div");
-    var plantSzn = document.createElement("div");
-    plantName.id = "plantName";
-    plantCat.id = "plantCat";
-    plantTemp.id = "plantTemp";
-    plantHumid.id = "plantHumid";
-    plantRain.id = "plantRain";
-    plantGrowth.id = "plantGrowth";
-    plantSzn.id = "plantSzn";
-    plantName.innerHTML = "Name:";
-    plantCat.innerHTML = "Category:";
-    plantTemp.innerHTML = "Temperature:";
-    plantHumid.innerHTML = "Humidity:";
-    plantRain.innerHTML = "Rain Tolerance:";
-    plantGrowth.innerHTML = "Growth Time:";
-    plantSzn.innerHTML = "Season:";
-    plantData[i].appendChild(plantName,plantCat,plantTemp, plantHumid, plantRain, plantGrowth, plantSzn)
-} */
-
-function createpDiv(text) {
-    var pdiv = document.createElement('div')
-    pdiv.textcontent = text;
-    return pdiv;
+//css
+if (document.getElementById('advSearchbtn').ariaHidden='true') {
+    document.getElementById('plantSearch').style.border='1px solid green';
 }
 
-var data = [
-    createpDiv('Name:'),
-    createpDiv('Category:'),
-    createpDiv('Temperature:'),
-    createpDiv('Humidity:'),
-    createpDiv('Rain Tolerance:'),
-    createpDiv('Growth Time:'),
-    createpDiv('Season:')
-]
+// database
 
-data.forEach(function(pdiv){
-    plantData.appendChild(pdiv);
-});
+getPlants();
+    async function getPlants(){
+        const response = await fetch('http://127.0.0.1:8000/get_all_user_plants')
+        console.log(response);
+        const plant = await response.json();
+        console.log(plant);
+        length = data.drinks.length;
+        console.log(plant);
+        var plantData="";
+        for (i=0; i<length; i++){
+            let printSeason;
+            if(plant.plant[i].summer == true && plant.plant[i].rainy_season == true) {
+                plantSeason = "Wet and Dry Season";
+            }
+            if(plant.plant[i].rainy_season == true && plant.plant[i].summer != true){
+                plantSeason = "Rainy";
+            }
+            if(plant.plant[i].summer == true && plant.plant[i].rainy_season != true){
+                plantSeason = "Summer";
+            }
+
+            plantData+= '<div class="plantItem col-lg-3 rounded-3 m-2 p-2 align-items-center">';
+            plantData+= '<div class="plantName">Name: '+ plant.plant[i].name +'</div>';
+            plantData+= '<div class="plantCat">Category: '+ plant.plant[i].category +'</div>';
+            plantData+= '<div class="plantTemp">Temperature: '+ plant.plant[i].min_temp + ' - ' + plant.plant[i].max_temp +'</div>';
+            plantData+= '<div class="plantHumid">Humidity: '+ plant.plant[i].min_humidity + ' - ' + plant.plant[i].max_humidity +'</div>';
+            plantData+= '<div class="plantRain">Rain Tolerance: '+ plant.plant[i].rain_tolerance +'</div>';
+            plantData+= '<div class="plantGrowth">Growth time: '+ plant.plant[i].planting_time +'</div>';
+            plantData+= '<div class="plantSzn">Season: '+ printSeason +'</div>';
+            plantData+= '</div>';
+        }
+        document.getElementById("plantsDb").innerHTML=plantData;
+    }
+
+/* .then (res => {
+    if (res.ok){
+        console.log('SUCCESS')
+    } else {
+        console.log('Not Successful')
+    }
+    res.json()
+})
+.then(data => console.log(data))
+.catch(error => console.log('ERROR'))
+
+    } */
+
+

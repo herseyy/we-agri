@@ -1,0 +1,73 @@
+* {
+    padding: 0;
+    margin: 0;
+    box-sizing: border-box;
+    
+  }
+
+  html, body {
+    height: 100%;
+  }
+
+html {
+    overflow:hidden;
+}
+
+@font-face {
+    font-family: "Proxima Nova";
+    src: url(../fonts/ProximaNovaAltBold.otf);
+}
+@font-face {
+    font-family: "Sceageus";
+    src: url(../fonts/Sceageus.otf);
+}
+
+  body{
+    background: url("../images/bg.jpg") no-repeat center fixed;
+    -webkit-background-size: cover;
+    -moz-background-size: cover;
+    -o-background-size: cover;
+    background-size: cover;
+    font-family: 'Proxima Nova';
+  }
+
+  .nav-item > .nav-link{
+    color:#117a3d;
+    font-family: 'Proxima Nova';
+  }
+
+  .nav-item:hover, .nav-item.active{
+    background:#117a3d;
+  }
+
+  .nav-item:hover > .nav-link, .nav-item.active > .nav-link{
+    color:white;
+  }
+
+
+  #indexcontent{
+    color:white;
+  }
+
+  .texttitle{
+    font-family: 'Sceageus';
+    background-color:#9ad084;
+    background-image: linear-gradient( #ffffff 70%, rgba(154,0,0,0));
+    background-size: 100%;
+    background-repeat: repeat;
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent; 
+    -moz-background-clip: text;
+    -moz-text-fill-color: transparent;
+    text-align:center;
+    font-size: 8vw;
+    margin-top: 6%;
+  }
+
+  #contentright{
+    display:block;
+    position:absolute;
+    top:60%;
+    right:0%;
+    margin-right:5%;
+  }
