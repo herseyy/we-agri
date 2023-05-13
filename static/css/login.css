@@ -82,7 +82,7 @@ form.sign-in-form {
 .input-field i {
   text-align: center;
   line-height: 55px;
-  color: #AAD576;
+  color: #acacac;
   transition: 0.5s;
   font-size: 1.1rem;
 }
@@ -98,7 +98,7 @@ form.sign-in-form {
 }
 
 .input-field input::placeholder {
-  color: #AAD576;
+  color: #acacac;
   font-weight: 500;
 }
 
