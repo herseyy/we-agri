@@ -1,7 +1,4 @@
-//css
-if (document.getElementById('advSearchbtn').ariaHidden='true') {
-    document.getElementById('plantSearch').style.border='1px solid green';
-}
+
 
 // database
 
