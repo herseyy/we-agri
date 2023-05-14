@@ -95,7 +95,10 @@ html{
                     color:darkolivegreen;
                 }
 
-
+input[type=checkbox] {
+     filter: hue-rotate(240deg);
+     cursor:pointer;
+}
 
 
     #plantsContent {
