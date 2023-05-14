@@ -1,42 +1,50 @@
 
 
+const plantDb = document.getElementById("plantsDb");
+
 // database
+const allPlants_url = "http://127.0.0.1:8000/filter_plants";
 
-getPlants();
     async function getPlants(){
-        const response = await fetch('http://127.0.0.1:8000/get_all_user_plants')
-        console.log(response);
-        const plant = await response.json();
-        console.log(plant);
-        length = data.drinks.length;
-        console.log(plant);
-        var plantData="";
-        for (i=0; i<length; i++){
-            let printSeason;
-            if(plant.plant[i].summer == true && plant.plant[i].rainy_season == true) {
-                plantSeason = "Wet and Dry Season";
-            }
-            if(plant.plant[i].rainy_season == true && plant.plant[i].summer != true){
-                plantSeason = "Rainy";
-            }
-            if(plant.plant[i].summer == true && plant.plant[i].rainy_season != true){
-                plantSeason = "Summer";
-            }
-
-            plantData+= '<div class="plantItem col-lg-3 rounded-3 m-2 p-2 align-items-center">';
-            plantData+= '<div class="plantName">Name: '+ plant.plant[i].name +'</div>';
-            plantData+= '<div class="plantCat">Category: '+ plant.plant[i].category +'</div>';
-            plantData+= '<div class="plantTemp">Temperature: '+ plant.plant[i].min_temp + ' - ' + plant.plant[i].max_temp +'</div>';
-            plantData+= '<div class="plantHumid">Humidity: '+ plant.plant[i].min_humidity + ' - ' + plant.plant[i].max_humidity +'</div>';
-            plantData+= '<div class="plantRain">Rain Tolerance: '+ plant.plant[i].rain_tolerance +'</div>';
-            plantData+= '<div class="plantGrowth">Growth time: '+ plant.plant[i].planting_time +'</div>';
-            plantData+= '<div class="plantSzn">Season: '+ printSeason +'</div>';
-            plantData+= '</div>';
-        }
-        document.getElementById("plantsDb").innerHTML=plantData;
+        const res = await fetch(allPlants_url)
+        const data = await res.json();
+        return data
     }
+    async function displayAllPlants(){
+        const payload = await getPlants();
+        
+        let plantDisplay = payload.map((object)=> {
+            const {name, category,min_temp, max_temp, min_humidity, max_humidity, rain_tolerance, planting_time, rainy_season, summer} = object;
+            let printSeason;
+            if (summer == true && rainy_season == true){
+                printSeason = "Wet and Dry Season";
+            } else if (summer == true && rainy_season == false){
+                printSeason = "Summer";
+            }else if (summer == false && rainy_season == true){
+                printSeason = "Rainy";
+            }else {
+                printSeason = "unidentified";
+            }
+            return `
+                <div class="plantItem col-lg-3 rounded-3 m-2 p-2 align-items-center">
+                    <div class="plantName">Name: ${name}</div>
+                    <div class="plantCat">Category: ${category}</div>
+                    <div class="plantTemp">Temperature: ${min_temp} - ${max_temp} &degC </div>
+                    <div class="plantHumid">Humidity: ${min_humidity} - ${max_humidity}% </div>
+                    <div class="plantRain">Rain Tolerance: ${rain_tolerance}mm</div>
+                    <div class="plantGrowth">Growth time: ${planting_time}</div>
+                    <div class="plantSzn">Season: ${printSeason}</div>
+                </div>
+            `;
+            
+        }).join("");
+        plantDb.innerHTML = plantDisplay;
+        
+    }
+    displayAllPlants();
 
-/* .then (res => {
+/* 
+.then (res => {
     if (res.ok){
         console.log('SUCCESS')
     } else {
@@ -45,8 +53,4 @@ getPlants();
     res.json()
 })
 .then(data => console.log(data))
-.catch(error => console.log('ERROR'))
-
-    } */
-
-
+.catch(error => console.log('ERROR'))  */

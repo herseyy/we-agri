@@ -41,6 +41,16 @@ html{
     }
 
   /* start of nav*/ 
+  @media screen and (max-width: 992px) {
+    #logo {
+        margin-left:0 auto;
+    }
+  }
+  @media screen and (min-width: 992px) {
+    #logo {
+        margin-left:5%;
+    }
+  }
 
     .nav-item > .nav-link{
         font-family: 'Proxima Nova';
