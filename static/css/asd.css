@@ -37,7 +37,7 @@ nav {
 	display: flex;
 	flex-wrap:wrap;
 	position: relative;
-	font-size: 0.5cm;
+	font-size: 1.75vh;
 	color: #fff;
 	text-decoration: none;
 	font-weight: 500;
@@ -49,6 +49,13 @@ header nav button {
 
 div.modal-content {
 	background: darkolivegreen;
+}
+
+.navbar-toggler[aria-expanded="false"] + #we-agriNav {
+	background:transparent;
+}
+.navbar-toggler[aria-expanded="true"] + #we-agriNav {
+	background:green;
 }
 
 #lo{

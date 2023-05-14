@@ -1,19 +1,35 @@
 """
 Main file
 """
-from fastapi import FastAPI, Request, Response, Depends, HTTPException, Query
+from fastapi import FastAPI, Request, Response, Depends, HTTPException, Query, status
 from typing import Optional, Annotated, Union
 from fastapi.middleware.cors import CORSMiddleware
 from sqlalchemy.orm import Session
 # from fastapi.templating import Jinja2Templates
 
-from . import crud, models, schemas, owm
+from . import crud, models, schemas, owm, login
 from .database import SessionLocal, engine
 
-from pydantic import BaseModel
+
+
+
+# from fastapi.security import OAuth2PasswordBearer, OAuth2PasswordRequestForm
+# from datetime import datetime, timedelta
+
+
+
+
+
+
 
 # Matic nagccreate na ng table
 models.Base.metadata.create_all(bind=engine)
+
+
+# SECRET_KEY = "4882fb01f85938a7b77a1cc157c84a4b3cee06e069ce6bc880235755f190de18"
+# ALGORITHM = "HS256"
+# ACCESS_TOKEN_EXPIRE_MINUTES = 1
+
 # Main app object
 app = FastAPI()
 
@@ -68,6 +84,28 @@ def index():
 
 
 
+# @app.post("/token", response_model=schemas.Token)
+# async def login_for_access_token(form_data: OAuth2PasswordRequestForm = Depends(), db:Session = Depends(get_db)):
+#     user = crud.authenticate_user(db, form_data.username, form_data.password)
+#     if not user:
+#         raise HTTPException(status_code=status.HTTP_401_UNAUTHORIZED, detail = "Incorrect username or password", headers={"WWW-Authenticate": "Bearer"})
+#     access_token_expires = timedelta(minutes=ACCESS_TOKEN_EXPIRE_MINUTES)
+#     access_token = crud.create_access_token(
+#         data= {"sub": user.username}, expires_delta=access_token_expires)
+#     return {"access_token": access_token, "token_type": "bearer"}
+
+# @app.get("/users/me/", response_model=schemas.UserResponse)
+# async def read_users_me(current_user : schemas.UserRequest = Depends(crud.get_current_user_)):
+#     return current_user
+
+# @app.get("/users/me/items/")
+# async def read_own_items(current_user : schemas.UserRequest = Depends(crud.get_current_user_)):
+#     return [{"item_id": 1, "owner": current_user}]
+
+
+
+
+
 ##### USERS
 
 # , response_model = schemas.UserResponse
@@ -90,14 +128,22 @@ def filter_users(user_filter: schemas.UserFilterRequest = Depends(), q: Union[li
     return [crud.format_user(user) for user in users]
 
 
+
+
+
+  
 @app.patch("/update_user/{user_id}")
-def update_user(user_id: int, info: schemas.UserUpdateRequest, db: Session = Depends(get_db)):
+def update_user(user_id: int, info: schemas.UserUpdateRequest, db: Session = Depends(get_db), token:str=Depends(login.oauth2_scheme)):
     current_user = crud.update_user(db=db, id=user_id, info=info)
 
     if current_user is None:
         raise HTTPException(404, detail="User not found!")
 
     return crud.format_user(current_user)
+
+
+
+
 
 
 @app.patch("/change_pass/{user_id}")
@@ -215,5 +261,4 @@ def get_api():
 
 # Ang ginagawa lang neto, sinasabe na yung response format ay galing sa schema na Symptoms
 # Tapos yung function ay tatangap ng db object galing dun sa get_db function sa taas
-
 

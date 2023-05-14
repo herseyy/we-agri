@@ -1,0 +1,15 @@
+html {
+    background-color: rgb(170, 213, 118);
+}
+#plantsContent {
+    margin-top:4.5em;
+}
+.plantItem {
+    height:200px;
+    background-color: white;
+}
+
+#advSearchbtn:hover{
+    background-color: #5cb85c;
+    color:white;
+}

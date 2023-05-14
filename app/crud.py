@@ -1,29 +1,119 @@
-from fastapi import HTTPException
+from fastapi import HTTPException, Depends, status, Request
 
 from sqlalchemy.orm import Session
 from sqlalchemy import and_, or_
 from sqlalchemy.exc import IntegrityError
 
 from .models import UserPlants, User, Plant
-from .schemas import UserRequest, UserResponse, PlantRequest, PlantsResponse, UserFilterRequest, UserUpdateRequest, UserChangePass, CurrentUserPlants, PlantUpdate, PlantFilterRequest
+from .schemas import UserRequest, UserResponse, PlantRequest, PlantsResponse, UserFilterRequest, UserUpdateRequest, UserChangePass, CurrentUserPlants, PlantUpdate, PlantFilterRequest, Token, TokenData
+# from .server import get_db
 
 from datetime import datetime, date, timedelta
 from dateutil.relativedelta import relativedelta
 
 
-def create_user(db:Session, user: UserRequest):
+# from passlib.context import CryptContext
+# from fastapi.security import OAuth2PasswordBearer, OAuth2PasswordRequestForm
+# from jose import JWTError, jwt  
 
+
+# SECRET_KEY = "4882fb01f85938a7b77a1cc157c84a4b3cee06e069ce6bc880235755f190de18"
+# ALGORITHM = "HS256"
+
+# pwd_context = CryptContext(schemes=["bcrypt"], deprecated="auto")
+
+# oauth2_scheme = OAuth2PasswordBearer(tokenUrl="token")
+
+# def get_db(request: Request):
+#     return request.state.db
+
+
+# def get_password_hash(password):
+#     return pwd_context.hash(password)
+
+# def verify_password(plain_password, hashed_password):
+#     return pwd_context.verify(plain_password, hashed_password)
+
+
+
+
+# # di pa tapos
+# def get_user_by_username(db:Session, username_: str):
+# 	user = db.query(User).filter(User.username == username_).first()
+
+# 	if user:
+# 		return user
+
+
+# def authenticate_user(db:Session, username: str, password: str):
+#     user = get_user_by_username(db, username)
+#     # print(user)
+#     if not user: 
+#         return False
+#     if not verify_password(password, user.hashed_pass):
+#         return False
+#     return user
+
+
+# def create_access_token(data: dict, expires_delta: timedelta or None = None): 
+#     to_encode = data.copy()
+#     if expires_delta:
+#         expire = datetime.utcnow() + expires_delta
+#     else: 
+#         expire = datetime.utcnow() + timedelta(minutes=15)
+    
+#     to_encode.update({"exp": expire})
+#     encoded_jwt = jwt.encode(to_encode, SECRET_KEY, algorithm=ALGORITHM)
+#     return encoded_jwt
+
+
+# async def get_current_user_(token: str = Depends(oauth2_scheme), db:Session = Depends(get_db)):
+#     credential_exception = HTTPException(status_code=status.HTTP_401_UNAUTHORIZED, detail="Could not validate credentials", headers={"WWW-Authenticate": "Bearer"})
+#     try :
+#         payload = jwt.decode(token, SECRET_KEY, algorithms=[ALGORITHM])
+#         username: str = payload.get("sub")
+#         if username is None: 
+#             raise credential_exception
+        
+#         token_data = TokenData(username=username)
+        
+#     except JWTError:
+#         raise credential_exception
+
+#     user = get_user_by_username(db, username_=token_data.username) 
+#     if user is None: 
+#         raise credential_exception
+    
+#     return user
+
+
+# async def get_current_active_user(current_user: UserRequest = Depends(get_current_user)):
+# 	# print(current_user.is_active)
+# 	if not current_user.is_active:
+# 	    raise HTTPException(status_code=400, detail= "Inactive user")
+
+# 	return current_user
+
+
+
+
+
+
+
+
+
+def create_user(db:Session, user: UserRequest):
 	try:
-		
-		users = db.query(User).filter(User.username == user.username).first()
-		if users:
+		user_n = db.query(User).filter(User.username == user.username).first()
+		if user_n:
 			# print('hehe')
 			return None
+		hashed_pass = get_password_hash(user.pass_to_hash1)
 
 		db_user = User(
 			username = user.username,
 			birthday = user.birthday,
-			hashed_pass = user.hashed_pass1,
+			hashed_pass = hashed_pass,
 			province = user.province,
 			city = user.city,
 			is_public = user.is_public
@@ -108,21 +198,30 @@ def change_pass(db: Session, id: int, pass_: UserChangePass):
 	status = {
 		"status": "success"
 	}
+	# print(get_password_hash("pass"))
+	# print(current_user.hashed_pass)
+
+
+	# if verify_password(pass_.old_pass, current_user.hashed_pass):
+	# 	print(True)
 
 	if current_user is None:
 		return current_user
-	if pass_.old_pass is not None and pass_.old_pass == current_user.hashed_pass:
+	if pass_.old_pass is not None and verify_password(pass_.old_pass, current_user.hashed_pass):
 		if pass_.old_pass == pass_.new_pass1:
 			status["status"] = "error new pass can't be the same as old"
 			return status
 		elif pass_.new_pass1 is not None and pass_.new_pass2 == pass_.new_pass1:
-			current_user.hashed_pass = pass_.new_pass1
+			current_user.hashed_pass = get_password_hash(pass_.new_pass1)
 		else:
 			status["status"] = "pass1 != pass2"
 			return status
 	else:
 		status["status"] = "incorrect old pass"
 		return status
+	# print(current_user.hashed_pass)
+	# if verify_password(pass_.new_pass1, current_user.hashed_pass):
+	# 	print(True)
 
 	db.commit()
 
@@ -362,3 +461,14 @@ def delete_plant(db: Session, plant_id: int):
 	remaining_plants = db.query(Plant).all()
 
 	return remaining_plants
+
+
+
+
+
+
+
+
+
+
+
