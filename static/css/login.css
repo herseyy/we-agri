@@ -11,8 +11,8 @@ input {
   font-family: "Poppins", sans-serif;
 }
 .loc {
-  width: 80vw;
-  max-width: 37.5em;
+  width: 50vw;
+  max-width: 35em;
   background-color: #ffffff;
   padding: 3em 1.8em;
   position: absolute;
@@ -116,16 +116,16 @@ form .fields .input-field{
     color: #333;
 }
 .input-field {
-  max-width: 250px;
-  width: 80%;
+  max-width: 400px;
+  width: 100%;
   background-color: #FFFFFF;
   margin: 5px 0;
-  height: 44px;
+  height: 40px;
   border-radius: 50px;
   display: grid;
   grid-template-columns: 15% 85%;
   padding: 0 0.4rem;
-  position: relative;
+  position: relative; 
 }
 .input-field i {
   text-align: center;
