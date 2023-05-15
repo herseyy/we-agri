@@ -3,10 +3,11 @@ import math
 from datetime import date, datetime, timedelta
 import numpy as np
 
+api_key = "2aefe52a593c0d988f240092f4dfa3c6"    # ilagay sa env
+
 def get_api_data():
 	base_url = "https://api.openweathermap.org/data/2.5/forecast?"
 	base_url_current = "https://api.openweathermap.org/data/2.5/weather?"
-	api_key = "2aefe52a593c0d988f240092f4dfa3c6"
 	lon = "121.0580992"  # lon from user city form
 	lat = "13.778944"
 
