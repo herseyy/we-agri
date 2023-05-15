@@ -1,20 +1,21 @@
 @import url('https://fonts.googleapis.com/css2?family=Montserrat&display=swap');
 
+@font-face {
+    font-family: "Proxima Nova";
+    src: url(../fonts/ProximaNovaAltBold.otf);
+}
+@font-face {
+    font-family: "Sceageus";
+    src: url(../fonts/Sceageus.otf);
+}
+
 * {
     margin: 0;
     padding: 0;
     box-sizing: border-box;
-    font-family: 'Poppins', sans-serif;
+    font-family: 'Proxima Nova', sans-serif;
  }
 
-    @font-face {
-        font-family: "Proxima Nova";
-        src: url(../fonts/ProximaNovaAltBold.otf);
-    }
-    @font-face {
-        font-family: "Sceageus";
-        src: url(../fonts/Sceageus.otf);
-    }
 
 html{
     background-image: url(../images/transparentbg.jpg);
@@ -95,10 +96,10 @@ html{
                     color:darkolivegreen;
                 }
 
-input[type=checkbox] {
-     filter: hue-rotate(240deg);
-     cursor:pointer;
-}
+    input[type=checkbox] {
+        filter: hue-rotate(240deg);
+        cursor:pointer;
+    }
 
 
     #plantsContent {
@@ -114,4 +115,8 @@ input[type=checkbox] {
     #plantsGrid{
         font-family: 'Montserrat', sans-serif;
     }
-    
+
+#plantsearchList{
+    position:absolute;
+    display:inline-block;
+}
