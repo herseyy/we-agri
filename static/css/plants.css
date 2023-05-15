@@ -95,10 +95,10 @@ html{
                     color:darkolivegreen;
                 }
 
-input[type=checkbox] {
-     filter: hue-rotate(240deg);
-     cursor:pointer;
-}
+    input[type=checkbox] {
+        filter: hue-rotate(240deg);
+        cursor:pointer;
+    }
 
 
     #plantsContent {
@@ -114,4 +114,8 @@ input[type=checkbox] {
     #plantsGrid{
         font-family: 'Montserrat', sans-serif;
     }
-    
+
+#plantsearchList{
+    position:absolute;
+    display:inline-block;
+}
