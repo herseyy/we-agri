@@ -325,7 +325,8 @@ def format_plants(db_plant: Plant):
 		min_humidity = db_plant.min_humidity,
 		max_humidity = db_plant.max_humidity,
 		rain_tolerance = db_plant.rain_tolerance,
-		planting_time = db_plant.planting_time,
+		min_planting_time = db_plant.min_planting_time,
+		max_planting_time = db_plant.max_planting_time,
 		summer = db_plant.summer,
 		rainy_season = db_plant.rainy_season,
 	    )
@@ -408,7 +409,8 @@ def create_plant(db:Session, plant: PlantRequest):
             min_humidity = plant.min_humidity,
             max_humidity = plant.max_humidity,
             rain_tolerance = plant.rain_tolerance,
-            planting_time = plant.planting_time,
+            min_planting_time = plant.min_planting_time,
+            max_planting_time = plant.max_planting_time,
             summer = plant.summer,
             rainy_season = plant.rainy_season,
 			)
@@ -427,10 +429,16 @@ def filter_plants(db: Session, plant_filter: PlantFilterRequest = None):
 		query = query.filter(Plant.name == plant_filter.name.lower())
 	if plant_filter.category is not None:
 		query = query.filter(Plant.category == plant_filter.category)
+
+
+
 	if plant_filter.upper_p_time is not None and plant_filter.lower_p_time is not None:
 		query = query.filter(
 					and_((Plant.planting_time >=  plant_filter.lower_p_time),
 						(Plant.planting_time <= plant_filter.upper_p_time)))
+
+
+		
 	if plant_filter.summer is not None:
 		query = query.filter(Plant.summer == plant_filter.summer)
 	if plant_filter.rainy_season is not None:
@@ -461,8 +469,10 @@ def update_plant(db: Session, plant_id: int, info: PlantUpdate):
 		plant.max_humidity = info.max_humidity
 	if info.rain_tolerance != plant.rain_tolerance:
 		plant.rain_tolerance = info.rain_tolerance
-	if info.planting_time != plant.planting_time:
-		plant.planting_time = info.planting_time
+	if info.min_planting_time != plant.min_planting_time:
+		plant.min_planting_time = info.min_planting_time
+	if info.max_planting_time != plant.max_planting_time:
+		plant.max_planting_time = info.max_planting_time
 	if info.summer != plant.summer:
 		plant.summer = info.summer
 	if info.rainy_season != plant.rainy_season:

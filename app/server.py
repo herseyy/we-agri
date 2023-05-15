@@ -7,7 +7,7 @@ from fastapi.middleware.cors import CORSMiddleware
 from sqlalchemy.orm import Session
 # from fastapi.templating import Jinja2Templates
 
-from . import crud, models, schemas, owm, login
+from . import crud, models, schemas, owm
 from .database import SessionLocal, engine
 
 

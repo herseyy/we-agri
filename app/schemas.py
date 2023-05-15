@@ -35,7 +35,8 @@ class PlantsResponse(BaseModel):
 	min_humidity: float = None
 	max_humidity: float = None
 	rain_tolerance: float = None
-	planting_time: int = None
+	min_planting_time: int = None
+	max_planting_time: int = None
 	summer: bool = False
 	rainy_season: bool = False
 
@@ -51,7 +52,8 @@ class PlantRequest(BaseModel):
 	min_humidity: float = None
 	max_humidity: float = None
 	rain_tolerance: float = None 
-	planting_time: int = None
+	min_planting_time: int = None
+	max_planting_time: int = None
 	summer: bool = None
 	rainy_season: bool = None
 
@@ -131,7 +133,8 @@ class PlantUpdate(BaseModel):
 	min_humidity: float = None
 	max_humidity: float = None
 	rain_tolerance: float = None
-	planting_time: int = None
+	min_planting_time: int = None
+	max_planting_time: int = None
 	summer: bool = None
 	rainy_season: bool = None
 
