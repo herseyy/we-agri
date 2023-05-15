@@ -1,19 +1,21 @@
 function checkbox() {
     var checkboxes = document.getElementsByName("checkbox");
-    let checked_symptoms = [];
+    let checked_filter = [];
     for (var checkbox of checkboxes) {
         if (checkbox.checked) {
             // console.log(checkbox.id)
-            checked_symptoms.push(checkbox.id);
-            checked_symptoms.sort();
+            checked_filter.push(checkbox.id);
+            checked_filter.sort();
         }
     }
-    // console.log(checked_symptoms)
+    // console.log(checked_filter)
 
-    return checked_symptoms
+    return checked_filter
 }
 
 //checkbox 
+
+
 
 function getPlants(){
 
@@ -21,6 +23,9 @@ function getPlants(){
     let vegetable = ""; 
     let summer = "";
     let rainy = "";
+
+    let ptime_range = document.getElementById('p_time').value;
+    var split = ptime_range.split(',');
 
     for (i in checkbox()){
         // console.log(checkbox()[i])
@@ -63,6 +68,12 @@ function getPlants(){
 
     var inp_obj = {}
     
+    if (ptime_range != ""){
+        inp_obj = Object.assign({"upper_p_time":split[1]}, inp_obj)
+    }
+    if (ptime_range != ""){
+        inp_obj = Object.assign({"lower_p_time":split[0]}, inp_obj)
+    }
     if (rainy != ""){
         inp_obj = Object.assign({"rainy_season":rainy}, inp_obj)
     }
@@ -117,13 +128,13 @@ function getPlants(){
                 }
 
             return `
-                <div class="plantItem col-lg-3 rounded-3 m-2 p-2 align-items-center">
+                <div class="plantItem col-lg-3 rounded-3 m-2 p-1 align-items-center">
                     <div class="plantName">Name: ${name}</div>
                     <div class="plantCat">Category: ${category}</div>
                     <div class="plantTemp">Temperature: ${min_temp} - ${max_temp} &degC </div>
                     <div class="plantHumid">Humidity: ${min_humidity} - ${max_humidity}% </div>
                     <div class="plantRain">Rain Tolerance: ${rain_tolerance}mm</div>
-                    <div class="plantGrowth">Growth time: ${planting_time}</div>
+                    <div class="plantGrowth">Growth time: ${planting_time} weeks</div>
                     <div class="plantSzn">Season: ${printSeason}</div>
                 </div>`;
             
