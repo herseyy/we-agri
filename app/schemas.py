@@ -10,6 +10,24 @@ from typing import Optional, Annotated, Union
 from pydantic import BaseModel
 from fastapi import Query
 
+
+class Token(BaseModel):
+    access_token: str 
+    token_type: str
+
+
+class TokenData(BaseModel):
+    username: str or None = None
+
+
+# class Login(BaseModel):
+	
+
+
+
+
+
+
 class PlantsResponse(BaseModel):
 	id: int
 	name: str = None
@@ -51,8 +69,8 @@ class CurrentUserPlants(BaseModel):
 class UserRequest(BaseModel):
 	username: str = None
 	birthday: Optional[datetime.date] = None
-	hashed_pass1: str = None
-	hashed_pass2: str = None
+	pass_to_hash1: str = None
+	pass_to_hash2: str = None
 	province: str = None
 	city: str = None
 	is_active: bool = False
@@ -116,3 +134,7 @@ class PlantFilterRequest(BaseModel):
 	lower_p_time: Optional[int] = None
 	summer: Optional[bool] = None
 	rainy_season: Optional[bool] = None
+# <<<<<<< HEAD
+# =======
+# 	rainy_season: Optional[bool] = None
+# >>>>>>> origin/ciavel

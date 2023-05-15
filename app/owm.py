@@ -176,4 +176,3 @@ def get_api_data():
 
 
 	return response
-
