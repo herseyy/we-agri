@@ -25,20 +25,18 @@ class TokenData(BaseModel):
 
 
 
-
-
-
 class PlantsResponse(BaseModel):
-	id: int
+	id: int = None
 	name: str = None
-	category: str
+	category: str = None
 	p_info: str = None 
 	min_temp: float = None
 	max_temp: float = None
 	min_humidity: float = None
 	max_humidity: float = None
 	rain_tolerance: float = None
-	planting_time: int = None
+	min_planting_time: int = None
+	max_planting_time: int = None
 	summer: bool = False
 	rainy_season: bool = False
 
@@ -54,7 +52,8 @@ class PlantRequest(BaseModel):
 	min_humidity: float = None
 	max_humidity: float = None
 	rain_tolerance: float = None 
-	planting_time: int = None
+	min_planting_time: int = None
+	max_planting_time: int = None
 	summer: bool = None
 	rainy_season: bool = None
 
@@ -66,17 +65,27 @@ class CurrentUserPlants(BaseModel):
 	class Config:
 		orm_mode = True	
 
-class UserRequest(BaseModel):
+class SignUpRequest(BaseModel):
 	username: str = None
 	birthday: Optional[datetime.date] = None
-	pass_to_hash1: str = None
-	pass_to_hash2: str = None
+	pass_to_hash: str = None
 	province: str = None
 	city: str = None
 	is_active: bool = False
 	is_public: bool = True
-	plants: Optional[list[int]]
 
+class SignUpResponse(BaseModel):
+	id: int
+	username: str = None
+	birthday: Optional[datetime.date] = None
+	# hashed_pass: str = None
+	province: str = None
+	city: str = None
+	is_active: bool= False
+	is_public: bool = True
+
+	class Config:
+		orm_mode = True
 
 # same for update
 class UserResponse(BaseModel):
@@ -88,7 +97,7 @@ class UserResponse(BaseModel):
 	city: str = None
 	is_active: bool= False
 	is_public: bool = True
-	plants: list[PlantsResponse]
+	plants: list[PlantsResponse] = []
 
 	class Config:
 		orm_mode = True	
@@ -124,11 +133,13 @@ class PlantUpdate(BaseModel):
 	min_humidity: float = None
 	max_humidity: float = None
 	rain_tolerance: float = None
-	planting_time: int = None
+	min_planting_time: int = None
+	max_planting_time: int = None
 	summer: bool = None
 	rainy_season: bool = None
 
 class PlantFilterRequest(BaseModel):
+	name: Optional[str] = None
 	category: Optional[str] = None
 	upper_p_time: Optional[int] = None
 	lower_p_time: Optional[int] = None

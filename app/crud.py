@@ -5,11 +5,15 @@ from sqlalchemy import and_, or_
 from sqlalchemy.exc import IntegrityError
 
 from .models import UserPlants, User, Plant
-from .schemas import UserRequest, UserResponse, PlantRequest, PlantsResponse, UserFilterRequest, UserUpdateRequest, UserChangePass, CurrentUserPlants, PlantUpdate, PlantFilterRequest, Token, TokenData
+from .schemas import SignUpRequest, SignUpResponse, UserResponse, PlantRequest, PlantsResponse, UserFilterRequest, UserUpdateRequest, UserChangePass, CurrentUserPlants, PlantUpdate, PlantFilterRequest, Token, TokenData
 # from .server import get_db
 
 from datetime import datetime, date, timedelta
 from dateutil.relativedelta import relativedelta
+
+
+from fastapi.security import OAuth2PasswordBearer
+from passlib.context import CryptContext
 
 
 # from passlib.context import CryptContext
@@ -95,6 +99,16 @@ from dateutil.relativedelta import relativedelta
 # 	return current_user
 
 
+pwd_context = CryptContext(schemes=["bcrypt"], deprecated="auto")
+
+oauth2_scheme = OAuth2PasswordBearer(tokenUrl="/login/token")
+
+
+def get_hash_password(plain_password):
+    return pwd_context.hash(plain_password)
+
+def verify_password(plain_password, hash_password):
+    return pwd_context.verify(plain_password, hash_password)
 
 
 
@@ -102,13 +116,14 @@ from dateutil.relativedelta import relativedelta
 
 
 
-def create_user(db:Session, user: UserRequest):
+
+def create_user(db:Session, user: SignUpRequest):
 	try:
 		user_n = db.query(User).filter(User.username == user.username).first()
 		if user_n:
 			# print('hehe')
 			return None
-		hashed_pass = get_password_hash(user.pass_to_hash1)
+		hashed_pass = get_hash_password(user.pass_to_hash)
 
 		db_user = User(
 			username = user.username,
@@ -119,15 +134,15 @@ def create_user(db:Session, user: UserRequest):
 			is_public = user.is_public
 			)
 		db.add(db_user)
-		db.flush()
+		# db.flush()
 
-		for i in user.plants:
-			db_plants = UserPlants(
-				user_id = db_user.id,
-				plant_id = i
-				)
-			db.add(db_plants)
-		db.flush()
+		# for i in user.plants:
+		# 	db_plants = UserPlants(
+		# 		user_id = db_user.id,
+		# 		plant_id = i
+		# 		)
+		# 	db.add(db_plants)
+		# db.flush()
 		db.commit()
 
 	except IntegrityError:
@@ -137,9 +152,10 @@ def create_user(db:Session, user: UserRequest):
 	return db_user
 
 def filter_users(db:Session, user_filter: UserFilterRequest = None, q: int = None):
+
 	query = db.query(User)
 
-	print(user_filter)
+	# print(query)
 	if user_filter == None:
 		print('a')
 		return query.all()
@@ -149,19 +165,25 @@ def filter_users(db:Session, user_filter: UserFilterRequest = None, q: int = Non
 		ids = []
 		qry = db.query(UserPlants).join(User)
 		for i in query.all():
-			qry = qry.filter(UserPlants.user_id == i.id)
+			if 0 in q:
+				qry1 = qry.filter(UserPlants.user_id != i.id)
+				for l in qry1:
+					ids.append(i.id)
+			else:
+				qry = qry.filter(UserPlants.user_id == i.id)
+				# print(i.id)
+				for j in qry:
+					plants_.append(j.plant_id)
 
-			for j in qry:
-				plants_.append(j.plant_id)
+				# print(plants_)
+				# print(q)
 
-			# print(plants_)
-			# print(q)
-			new_list=  all(item in plants_ for item in q)
-			if new_list is True:
-				ids.append(i.id)
-				# print(i.id) 
-			qry = db.query(UserPlants).join(User)
-			plants_ = []
+				new_list=  all(item in plants_ for item in q)
+				if new_list is True:
+					ids.append(i.id)
+					# print(i.id) 
+				qry = db.query(UserPlants).join(User)
+				plants_ = []
 
 		if ids != []:
 			query = query.filter(or_(User.id == x for x in ids))
@@ -192,37 +214,25 @@ def filter_users(db:Session, user_filter: UserFilterRequest = None, q: int = Non
 	return query.all()
 
 
-def change_pass(db: Session, id: int, pass_: UserChangePass):
-	current_user = db.query(User).filter(User.id == id).first()
+def change_pass(db: Session, current_user: User, pass_: UserChangePass):
+	# current_user = db.query(User).filter(User.id == id).first()
 
 	status = {
 		"status": "success"
 	}
-	# print(get_password_hash("pass"))
-	# print(current_user.hashed_pass)
 
-
-	# if verify_password(pass_.old_pass, current_user.hashed_pass):
-	# 	print(True)
-
-	if current_user is None:
-		return current_user
 	if pass_.old_pass is not None and verify_password(pass_.old_pass, current_user.hashed_pass):
 		if pass_.old_pass == pass_.new_pass1:
 			status["status"] = "error new pass can't be the same as old"
 			return status
 		elif pass_.new_pass1 is not None and pass_.new_pass2 == pass_.new_pass1:
-			current_user.hashed_pass = get_password_hash(pass_.new_pass1)
+			current_user.hashed_pass = get_hash_password(pass_.new_pass1)
 		else:
 			status["status"] = "pass1 != pass2"
 			return status
 	else:
 		status["status"] = "incorrect old pass"
 		return status
-	# print(current_user.hashed_pass)
-	# if verify_password(pass_.new_pass1, current_user.hashed_pass):
-	# 	print(True)
-
 	db.commit()
 
 	return status
@@ -270,27 +280,27 @@ def delete_user_plant(db: Session, user_id: int, plant_id: int):
 	return remaining_plants_lst
 
 
-def add_user_plant(db: Session, user_id: int, plant_id:int):
+def add_user_plant(db: Session, current_user: User, plant_id:int):
 
-	current_user = db.query(User).filter(User.id == user_id).first()
+	# current_user = db.query(User).filter(User.id == user_id).first()
 
-	if current_user is None:
-		return False
+	# if current_user is None:
+	# 	return False
 
-	plants_old = db.query(UserPlants).filter(UserPlants.user_id == user_id).all()
+	plants_old = db.query(UserPlants).filter(UserPlants.user_id == current_user.id).all()
 	# print(plants_old)
 	for i in plants_old:
 		if plant_id == i.plant_id:
 			return None
 
 	db_plants = UserPlants(
-		user_id = user_id,
+		user_id = current_user.id,
 		plant_id = plant_id
 		)
 	db.add(db_plants)
 	db.commit()
 
-	plants_new = db.query(UserPlants).filter(UserPlants.user_id == user_id).all()
+	plants_new = db.query(UserPlants).filter(UserPlants.user_id == current_user.id).all()
 	# print(plant_)
 
 	plants_1 = []
@@ -301,7 +311,10 @@ def add_user_plant(db: Session, user_id: int, plant_id:int):
 	return plants_1
 
 def format_plants(db_plant: Plant):
-	# print(db_plant.id)
+	# print(db_plant)
+	if db_plant is None:
+		# print('aaa')
+		return []
 	return PlantsResponse(
 		id = db_plant.id,
 		name = db_plant.name,
@@ -312,18 +325,19 @@ def format_plants(db_plant: Plant):
 		min_humidity = db_plant.min_humidity,
 		max_humidity = db_plant.max_humidity,
 		rain_tolerance = db_plant.rain_tolerance,
-		planting_time = db_plant.planting_time,
+		min_planting_time = db_plant.min_planting_time,
+		max_planting_time = db_plant.max_planting_time,
 		summer = db_plant.summer,
 		rainy_season = db_plant.rainy_season,
 	    )
 
 
-def update_user(db: Session, id: int, info: UserUpdateRequest):
+def update_user(db: Session, current_user: User, info: UserUpdateRequest):
 
-	current_user = db.query(User).filter(User.id == id).first()
+	# current_user = db.query(User).filter(User.username == username).first()
 
-	if current_user is None:
-		return current_user
+	# if current_user is None:
+		# return current_user
 
 	if info.birthday != current_user.birthday:
 		current_user.birthday = info.birthday
@@ -339,24 +353,34 @@ def update_user(db: Session, id: int, info: UserUpdateRequest):
 	return current_user
 
 
-def delete_user(db:Session, user_id: int):
-	user_d = db.query(User).filter(User.id == user_id).delete()
+def delete_user(db:Session, user_id: int, pass_: str):
 
-	user_d_plants = db.query(UserPlants).filter(UserPlants.user_id == user_id).delete()
+	user_d = db.query(User).filter(User.id == user_id).first()
+
+	
+	if pass_ is not None and verify_password(pass_, user_d.hashed_pass):
+		print(True)
+	else:
+		return {"fail": "incorrect pass"}
+
+	db.query(User).filter(User.id == user_id).delete()
+
+	db.query(UserPlants).filter(UserPlants.user_id == user_id).delete()
 
 	db.commit()
 
-	remaining_users = db.query(User).all()
+	return {"success": "ok"}
 
-	return remaining_users
 
 
 def format_user(db_user: User):
-	# print(db_user)
+	# print(db_user.plants)
 	_plants = []
 
-	plants = db_user.plants
+	# if db_user.plants is None:
+	# 	print('a')
 
+	plants = db_user.plants
 	for i in plants:
 	    if plants is not None:
 	    	_plants.append(i.description)
@@ -377,7 +401,7 @@ def format_user(db_user: User):
 def create_plant(db:Session, plant: PlantRequest):
     try:
      	db_plant = Plant(
-			name = plant.name,
+			name = plant.name.lower(),
 			category = plant.category,
 			p_info = plant.p_info,
 			min_temp = plant.min_temp,
@@ -385,7 +409,8 @@ def create_plant(db:Session, plant: PlantRequest):
             min_humidity = plant.min_humidity,
             max_humidity = plant.max_humidity,
             rain_tolerance = plant.rain_tolerance,
-            planting_time = plant.planting_time,
+            min_planting_time = plant.min_planting_time,
+            max_planting_time = plant.max_planting_time,
             summer = plant.summer,
             rainy_season = plant.rainy_season,
 			)
@@ -399,14 +424,21 @@ def create_plant(db:Session, plant: PlantRequest):
 
 def filter_plants(db: Session, plant_filter: PlantFilterRequest = None):
 	query = db.query(Plant)
-
-
+	# print(plant_filter.name.lower())
+	if plant_filter.name is not None:
+		query = query.filter(Plant.name == plant_filter.name.lower())
 	if plant_filter.category is not None:
 		query = query.filter(Plant.category == plant_filter.category)
+
+
+
 	if plant_filter.upper_p_time is not None and plant_filter.lower_p_time is not None:
 		query = query.filter(
 					and_((Plant.planting_time >=  plant_filter.lower_p_time),
 						(Plant.planting_time <= plant_filter.upper_p_time)))
+
+
+		
 	if plant_filter.summer is not None:
 		query = query.filter(Plant.summer == plant_filter.summer)
 	if plant_filter.rainy_season is not None:
@@ -437,8 +469,10 @@ def update_plant(db: Session, plant_id: int, info: PlantUpdate):
 		plant.max_humidity = info.max_humidity
 	if info.rain_tolerance != plant.rain_tolerance:
 		plant.rain_tolerance = info.rain_tolerance
-	if info.planting_time != plant.planting_time:
-		plant.planting_time = info.planting_time
+	if info.min_planting_time != plant.min_planting_time:
+		plant.min_planting_time = info.min_planting_time
+	if info.max_planting_time != plant.max_planting_time:
+		plant.max_planting_time = info.max_planting_time
 	if info.summer != plant.summer:
 		plant.summer = info.summer
 	if info.rainy_season != plant.rainy_season:
