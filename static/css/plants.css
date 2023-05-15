@@ -1,15 +1,117 @@
-html {
-    background-color: rgb(170, 213, 118);
+@import url('https://fonts.googleapis.com/css2?family=Montserrat&display=swap');
+
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+    font-family: 'Poppins', sans-serif;
+ }
+
+    @font-face {
+        font-family: "Proxima Nova";
+        src: url(../fonts/ProximaNovaAltBold.otf);
+    }
+    @font-face {
+        font-family: "Sceageus";
+        src: url(../fonts/Sceageus.otf);
+    }
+
+html{
+    background-image: url(../images/transparentbg.jpg);
 }
-#plantsContent {
-    margin-top:4.5em;
-}
-.plantItem {
-    height:200px;
-    background-color: white;
+    body {
+        justify-content: center;
+        align-items: center;
+        min-height: 100vh;
+        background-size: cover;
+        background-position: center;
+        background-color: rgba(17, 122, 61, 0.8);
+        background-attachment: fixed;
+    }
+
+
+    @keyframes slideDown {
+        0% {
+            transform: translateY(-20%);
+        }
+
+        100% {
+            transform: translateY(0);
+        }
+    }
+
+  /* start of nav*/ 
+  @media screen and (max-width: 992px) {
+    #logo {
+        margin-left:0 auto;
+    }
+  }
+  @media screen and (min-width: 992px) {
+    #logo {
+        margin-left:5%;
+    }
+  }
+
+    .nav-item > .nav-link{
+        font-family: 'Proxima Nova';
+        color:#117a3d;
+    }
+
+        .nav-item:hover, .nav-item.active{
+            background:#117a3d;
+        }
+
+            .nav-item:hover > .nav-link, .nav-item.active > .nav-link{
+                color:white;
+            }
+
+ /* end of nav*/   
+
+        #down {
+            animation: 0.2s ease-out 0s 1 slideDown;
+        }
+
+            #search {
+                margin:5% auto 0 auto;
+            }
+
+            .form-control {
+                background: transparent;
+                padding:0;
+                border:none;
+            }
+
+            #plantSearch {
+                background-color: white;
+                border: 1px solid green;
+            }
+
+            #advsearch{
+                margin:2% auto 0 auto;
+            }
+            
+                #advSearchbtn:hover{
+                    background-color:white;
+                    color:darkolivegreen;
+                }
+
+input[type=checkbox] {
+     filter: hue-rotate(240deg);
+     cursor:pointer;
 }
 
-#advSearchbtn:hover{
-    background-color: #5cb85c;
-    color:white;
-}
+
+    #plantsContent {
+        margin-top:-15%;
+    }
+
+            .plantItem {
+                height:200px;
+                background-color: white;
+            }
+
+
+    #plantsGrid{
+        font-family: 'Montserrat', sans-serif;
+    }
+    

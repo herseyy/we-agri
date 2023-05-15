@@ -133,8 +133,8 @@ class PlantFilterRequest(BaseModel):
 	upper_p_time: Optional[int] = None
 	lower_p_time: Optional[int] = None
 	summer: Optional[bool] = None
+	rainy_season: Optional[bool] = None
 # <<<<<<< HEAD
-# 	rainy_season: Optional[bool] = None
 # =======
 # 	rainy_season: Optional[bool] = None
 # >>>>>>> origin/ciavel
