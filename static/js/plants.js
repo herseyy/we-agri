@@ -128,13 +128,13 @@ function getPlants(){
 
             return `
                 <div class="plantItem col-lg-3 rounded-3 m-2 p-1 align-items-center">
-                    <div class="plantName">Name: ${name}</div>
-                    <div class="plantCat">Category: ${category}</div>
-                    <div class="plantTemp">Temperature: ${min_temp} - ${max_temp} &degC </div>
-                    <div class="plantHumid">Humidity: ${min_humidity} - ${max_humidity}% </div>
-                    <div class="plantRain">Rain Tolerance: ${rain_tolerance}mm</div>
-                    <div class="plantGrowth">Growth time: ${planting_time} weeks</div>
-                    <div class="plantSzn">Season: ${printSeason}</div>
+                    <div class="plantName"><span class="strong">Name:</span> ${name}</div>
+                    <div class="plantCat"><span class="strong">Category:</span> ${category}</div>
+                    <div class="plantTemp"><span class="strong">Temperature:</span> ${min_temp} - ${max_temp} &degC </div>
+                    <div class="plantHumid"><span class="strong">Humidity:</span> ${min_humidity} - ${max_humidity}% </div>
+                    <div class="plantRain"><span class="strong">Rain Tolerance:</span> ${rain_tolerance}mm</div>
+                    <div class="plantGrowth"><span class="strong">Growth time:</span> ${planting_time} weeks</div>
+                    <div class="plantSzn"><span class="strong">Season:</span> ${printSeason}</div>
                 </div>`;
             
         })/* .catch(error => console.log("ERROR")) */;
