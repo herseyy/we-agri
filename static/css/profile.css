@@ -291,6 +291,120 @@ body.dark .switch::before{
     color: var(--text-color);
     padding: 12px 60px;  
 }
+/*settings*/
+
+.input-field label{
+    font-size: 12px;
+    font-weight: 500;
+    color: #2e2e2e;
+}
+.input-field input, select{
+    outline: none;
+    font-size: 14px;
+    font-weight: 400;
+    color: #333;
+    border-radius: 5px;
+    border: 1px solid #aaa;
+    padding: 0 15px;
+    height: 42px;
+    margin: 8px 0;
+}
+.input-field input :focus,
+.input-field select:focus{
+    box-shadow: 0 3px 6px rgba(0,0,0,0.13);
+}
+.input-field select,
+.input-field input[type="date"]{
+    color: #707070;
+}
+.input-field input[type="date"]:valid{
+    color: #333;
+}
+.container form button, .btn{
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    height: 45px;
+    max-width: 200px;
+    width: 100%;
+    border: none;
+    outline: none;
+    color: #fff;
+    border-radius: 5px;
+    margin: 25px 0;
+    background-color: #4070f4;
+    transition: all 0.3s linear;
+    cursor: pointer;
+}
+.btn {
+  width: 150px;
+  background-color: #73A942;
+  border: none;
+  outline: none;
+  height: 49px;
+  border-radius: 49px;
+  color: #AAD576;
+  text-transform: uppercase;
+  font-weight: 600;
+  margin: 10px 0;
+  cursor: pointer;
+  transition: 0.5s;
+}
+.btn:hover {
+  background-color: #1A4301;
+}
+@media (max-width: 750px) {
+    .container form{
+        overflow-y: scroll;
+    }
+    .container form::-webkit-scrollbar{
+       display: none;
+    }
+    form .fields .input-field{
+        width: calc(100% / 2 - 15px);
+    }
+}
+@media (max-width: 550px) {
+    form .fields .input-field{
+        width: 100%;
+    }
+}
+.loc {
+  width: 50vw;
+  max-width: 35em;
+  background-color: #ffffff;
+  padding: 3em 1.8em;
+  position: absolute;
+  transform: translate(-50%, -50%);
+  top: 30%;
+  left: 25%;
+  border-radius: 0.6em;
+  box-shadow: 0 0.6em 2.5em rgba(0, 7, 70, 0.2);
+}
+#location-details {
+  font-size: 1em;
+  text-align: center;
+  margin: 0.5em 0 1em 0;
+  color: #021d38;
+  font-weight: 100;
+}
+.loco-btn {
+   width: 100px;
+  background-color: #73A942;
+  border: none;
+  outline: none;
+  height: 30px;
+  border-radius: 39px;
+  color: #AAD576;
+  text-transform: uppercase;
+  font-weight: 400;
+  margin: 10px 0;
+  cursor: pointer;
+  transition: 0.5s;
+}
+.loco-btn:hover {
+  background-color: #1A4301;
+}
  .settings{
     font-size: 30px;
     font-weight: 500;
