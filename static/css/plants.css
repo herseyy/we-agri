@@ -5,6 +5,10 @@
     src: url(../fonts/ProximaNovaAltBold.otf);
 }
 @font-face {
+    font-family: "Proxima Nova Reg";
+    src: url(../fonts/ProximaNova-Regular.otf);
+}
+@font-face {
     font-family: "Sceageus";
     src: url(../fonts/Sceageus.otf);
 }
@@ -19,6 +23,9 @@
 
 html{
     background-image: url(../images/transparentbg.jpg);
+    background-size: cover;
+    background-position: center;
+    background-attachment: fixed;
 }
     body {
         justify-content: center;
@@ -107,9 +114,9 @@ html{
     }
 
             .plantItem {
-                height:200px;
                 background-color: white;
             }
+
 
 
     #plantsGrid{
@@ -117,10 +124,11 @@ html{
     }
 
 #plantsearchList{
-    position:absolute;
-    display:inline-block;
+    position: absolute;
+    z-index: 50;
+    width:49%;
 }
 
-/* .strong {
-
-} */
+.strong {
+font-family: 'Proxima Nova', sans-serif;
+} 

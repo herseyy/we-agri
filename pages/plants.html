@@ -44,7 +44,7 @@
                 <div class="form form-control" >
                     <div class="input-group ">
                         <input type="text" id="plantSearch" class="form-control" placeholder="   Search Plant..." aria-label="Search"/>
-                        <button type="button" class="btn btn-success" style="margin-right:1%;" onclick="getPlants()">
+                        <button id="searchBtn" type="button" class="btn btn-success" style="margin-right:1%;" onclick="getPlants()">
                             <i class="fas fa-search"></i>
                         </button>
                         <button id="advSearchbtn" type="button" class="btn btn-outline-success " data-bs-toggle="collapse" data-bs-target="#advSearchCollapse" aria-hidden="false" aria-controls="advSearchCollapse">
@@ -81,12 +81,12 @@
                                     <select name="p_time" id="p_time" onclick="getPlants()">
                                         <option value="">--</option>
                                         <option value="1,6">1-6weeks</option>
-                                        <option value="6,12">6-12weeks</option>
-                                        <option value="12,18">12-18weeks</option>
-                                        <option value="18,24">18-24weeks</option>
-                                        <option value="24,30">24-30weeks</option>
-                                        <option value="30,36">30-36weeks</option>
-                                        <option value="36, 999999">36+ weeks</option>
+                                        <option value="7,12">7-12weeks</option>
+                                        <option value="13,18">13-18weeks</option>
+                                        <option value="19,24">19-24weeks</option>
+                                        <option value="25,30">25-30weeks</option>
+                                        <option value="31,36">31-36weeks</option>
+                                        <option value="37, 999999">37+ weeks</option>
                                     </select>
                                 </div>
                                 
@@ -152,7 +152,20 @@
                 <div id="plantsGrid" class="container">      
                     <div id="plantsDb" class="row justify-content-around">
                         <!--database-->
-                    </div>                
+                        <!-- <div class="plantItem row col-lg-3 rounded-3 m-2 p-1 align-items-center">
+                            <div class="mx-auto" style="overflow:hidden;"><img src="https://www.iamcountryside.com/wp-content/uploads/2021/09/AdobeStock_364056397-scaled-e1662410682321.jpeg" alt="${name}" style="margin:auto; object-fit: cover; height:200px; width:100%;"></div>
+                            <div class="col-xl-12 col-m-9">
+                                <div class="plantName"><span class="strong">Name:</span> ${name}</div>
+                                <div class="plantCat"><span class="strong">Category:</span> ${category}</div>
+                                <div class="plantTemp"><span class="strong">Temperature:</span> ${min_temp} - ${max_temp} &degC </div>
+                                <div class="plantHumid"><span class="strong">Humidity:</span> ${min_humidity} - ${max_humidity}% </div>
+                                <div class="plantRain"><span class="strong">Rain Tolerance:</span> ${rain_tolerance}mm</div>
+                                <div class="plantGrowth"><span class="strong">Growth time:</span> ${planting_time} weeks</div>
+                                <div class="plantSzn"><span class="strong">Season:</span> ${printSeason}</div>
+                                <div class="plantInfo" id="plantInfo"> ${p_info} </div>
+                            </div>
+                        </div>
+                    </div>   -->              
                 </div>               
             </div>
             

@@ -23,7 +23,7 @@ function getPlants(){
     let vegetable = ""; 
     let summer = "";
     let rainy = "";
-
+    let psearch = document.getElementById('plantSearch').value;
     let ptime_range = document.getElementById('p_time').value;
     var split = ptime_range.split(',');
 
@@ -67,6 +67,9 @@ function getPlants(){
 
     var inp_obj = {}
     
+    if (psearch != ""){
+        inp_obj = Object.assign({"name":psearch}, inp_obj)
+    }
     if (ptime_range != ""){
         inp_obj = Object.assign({"upper_p_time":split[1]}, inp_obj)
     }
@@ -89,7 +92,15 @@ function getPlants(){
         if(vegetable != ""){
             inp_obj = Object.assign({"category":vegetable}, inp_obj)
         }
-    }
+    };
+
+    document.getElementById("plantSearch")
+      .addEventListener("keyup", function(event) {
+      event.preventDefault();
+      if (event.key === 'Enter') {
+          document.getElementById("searchBtn").click();
+      }
+    });
 
     // console.log(allPlants_url)
     
@@ -113,11 +124,11 @@ function getPlants(){
         plantDb.innerHTML='';
 
         let plantDisplay = data.map((object)=> {
-            const {name, category, min_temp, max_temp, min_humidity, max_humidity, rain_tolerance, planting_time, rainy_season, summer} = object;
+            const {name, category, min_temp, max_temp, min_humidity, max_humidity, min_rain_tolerance, max_rain_tolerance, min_planting_time, max_planting_time, rainy_season, summer, p_info} = object;
             
             let printSeason;
                 if (summer && rainy_season){
-                    printSeason = "Wet and Dry Season";
+                    printSeason = "Wet and Dry";
                 } else if (summer && !rainy_season){
                     printSeason = "Summer";
                 }else if (!summer && rainy_season){
@@ -127,15 +138,19 @@ function getPlants(){
                 }
 
             return `
-                <div class="plantItem col-lg-3 rounded-3 m-2 p-1 align-items-center">
+              <div class="plantItem row col-lg-3 rounded-3 m-2 p-1 align-items-center">
+                <div class="mx-auto" style="overflow:hidden;"><img src="../static/images/plants/${name}.jpg" alt="${name}" style="margin:auto; object-fit: cover; height:200px; width:100%;"></div>
+                <div class="col-xl-12 col-m-9">
                     <div class="plantName"><span class="strong">Name:</span> ${name}</div>
                     <div class="plantCat"><span class="strong">Category:</span> ${category}</div>
                     <div class="plantTemp"><span class="strong">Temperature:</span> ${min_temp} - ${max_temp} &degC </div>
                     <div class="plantHumid"><span class="strong">Humidity:</span> ${min_humidity} - ${max_humidity}% </div>
-                    <div class="plantRain"><span class="strong">Rain Tolerance:</span> ${rain_tolerance}mm</div>
-                    <div class="plantGrowth"><span class="strong">Growth time:</span> ${planting_time} weeks</div>
+                    <div class="plantRain"><span class="strong">Rain Tolerance:</span> ${min_rain_tolerance} - ${max_rain_tolerance}mm</div>
+                    <div class="plantGrowth"><span class="strong">Growth time:</span> ${min_planting_time}  - ${max_planting_time}weeks</div>
                     <div class="plantSzn"><span class="strong">Season:</span> ${printSeason}</div>
-                </div>`;
+                    <div class="plantInfo mt-2" id="plantInfo"> ${p_info} </div>
+                </div>
+            </div>`;
             
         })/* .catch(error => console.log("ERROR")) */;
         document.getElementById('catFruit').value = "";
@@ -179,7 +194,7 @@ let autocomplete = (inp, arr) => {
       a.setAttribute("class", "autocomplete-items list-group text-left");
       
       /*append the DIV element as a child of the autocomplete container:*/
-      this.parentNode.appendChild(a);
+      parent_div.appendChild(a);
   
       /*for each item in the array...*/
       for (i = 0; i < arr.length; i++) {
