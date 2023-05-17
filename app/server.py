@@ -8,7 +8,7 @@ from sqlalchemy.orm import Session
 from datetime import datetime, date, timedelta
 # from fastapi.templating import Jinja2Templates
 
-from . import crud, models, schemas, owm
+from . import crud, models, schemas, owm, auth
 from .database import SessionLocal, engine
 import os
 from fastapi.responses import FileResponse
@@ -16,6 +16,10 @@ from fastapi.responses import FileResponse
 
 # from fastapi import APIRouter, Depends
 from fastapi.security import OAuth2PasswordBearer, OAuth2PasswordRequestForm
+
+
+
+
 # from passlib.context import CryptContext
 
 # from fastapi.security import OAuth2PasswordBearer, OAuth2PasswordRequestForm
@@ -41,6 +45,10 @@ models.Base.metadata.create_all(bind=engine)
 
 # Main app object
 app = FastAPI()
+
+
+
+app.include_router(auth.router)
 
 
 origins = [
@@ -105,8 +113,13 @@ SECRET_KEY = "83e8c4bb007a0fa49d3157792dfaaf94125ff85b5057bbcf306a4980a7383d9b" 
 ALGORITHM = "HS256"  # ito rin
 
 
+# jwt_token = ""
 
+import requests
 
+@app.get("/")
+def index(token:str=Depends(crud.oauth2_scheme)):
+    return {"Hello": "World"}
 
 @app.post("/login/token", tags=["login"])
 def get_token_after_authentication(form_data: OAuth2PasswordRequestForm = Depends(), db: Session = Depends(get_db)):
@@ -121,13 +134,8 @@ def get_token_after_authentication(form_data: OAuth2PasswordRequestForm = Depend
     }
     jwt_token = jwt.encode(data, SECRET_KEY, algorithm=ALGORITHM)
 
+
     return {"access_token": jwt_token, "token_type": "bearer"}
-
-
-
-@app.get("/")
-def index():
-    return {"Hello": "World"}
 
 
 ##### USERS
@@ -153,13 +161,15 @@ def filter_users(user_filter: schemas.UserFilterRequest = Depends(), q: Union[li
 
 
 
-@app.patch("/update_user", response_model = schemas.UserResponse)
-def update_user(info: schemas.UserUpdateRequest, db: Session = Depends(get_db), token:str=Depends(crud.oauth2_scheme)):
-    user = crud.decode(token, SECRET_KEY, ALGORITHM, db)
+@app.patch("/update_user")
+def update_user(info: schemas.UserUpdateRequest, db: Session = Depends(get_db)):
+    print("jwt_token")
+    print(crud.token_)
+    # user = crud.decode(token, SECRET_KEY, ALGORITHM, db)
 
-    updated_user = crud.update_user(db=db, current_user=user, info=info)
+    # updated_user = crud.update_user(db=db, current_user=user, info=info)
 
-    return crud.format_user(updated_user)
+    # return crud.format_user(updated_user)
 
 
 @app.patch("/change_pass")

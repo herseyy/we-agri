@@ -112,20 +112,20 @@ def verify_password(plain_password, hash_password):
 
 # get user from token
 def decode(token, SECRET_KEY, ALGORITHM, db):
-    try:
-	    payload = jwt.decode(token, SECRET_KEY, ALGORITHM)
-	    username = payload.get('sub')
+    # try:
+    payload = jwt.decode(token, SECRET_KEY, ALGORITHM)
+    username = payload.get('sub')
 
-	    if username is None:
-	        raise HTTPException(status_code=status.HTTP_401_UNAUTHORIZED, detail="Unable to verify credentials")
-
-	    user = db.query(User).filter(User.username == username).first()
-
-	    if user is None:
-	        raise HTTPException(404, detail="User not found!")
-
-    except Exception as e:
+    if username is None:
         raise HTTPException(status_code=status.HTTP_401_UNAUTHORIZED, detail="Unable to verify credentials")
+
+    user = db.query(User).filter(User.username == username).first()
+
+    if user is None:
+        raise HTTPException(404, detail="User not found!")
+
+    # except Exception as e:
+    #     raise HTTPException(status_code=status.HTTP_401_UNAUTHORIZED, detail="Unable to verify credentials")
 
     return user
 
