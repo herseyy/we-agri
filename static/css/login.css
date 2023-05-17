@@ -5,46 +5,83 @@
   padding: 0;
   box-sizing: border-box;
 }
+* {
+    padding: 0;
+    margin: 0;
+    box-sizing: border-box;
+    
+  }
+
+  html, body {
+    height: 100%;
+  }
+
+html {
+    overflow:hidden;
+}
+
+@font-face {
+    font-family: "Proxima Nova";
+    src: url(../fonts/ProximaNovaAltBold.otf);
+}
+@font-face {
+    font-family: "Sceageus";
+    src: url(../fonts/Sceageus.otf);
+}
+
+  body{
+    background: url("../images/bg.jpg") no-repeat center fixed;
+    -webkit-background-size: cover;
+    -moz-background-size: cover;
+    -o-background-size: cover;
+    background-size: cover;
+    font-family: 'Proxima Nova';
+  }
+
+  .nav-item > .nav-link{
+    color:#117a3d;
+    font-family: 'Proxima Nova';
+  }
+
+  .nav-item:hover, .nav-item.active{
+    background:#117a3d;
+  }
+
+  .nav-item:hover > .nav-link, .nav-item.active > .nav-link{
+    color:white;
+  }
+
+
+  #indexcontent{
+    color:white;
+  }
+
+  .texttitle{
+    font-family: 'Sceageus';
+    background-color:#9ad084;
+    background-image: linear-gradient( #ffffff 70%, rgba(154,0,0,0));
+    background-size: 100%;
+    background-repeat: repeat;
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent; 
+    -moz-background-clip: text;
+    -moz-text-fill-color: transparent;
+    text-align:center;
+    font-size: 8vw;
+    margin-top: 6%;
+  }
+
+  #contentright{
+    display:block;
+    position:absolute;
+    top:60%;
+    right:0%;
+    margin-right:5%;
+  }
 
 body,
 input {
   font-family: "Poppins", sans-serif;
-}
-.loc {
-  width: 50vw;
-  max-width: 35em;
-  background-color: #ffffff;
-  padding: 3em 1.8em;
-  position: absolute;
-  transform: translate(-50%, -50%);
-  top: 30%;
-  left: 25%;
-  border-radius: 0.6em;
-  box-shadow: 0 0.6em 2.5em rgba(0, 7, 70, 0.2);
-}
-#location-details {
-  font-size: 1em;
-  text-align: center;
-  margin: 0.5em 0 1em 0;
-  color: #021d38;
-  font-weight: 100;
-}
-.loco-btn {
-   width: 100px;
-  background-color: #73A942;
-  border: none;
-  outline: none;
-  height: 30px;
-  border-radius: 39px;
-  color: #AAD576;
-  text-transform: uppercase;
-  font-weight: 400;
-  margin: 10px 0;
-  cursor: pointer;
-  transition: 0.5s;
-}
-.loco-btn:hover {
-  background-color: #1A4301;
 }
 
 .container {
@@ -102,19 +139,19 @@ form.sign-in-form {
   margin-bottom: 10px;
 }
 form .fields .input-field{
-    display: flex;
+    justify-content: center;
     width: calc(100% / 3 - 15px);
     flex-direction: column;
     margin: 4px 0;
 }
 
-.input-field select,
+/*.input-field select,
 .input-field input[type="date"]{
     color: #707070;
 }
 .input-field input[type="date"]:valid{
     color: #333;
-}
+}*/
 .input-field {
   max-width: 400px;
   width: 100%;

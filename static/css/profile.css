@@ -10,11 +10,11 @@
 :root{
     /* ===== Colors ===== */
     --body-color: #D9D9CC;
-    --sidebar-color: #FFF;
+    --sidebar-color: #73A942;
     --primary-color: #1A4301;
     --primary-color-light: #F6F5FF;
     --toggle-color: #DDD;
-    --text-color: #707070;
+    --text-color: #1A4301;
 
     /* ====== Transition ====== */
     --tran-03: all 0.2s ease;
@@ -32,15 +32,6 @@ body{
 ::selection{
     background-color: var(--primary-color);
     color: #fff;
-}
-
-body.dark{
-    --body-color: #18191a;
-    --sidebar-color: #242526;
-    --primary-color: #3a3b3c;
-    --primary-color-light: #3a3b3c;
-    --toggle-color: #fff;
-    --text-color: #ccc;
 }
 
 /* ===== Sidebar ===== */
@@ -154,10 +145,6 @@ header .image-text .profession{
     transition: var(--tran-05);
 }
 
-body.dark .sidebar header .toggle{
-    color: var(--text-color);
-}
-
 .sidebar.close .toggle{
     transform: translateY(-50%) rotate(0deg);
 }
@@ -186,11 +173,6 @@ body.dark .sidebar header .toggle{
 .sidebar li a:hover .text{
     color: var(--sidebar-color);
 }
-body.dark .sidebar li a:hover .icon,
-body.dark .sidebar li a:hover .text{
-    color: var(--text-color);
-}
-
 .sidebar .menu-bar{
     height: calc(100% - 55px);
     display: flex;
@@ -206,24 +188,6 @@ body.dark .sidebar li a:hover .text{
     background-color: var(--primary-color-light);
     position: relative;
     transition: var(--tran-05);
-}
-
-.menu-bar .mode .sun-moon{
-    height: 50px;
-    width: 60px;
-}
-
-.mode .sun-moon i{
-    position: absolute;
-}
-.mode .sun-moon i.sun{
-    opacity: 0;
-}
-body.dark .mode .sun-moon i.sun{
-    opacity: 1;
-}
-body.dark .mode .sun-moon i.moon{
-    opacity: 0;
 }
 
 .menu-bar .bottom-content .toggle-switch{
@@ -264,35 +228,47 @@ body.dark .switch::before{
 }
 
 .home{
-    position: absolute;
+    background-color: #e7f2e6;
+    position: relative;
     top: 0;
     top: 0;
     left: 250px;
     height: 100vh;
-    width: calc(100% - 250px);
-    background-color: var(--body-color);
+    width: calc(100% - 200px);
     transition: var(--tran-05);
 }
 .profile {
-    font-size: 30px;
-    font-weight: 500;
+    background-color: #e7f2e6;
+    font-size: 50px;
+    font-weight: 600;
     color: var(--text-color);
-    padding: 12px 60px;  
+    padding: 12px 60px;        
 }
+
+
 .my_plants {
-    font-size: 30px;
-    font-weight: 500;
+    background-color: #e7f2e6; 
+    font-size: 50px;
+    font-weight: 600;
     color: var(--text-color);
     padding: 12px 60px;  
 }
  .harvest{
-    font-size: 30px;
-    font-weight: 500;
+    background-color: #e7f2e6;
+    font-size: 50px;
+    font-weight: 600;
     color: var(--text-color);
     padding: 12px 60px;  
 }
 /*settings*/
 
+ .settings{
+    background-color: #e7f2e6;
+    font-size: 50px;
+    font-weight: 600;
+    color: var(--text-color);
+    padding: 12px 60px;
+}
 .input-field label{
     font-size: 12px;
     font-weight: 500;
@@ -309,65 +285,52 @@ body.dark .switch::before{
     height: 42px;
     margin: 8px 0;
 }
-.input-field input :focus,
-.input-field select:focus{
-    box-shadow: 0 3px 6px rgba(0,0,0,0.13);
-}
-.input-field select,
-.input-field input[type="date"]{
-    color: #707070;
-}
-.input-field input[type="date"]:valid{
-    color: #333;
-}
-.container form button, .btn{
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    height: 45px;
-    max-width: 200px;
-    width: 100%;
-    border: none;
-    outline: none;
-    color: #fff;
-    border-radius: 5px;
-    margin: 25px 0;
-    background-color: #4070f4;
-    transition: all 0.3s linear;
-    cursor: pointer;
-}
 .btn {
-  width: 150px;
+  width: 120px;
   background-color: #73A942;
   border: none;
   outline: none;
-  height: 49px;
+  height: 40px;
   border-radius: 49px;
   color: #AAD576;
   text-transform: uppercase;
   font-weight: 600;
-  margin: 10px 0;
+/*  margin: 10px 0;*/
   cursor: pointer;
   transition: 0.5s;
+
 }
 .btn:hover {
   background-color: #1A4301;
 }
-@media (max-width: 750px) {
-    .container form{
-        overflow-y: scroll;
-    }
-    .container form::-webkit-scrollbar{
-       display: none;
-    }
-    form .fields .input-field{
-        width: calc(100% / 2 - 15px);
-    }
+.input-field {
+  max-width: 400px;
+  width: 100%;
+  background-color: #FFFFFF;
+  margin: 5px 0;
+  height: 40px;
+  border-radius: 50px;
+  display: grid;
+  grid-template-columns: 15% 85%;
+  padding: 0 0.4rem;
+  position: relative; 
 }
-@media (max-width: 550px) {
-    form .fields .input-field{
-        width: 100%;
-    }
+.input-field i {
+  text-align: center;
+  line-height: 44px;
+  color: #acacac;
+  transition: 0.5s;
+  font-size: 1.1rem;
+}
+
+.input-field input {
+  background: none;
+  outline: none;
+  border: none;
+  line-height: 1;
+  font-weight: 550;
+  font-size: 1rem;
+  color: #000000;
 }
 .loc {
   width: 50vw;
@@ -382,11 +345,10 @@ body.dark .switch::before{
   box-shadow: 0 0.6em 2.5em rgba(0, 7, 70, 0.2);
 }
 #location-details {
-  font-size: 1em;
-  text-align: center;
+  font-size: 0.5em;
   margin: 0.5em 0 1em 0;
-  color: #021d38;
-  font-weight: 100;
+  color: var(--text-color);
+  font-weight: 300;
 }
 .loco-btn {
    width: 100px;
@@ -405,17 +367,28 @@ body.dark .switch::before{
 .loco-btn:hover {
   background-color: #1A4301;
 }
- .settings{
-    font-size: 30px;
-    font-weight: 500;
-    color: var(--text-color);
-    padding: 12px 60px;
+
+@media (max-width: 750px) {
+    .container form{
+        overflow-y: scroll;
+    }
+    .container form::-webkit-scrollbar{
+       display: none;
+    }
+    form .fields .input-field{
+        width: calc(100% / 2 - 15px);
+    }
 }
+@media (max-width: 550px) {
+    form .fields .input-field{
+        width: 100%;
+    }
+}
+
+
 .sidebar.close ~ .home{
     left: 78px;
     height: 100vh;
     width: calc(100% - 78px);
 }
-body.dark .home .text{
-    color: var(--text-color);
-}
+
