@@ -1,14 +1,17 @@
 """
 Main file
 """
-from fastapi import FastAPI, Request, Response, Depends, HTTPException, Query, status
+from fastapi import FastAPI, Request, Response, Depends, HTTPException, Query, status, File, UploadFile
 from typing import Optional, Annotated, Union
 from fastapi.middleware.cors import CORSMiddleware
 from sqlalchemy.orm import Session
+from datetime import datetime, date, timedelta
 # from fastapi.templating import Jinja2Templates
 
 from . import crud, models, schemas, owm
 from .database import SessionLocal, engine
+import os
+from fastapi.responses import FileResponse
 
 
 # from fastapi import APIRouter, Depends
@@ -19,6 +22,10 @@ from fastapi.security import OAuth2PasswordBearer, OAuth2PasswordRequestForm
 # from datetime import datetime, timedelta
 
 
+import uuid
+
+
+IMAGEDIR = "./static/images/plants/"
 
 
 
@@ -99,6 +106,8 @@ ALGORITHM = "HS256"  # ito rin
 
 
 
+
+
 @app.post("/login/token", tags=["login"])
 def get_token_after_authentication(form_data: OAuth2PasswordRequestForm = Depends(), db: Session = Depends(get_db)):
     user = db.query(models.User).filter(models.User.username == form_data.username).first()
@@ -114,24 +123,6 @@ def get_token_after_authentication(form_data: OAuth2PasswordRequestForm = Depend
 
     return {"access_token": jwt_token, "token_type": "bearer"}
 
-
-def decode(token, SECRET_KEY, ALGORITHM, db):
-    try:
-        payload = jwt.decode(token, SECRET_KEY, ALGORITHM)
-        username = payload.get('sub')
-
-        if username is None:
-            raise HTTPException(status_code=status.HTTP_401_UNAUTHORIZED, detail="Unable to verify credentials")
-
-        user = db.query(models.User).filter(models.User.username == username).first()
-
-        if user is None:
-            raise HTTPException(404, detail="User not found!")
-
-    except Exception as e:
-        raise HTTPException(status_code=status.HTTP_401_UNAUTHORIZED, detail="Unable to verify credentials")
-
-    return user
 
 
 @app.get("/")
@@ -164,46 +155,65 @@ def filter_users(user_filter: schemas.UserFilterRequest = Depends(), q: Union[li
 
 @app.patch("/update_user", response_model = schemas.UserResponse)
 def update_user(info: schemas.UserUpdateRequest, db: Session = Depends(get_db), token:str=Depends(crud.oauth2_scheme)):
-    user = decode(token, SECRET_KEY, ALGORITHM, db)
+    user = crud.decode(token, SECRET_KEY, ALGORITHM, db)
 
     updated_user = crud.update_user(db=db, current_user=user, info=info)
-
 
     return crud.format_user(updated_user)
 
 
 @app.patch("/change_pass")
 def change_pass(pass_:schemas.UserChangePass, db:Session = Depends(get_db), token:str=Depends(crud.oauth2_scheme)):
-    user = decode(token, SECRET_KEY, ALGORITHM, db)
+    user = crud.decode(token, SECRET_KEY, ALGORITHM, db)
 
     updated_pass_user = crud.change_pass(db=db, current_user=user, pass_=pass_)
 
     return updated_pass_user
 
 
-@app.get("/get_all_user_plants")
+@app.get("/get_all_user_plants", response_model=list[schemas.UserPlantsResponse])
 def get_all_user_plants(db: Session = Depends(get_db)):
     user_plants = db.query(models.UserPlants).all()
 
-    plants = crud.get_user_plants(db=db, user_plants = user_plants)
+    # plants = crud.get_user_plants(db=db, user_plants = user_plants)
 
-    print(user_plants)
-    return [crud.format_plants(plant) for plant in plants]
+    # print(user_plants)
+    # return [crud.format_plants(plant) for plant in plants]
+    return [crud.format_user_plants(plant) for plant in user_plants]
 
-@app.get("/get_user_plants", response_model=list[schemas.PlantsResponse])
-def get_user_plants(db:Session = Depends(get_db), token:str=Depends(crud.oauth2_scheme)):
+@app.get("/filter_user_plants", response_model=list[schemas.UserPlantsResponse])
+def filter_user_plants(user_plant_filter: schemas.UserPlantsFilter = Depends(), db:Session = Depends(get_db), token:str=Depends(crud.oauth2_scheme)):
 
-    user = decode(token, SECRET_KEY, ALGORITHM, db)
+    user = crud.decode(token, SECRET_KEY, ALGORITHM, db)
 
-    user_plants = db.query(models.UserPlants).filter(models.UserPlants.user_id == user.id).all()
-    plants = crud.get_user_plants(db=db, user_plants=user_plants)
+    # user_plants = db.query(models.UserPlants).filter(models.UserPlants.user_id == user.id).all()
+    filtered_user_plants = crud.filter_user_plants(user=user, db=db, user_plant_filter=user_plant_filter)
+    # print(user_plants)
+    # plants = crud.get_user_plants(db=db, user_plants=user_plants)
 
-    return [crud.format_plants(plant) for plant in plants]
+    # return [crud.format_plants(plant) for plant in plants]
+    return [crud.format_user_plants(plant) for plant in filtered_user_plants]
+
+
+
+# @app.get("/filter_users", response_model = list[schemas.UserResponse])
+# def filter_users(user_filter: schemas.UserFilterRequest = Depends(), q: Union[list[int], None] = Query(default=None), db:Session = Depends(get_db)):
+#     users = crud.filter_users(db, user_filter, q)
+#     # for user in users:    
+#     #     print(crud.format_user(user))
+#     return [crud.format_user(user) for user in users]
+
+
+
+
+
+
+
 
 
 @app.delete("/delete_user_plant/{plant_id}", response_model=list[schemas.PlantsResponse])
 def delete_user_plant(plant_id: int, db:Session = Depends(get_db), token:str=Depends(crud.oauth2_scheme)):
-    user = decode(token, SECRET_KEY, ALGORITHM, db)
+    user = crud.decode(token, SECRET_KEY, ALGORITHM, db)
 
     plants = crud.delete_user_plant(db=db, user_id= user.id, plant_id= plant_id)
 
@@ -213,17 +223,17 @@ def delete_user_plant(plant_id: int, db:Session = Depends(get_db), token:str=Dep
 @app.delete("/delete_user/{pass_}")
 def delete_user(pass_: str, db: Session = Depends(get_db), token:str=Depends(crud.oauth2_scheme)):
 
-    user = decode(token, SECRET_KEY, ALGORITHM, db)
+    user = crud.decode(token, SECRET_KEY, ALGORITHM, db)
 
     mess = crud.delete_user(db = db, user_id = user.id, pass_=pass_)
 
     return mess
 
-@app.post("/add_user_plant/{plant_id}", response_model=list[schemas.PlantsResponse])
-def add_user_plant(plant_id: int, db:Session = Depends(get_db), token:str=Depends(crud.oauth2_scheme)):
-    user = decode(token, SECRET_KEY, ALGORITHM, db)
+@app.post("/add_user_plant/{plant_id}")
+def add_user_plant(plant_id: int, plant_info: schemas.UserPlantsRequest, db:Session = Depends(get_db), token:str=Depends(crud.oauth2_scheme)):
+    user = crud.decode(token, SECRET_KEY, ALGORITHM, db)
 
-    plants = crud.add_user_plant(db=db, current_user= user, plant_id= plant_id)
+    plants = crud.add_user_plant(db=db, plant_info=plant_info, current_user= user, plant_id= plant_id)
 
     message = {
         "message": "user already has this plant"
@@ -237,6 +247,15 @@ def add_user_plant(plant_id: int, db:Session = Depends(get_db), token:str=Depend
 
     return [crud.format_plants(plant) for plant in plants]  
     
+
+@app.patch("/update_user_plant/{plant_id}", response_model=schemas.UserPlantsResponse)
+def update_user_plant(plant_id: int, plant_info: schemas.UserPlantUpdate, db:Session = Depends(get_db), token:str=Depends(crud.oauth2_scheme)):
+    user = crud.decode(token, SECRET_KEY, ALGORITHM, db)
+
+    plant = crud.update_user_plant(db=db, plant_info=plant_info, current_user= user, plant_id= plant_id)
+
+    return crud.format_user_plants(plant)
+
 
 ##### PLANTS
 
@@ -274,3 +293,35 @@ def get_api():
 # Ang ginagawa lang neto, sinasabe na yung response format ay galing sa schema na Symptoms
 # Tapos yung function ay tatangap ng db object galing dun sa get_db function sa taas
 
+
+
+
+
+@app.post("/upload/{name}")
+async def create_upload_file(name:str, file: UploadFile = File(...), db:Session = Depends(get_db)):
+
+    file.filename = f"{name}.jpg"
+    contents = await file.read()
+
+    # save the file
+    with open(f"{IMAGEDIR}{file.filename}", "wb") as f:
+        f.write(contents)
+
+    image_path = f"{IMAGEDIR}{file.filename}"
+    # print(image_path)
+
+    plant = db.query(models.Plant).filter(models.Plant.name == name).first()
+
+    plant.file_path = image_path
+    db.commit()
+
+    return {"filename": file.filename}
+
+
+@app.get("/show_img/{name}")
+async def read_file(name:str, db:Session = Depends(get_db)):
+    plant = db.query(models.Plant).filter(models.Plant.name == name).first()
+    path = plant.file_path
+    # path = f"{IMAGEDIR}{name}.jpg"
+    # print(path)
+    return FileResponse(path)

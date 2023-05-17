@@ -5,7 +5,7 @@ from sqlalchemy import and_, or_
 from sqlalchemy.exc import IntegrityError
 
 from .models import UserPlants, User, Plant
-from .schemas import SignUpRequest, SignUpResponse, UserResponse, PlantRequest, PlantsResponse, UserFilterRequest, UserUpdateRequest, UserChangePass, CurrentUserPlants, PlantUpdate, PlantFilterRequest, Token, TokenData
+from .schemas import SignUpRequest, SignUpResponse, UserResponse, PlantRequest, PlantsResponse, UserFilterRequest, UserUpdateRequest, UserChangePass, CurrentUserPlants, PlantUpdate, PlantFilterRequest, Token, TokenData, UserPlantsRequest, UserPlantUpdate, UserPlantsResponse, UserPlantsFilter
 # from .server import get_db
 
 from datetime import datetime, date, timedelta
@@ -18,7 +18,7 @@ from passlib.context import CryptContext
 
 # from passlib.context import CryptContext
 # from fastapi.security import OAuth2PasswordBearer, OAuth2PasswordRequestForm
-# from jose import JWTError, jwt  
+from jose import JWTError, jwt  
 
 
 # SECRET_KEY = "4882fb01f85938a7b77a1cc157c84a4b3cee06e069ce6bc880235755f190de18"
@@ -110,8 +110,24 @@ def get_hash_password(plain_password):
 def verify_password(plain_password, hash_password):
     return pwd_context.verify(plain_password, hash_password)
 
+# get user from token
+def decode(token, SECRET_KEY, ALGORITHM, db):
+    try:
+	    payload = jwt.decode(token, SECRET_KEY, ALGORITHM)
+	    username = payload.get('sub')
 
+	    if username is None:
+	        raise HTTPException(status_code=status.HTTP_401_UNAUTHORIZED, detail="Unable to verify credentials")
 
+	    user = db.query(User).filter(User.username == username).first()
+
+	    if user is None:
+	        raise HTTPException(404, detail="User not found!")
+
+    except Exception as e:
+        raise HTTPException(status_code=status.HTTP_401_UNAUTHORIZED, detail="Unable to verify credentials")
+
+    return user
 
 
 
@@ -242,25 +258,25 @@ def get_current_user(db: Session, id: int):
 
 	return current_user
 
-def get_all_user_plants(db: Session):
-	all_user_plants = db.query(UserPlants).all()
+# def get_all_user_plants(db: Session):
+# 	all_user_plants = db.query(UserPlants).all()
 
-	plants = []
+# 	plants = []
 
-	for i in all_user_plants:
-		plants.append(i.description)
+# 	for i in all_user_plants:
+# 		plants.append(i.description)
 
-	return plants
+# 	return plants
 
-def get_user_plants(db: Session, user_plants: list):
-	# user_plants = db.query(UserPlants).filter(UserPlants.user_id == id).all()
-	# print(user_plants)
-	plants = []
-	for i in user_plants:
-		# print(i.description)
-		plants.append(i.description)
-	# print(plants)
-	return plants
+# def get_user_plants(db: Session, user_plants: list):
+# 	# user_plants = db.query(UserPlants).filter(UserPlants.user_id == id).all()
+# 	print(user_plants)
+# 	plants = []
+# 	for i in user_plants:
+# 		# print(i.description)
+# 		plants.append(i.description)
+# 	# print(plants)
+# 	return plants
 
 
 def delete_user_plant(db: Session, user_id: int, plant_id: int):
@@ -280,13 +296,31 @@ def delete_user_plant(db: Session, user_id: int, plant_id: int):
 	return remaining_plants_lst
 
 
-def add_user_plant(db: Session, current_user: User, plant_id:int):
+def add_user_plant(db: Session, plant_info:UserPlantsRequest, current_user: User, plant_id:int):
 
 	# current_user = db.query(User).filter(User.id == user_id).first()
 
 	# if current_user is None:
 	# 	return False
 
+	# print(plant_info.is_harvested)
+	# print(plant_info.date_planted) # 2023-05-16
+
+	plant = db.query(Plant).filter(Plant.id == plant_id).first()
+
+	# print(plant.min_planting_time) # 3
+	# print(plant.max_planting_time) # 5
+	min_planting_time_in_days = plant.min_planting_time * 7
+	max_planting_time_in_days = plant.max_planting_time * 7
+
+	min_date_plant = plant_info.date_planted + timedelta(days=min_planting_time_in_days)
+	max_date_plant = plant_info.date_planted + timedelta(days=max_planting_time_in_days)
+
+	print(min_date_plant)
+	print(max_date_plant)
+
+
+	# to check if yung user is may plant na na yun
 	plants_old = db.query(UserPlants).filter(UserPlants.user_id == current_user.id).all()
 	# print(plants_old)
 	for i in plants_old:
@@ -295,7 +329,11 @@ def add_user_plant(db: Session, current_user: User, plant_id:int):
 
 	db_plants = UserPlants(
 		user_id = current_user.id,
-		plant_id = plant_id
+		plant_id = plant_id,
+		is_harvested = False,
+		date_planted = plant_info.date_planted,
+		min_date_estimate_harvest = min_date_plant,
+		max_date_estimate_harvest = max_date_plant
 		)
 	db.add(db_plants)
 	db.commit()
@@ -309,6 +347,33 @@ def add_user_plant(db: Session, current_user: User, plant_id:int):
 		plants_1.append(i.description)
 
 	return plants_1
+
+
+def update_user_plant(db: Session, plant_info:UserPlantsRequest, current_user: User, plant_id:int):
+
+	user_plant = db.query(UserPlants).filter(UserPlants.user_id == current_user.id)\
+				.filter(UserPlants.plant_id == plant_id).first()
+	print(user_plant)
+
+
+	if plant_info.is_harvested != None:
+		user_plant.is_harvested = plant_info.is_harvested
+	if plant_info.date_harvested != None:
+		user_plant.date_harvested = plant_info.date_harvested
+
+	db.commit()
+	updated_user_plant = db.query(UserPlants).filter(UserPlants.user_id == current_user.id)\
+				.filter(UserPlants.plant_id == plant_id).first()
+
+	return updated_user_plant
+
+
+def filter_user_plants(user: User, db:Session, user_plant_filter: UserPlantsFilter = None):
+	query = db.query(UserPlants).filter(UserPlants.user_id == user.id)
+
+	if user_plant_filter.is_harvested != None:
+		query = query.filter(UserPlants.is_harvested == user_plant_filter.is_harvested)
+	return query.all()
 
 def format_plants(db_plant: Plant):
 	# print(db_plant)
@@ -324,12 +389,27 @@ def format_plants(db_plant: Plant):
 		max_temp = db_plant.max_temp,
 		min_humidity = db_plant.min_humidity,
 		max_humidity = db_plant.max_humidity,
-		rain_tolerance = db_plant.rain_tolerance,
+		min_rain_tolerance = db_plant.min_rain_tolerance,
+		max_rain_tolerance = db_plant.max_rain_tolerance,
 		min_planting_time = db_plant.min_planting_time,
 		max_planting_time = db_plant.max_planting_time,
 		summer = db_plant.summer,
 		rainy_season = db_plant.rainy_season,
 	    )
+
+def format_user_plants(db_user_plants: UserPlants):
+	if db_user_plants is None:
+		# print('aaa')
+		return []
+	return UserPlantsResponse(
+		user_id = db_user_plants.user_id,
+		plant_id = db_user_plants.plant_id,
+		is_harvested = db_user_plants.is_harvested,
+		date_planted = db_user_plants.date_planted,
+		min_date_estimate_harvest = db_user_plants.min_date_estimate_harvest,
+		max_date_estimate_harvest = db_user_plants.max_date_estimate_harvest,
+		date_harvested = db_user_plants.date_harvested
+		)
 
 
 def update_user(db: Session, current_user: User, info: UserUpdateRequest):
@@ -408,7 +488,8 @@ def create_plant(db:Session, plant: PlantRequest):
             max_temp = plant.max_temp,
             min_humidity = plant.min_humidity,
             max_humidity = plant.max_humidity,
-            rain_tolerance = plant.rain_tolerance,
+            min_rain_tolerance = plant.min_rain_tolerance,
+            max_rain_tolerance = plant.max_rain_tolerance,
             min_planting_time = plant.min_planting_time,
             max_planting_time = plant.max_planting_time,
             summer = plant.summer,
@@ -498,7 +579,7 @@ def delete_plant(db: Session, plant_id: int):
 
 
 
-
+# def add_img_to_db(db:Session, pla)
 
 
 

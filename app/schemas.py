@@ -34,7 +34,8 @@ class PlantsResponse(BaseModel):
 	max_temp: float = None
 	min_humidity: float = None
 	max_humidity: float = None
-	rain_tolerance: float = None
+	min_rain_tolerance: float = None
+	max_rain_tolerance: float = None
 	min_planting_time: int = None
 	max_planting_time: int = None
 	summer: bool = False
@@ -51,7 +52,8 @@ class PlantRequest(BaseModel):
 	max_temp: float = None
 	min_humidity: float = None
 	max_humidity: float = None
-	rain_tolerance: float = None 
+	min_rain_tolerance: float = None
+	max_rain_tolerance: float = None 
 	min_planting_time: int = None
 	max_planting_time: int = None
 	summer: bool = None
@@ -132,7 +134,8 @@ class PlantUpdate(BaseModel):
 	max_temp: float = None
 	min_humidity: float = None
 	max_humidity: float = None
-	rain_tolerance: float = None
+	min_rain_tolerance: float = None
+	max_rain_tolerance: float = None
 	min_planting_time: int = None
 	max_planting_time: int = None
 	summer: bool = None
@@ -145,6 +148,31 @@ class PlantFilterRequest(BaseModel):
 	lower_p_time: Optional[int] = None
 	summer: Optional[bool] = None
 	rainy_season: Optional[bool] = None
+
+
+class UserPlantsRequest(BaseModel):
+	is_harvested: bool = False
+	date_planted: datetime.date = None
+
+class UserPlantUpdate(BaseModel):
+	is_harvested: bool = True
+	date_harvested: datetime.date = None
+
+
+class UserPlantsResponse(BaseModel):
+	user_id: int = None
+	plant_id: int = None
+	is_harvested: bool = None
+	date_planted: datetime.date = None
+	min_date_estimate_harvest: datetime.date = None
+	max_date_estimate_harvest: datetime.date = None
+	date_harvested: Optional[datetime.date] = None
+
+
+class UserPlantsFilter(BaseModel):
+	is_harvested: Optional[bool] = None
+
+
 # <<<<<<< HEAD
 # =======
 # 	rainy_season: Optional[bool] = None

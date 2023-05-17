@@ -33,6 +33,7 @@ class User(Base):
     updated_at = Column(DateTime, default=datetime.datetime.now, onupdate=datetime.datetime.now)
 
     plants = relationship("UserPlants", back_populates="users")
+    # plants_harvested = relationship("UserPlantsHarvested", back_populates="users")
 
 
 class Plant(Base):
@@ -46,11 +47,13 @@ class Plant(Base):
     max_temp = Column(Float, nullable=False)
     min_humidity = Column(Float, nullable=False)
     max_humidity = Column(Float, nullable=False)
-    rain_tolerance = Column(Float, nullable=False)
+    min_rain_tolerance = Column(Float, nullable=False)
+    max_rain_tolerance = Column(Float, nullable=False)
     min_planting_time = Column(Integer, nullable=False)
     max_planting_time = Column(Integer, nullable=False)
     summer = Column(Boolean, nullable=False)
     rainy_season = Column(Boolean, nullable=False)
+    file_path = Column(String, nullable= True)
     created_at = Column(DateTime, default=datetime.datetime.now)
     updated_at = Column(DateTime, default=datetime.datetime.now, onupdate=datetime.datetime.now)
 
@@ -61,8 +64,30 @@ class UserPlants(Base):
     id = Column(Integer, primary_key=True, index=True)
     user_id = Column(Integer, ForeignKey("user.id"))
     plant_id = Column(Integer, ForeignKey("plant.id"))
+    is_harvested = Column(Boolean, default = False)
+    date_planted = Column(Date, default=datetime.datetime.now)
+    min_date_estimate_harvest = Column(Date) # date_planted + min_planting time
+    max_date_estimate_harvest = Column(Date) # date_planted + max_planting time (pag lampas na sa max and ala pa rin update auto harvest)
+    date_harvested = Column(Date, nullable=True) # for now wala pa pero magkalaman once na magtrue ang is_harvested
     created_at = Column(DateTime, default=datetime.datetime.now)
     updated_at = Column(DateTime, default=datetime.datetime.now, onupdate=datetime.datetime.now)
 
     users = relationship("User", back_populates="plants")
     description = relationship("Plant", backref=backref("info", lazy="joined"))
+
+
+
+# class UserPlantsHarvested(Base):
+#     __tablename__ = "user_plants_harvested"
+
+
+#     id = Column(Integer, primary_key=True, index=True)
+#     user_id = Column(Integer, ForeignKey("user.id"))
+#     plant_id = Column(Integer, ForeignKey("plant.id"))
+#     date_harvested = 
+#     created_at = Column(DateTime, default=datetime.datetime.now)
+#     updated_at = Column(DateTime, default=datetime.datetime.now, onupdate=datetime.datetime.now)
+
+#     users = relationship("User", back_populates="plants_harvested")
+#     description = relationship("Plant", backref=backref("info_h", lazy="joined"))
+
