@@ -36,3 +36,37 @@ const showLocation = async (position) => {
   let data = await response.json();
   locationDiv.innerText = `${data.address.city}, ${data.address.country}`;
 };
+
+
+
+function clickProfile(){
+  document.getElementById('my_plants').style.display='none';
+  document.getElementById('settings').style.display='none'; 
+  document.getElementById('harvest').style.display='none'; 
+  document.getElementById('profile').style.display='block';
+}
+
+function clickMyPlants(){
+  document.getElementById('profile').style.display='none';
+  document.getElementById('settings').style.display='none';
+  document.getElementById('harvest').style.display='none'; 
+  document.getElementById('my_plants').style.display='block';
+}
+
+function clickHarvest(){
+  document.getElementById('profile').style.display='none';
+  document.getElementById('settings').style.display='none';
+  document.getElementById('my_plants').style.display='none'; 
+  document.getElementById('harvest').style.display='block';
+}
+
+function clickSettings(){
+  document.getElementById('profile').style.display='none';
+  document.getElementById('my_plants').style.display='none';
+  document.getElementById('harvest').style.display='none';
+  document.getElementById('settings').style.display='block';
+}
+
+const filterusers_url = "http://127.0.0.1:8000/filter_users";
+const updateuser_url = "http://127.0.0.1:8000/update_user";
+const filteruserplants_url = "http://127.0.0.1:8000/filter_user_plants";
