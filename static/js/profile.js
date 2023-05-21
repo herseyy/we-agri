@@ -57,53 +57,53 @@ function clickMyPlants(){
 }
 
 //show profile
-async function getUser(){
-  fetch('/user/{username}', {
-    method: 'GET',
-    headers: {
-      'Content-type': 'application/json; charset=UTF-8'
-    },
-    body: JSON.stringify(inp_obj)
-  })
-  .then(res => {
-    return res.json()
-  })  
-  .then(data => {
-    const userData = document.getElementById('userData');
-    /* const  */
-    userData.innerHTML = "";
+// async function getUser(){
+//   fetch('/user/{username}', {
+//     method: 'GET',
+//     headers: {
+//       'Content-type': 'application/json; charset=UTF-8'
+//     },
+//     body: JSON.stringify(inp_obj)
+//   })
+//   .then(res => {
+//     return res.json()
+//   })  
+//   .then(data => {
+//     const userData = document.getElementById('userData');
+//     /* const  */
+//     userData.innerHTML = "";
   
-      let userDisplay = data.map((object)=> {
-          const {username, birthday, province, city, /* is_active, is_public */} = object;
+//       let userDisplay = data.map((object)=> {
+//           const {username, birthday, province, city, /* is_active, is_public */} = object;
   
-          return `
-          <h2 id="usernameProfile">@ ${username}</h2>
-          <div class="data">
-              <table class="table" >
-                  <tbody>
-                      <tr>
-                          <td>Name:</td>
-                          <td id="fullname">"first_name" + "last_name"</td>
-                      </tr>
-                      <tr>
-                          <td>Birthday:</td>
-                          <td id="bday">${birthday}</td>
-                      </tr>
-                      <tr>
-                          <td>Location:</td>
-                          <td id="locationOutput">${city}, ${province}</td>
-                      </tr>
-                  </tbody>
-              </table>
-          </div>`;
+//           return `
+//           <h2 id="usernameProfile">@ ${username}</h2>
+//           <div class="data">
+//               <table class="table" >
+//                   <tbody>
+//                       <tr>
+//                           <td>Name:</td>
+//                           <td id="fullname">"first_name" + "last_name"</td>
+//                       </tr>
+//                       <tr>
+//                           <td>Birthday:</td>
+//                           <td id="bday">${birthday}</td>
+//                       </tr>
+//                       <tr>
+//                           <td>Location:</td>
+//                           <td id="locationOutput">${city}, ${province}</td>
+//                       </tr>
+//                   </tbody>
+//               </table>
+//           </div>`;
           
-      })/* .catch(error => console.log("ERROR")) */
+//       })/* .catch(error => console.log("ERROR")) */
   
-      userData.innerHTML = userDisplay;
+//       userData.innerHTML = userDisplay;
       
-  });
-};
-getUser();
+//   });
+// };
+// getUser();
 
 
 
@@ -234,15 +234,7 @@ function get_current_user(){
         </div>
         `
       profile_info.innerHTML = display_user_info;
-
-      var firstname = document.getElementById("firstname")
-      firstname.value = data.firstname
-      var lastname = document.getElementById("lastname")
-      lastname.value = data.lastname
-      var birthdate = document.getElementById("birthdate")
-      birthdate.value = data.birthdate
-      var location_details = document.getElementById("location-details")
-      location_details.innerHTML = `${data.city},${data.state},${data.country}`
+      msg = document.getElementById("msg_q").style.display = "none"
 
     }).catch((error) => {
       console.error("Error:", error);
@@ -266,7 +258,7 @@ function editBtn(){
       var lastname = document.getElementById("lastname")
       lastname.value = data.lastname
       var birthdate = document.getElementById("birthdate")
-      birthdate.value = data.birthdate
+      birthdate.value = data.birthday
       var location_details = document.getElementById("location-details")
       location_details.innerHTML = `${data.city}, ${data.state}, ${data.country}`
 
@@ -312,26 +304,26 @@ function update_user_info(){
   .then(res => res.json())
   .then(data => {
     console.log(data)
-    window.location.href = '../profile';
+    msg = document.getElementById("msg_q")
+    msg.innerHTML = "Success"
+    msg.style.display = "inline-block"
+    msg.style.width = "100%"
+    msg.setAttribute('class', 'alert alert-success');
+    // window.location.href = '../profile';
   })
   .catch(error => console.log("ERROR")) 
-
-
 }
 
-// function update_user_info(){
 
-// }
-  // fetch("/")
-  //   .then(response => response.json())
-  //   .then(data => {
-  //   console.log(data)
-  //   if (data['detail']){
-  //     window.location.href = '../login';
-  //   }
-  //   else {
-  //     window.location.href = '../profile';
-  //   }
-  //   }).catch((error) => {
-  //       console.error('Error:', error);
-  //     });
+function get_current_user_plants() {
+  fetch("/user/plants/filter")
+  .then(response => response.json())
+  .then(data => {
+    console.log(data)
+  })
+  .catch((error) => {
+      console.error('Error:', error);
+    });
+}
+
+get_current_user_plants()

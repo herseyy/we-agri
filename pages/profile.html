@@ -89,6 +89,7 @@
                 </div>
                 <div class="modal-body editProfileModalcontent">
                     <div class="fields">
+                        <span class="alert" id = "msg_q" role="alert"></span>
 <!--                         <div class="input-field">
                             <i class='bx bx-user icon'></i>
                             <input type="text" id="newUsername" placeholder="Enter your new username" />
@@ -112,7 +113,7 @@
                     </div>
                 </div>
                 <div class="modal-footer">
-                    <button onclick="location.href=''" type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+                    <button onclick="get_current_user()" type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
                     <button onclick="update_user_info()" type="button" class="btn btn-primary">Update</button>
                 </div>
             </div>

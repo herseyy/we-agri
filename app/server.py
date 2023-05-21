@@ -238,6 +238,26 @@ def change_pass(request:Request, pass_:schemas.UserChangePass, db:Session = Depe
 
 
 
+@app.get("/user/plants/filter", response_model=list[schemas.CurrentUserPlants])
+def get_current_user_plants(request:Request, plants_filter: schemas.FilterCurrentUserPlants = Depends(), db: Session = Depends(get_db)):
+    token = request.cookies.get("access_token")
+    if token is None:
+        raise HTTPException(status_code=status.HTTP_401_UNAUTHORIZED, detail="Unable to verify credentials")
+    else:
+        scheme,_, param = token.partition(" ")
+
+        user = crud.decode(param, SECRET_KEY, ALGORITHM, db)
+
+        my_plants = crud.get_current_user_plants_filter(user=user, db=db, filter_plants=plants_filter)
+        return my_plants
+
+
+
+
+
+
+
+
 
 @app.get("/filter_users", response_model = list[schemas.UserResponse])
 def filter_users(user_filter: schemas.UserFilterRequest = Depends(), q: Union[list[int], None] = Query(default=None), db:Session = Depends(get_db)):
@@ -311,12 +331,6 @@ def delete_user_plant(plant_id: int, db:Session = Depends(get_db), token:str=Dep
 #     my_plants = crud.get_current_user_plants(user=user, db=db)
 #     return my_plants
 
-@app.get("/user/{username}/plants/filter", response_model=list[schemas.CurrentUserPlants])
-def get_current_user_plants(username:str, plants_filter: schemas.FilterCurrentUserPlants = Depends(), db: Session = Depends(get_db), token: str = Depends(crud.oauth2_scheme)):
-    user = crud.decode(token, SECRET_KEY, ALGORITHM, db)
-
-    my_plants = crud.get_current_user_plants_filter(user=user, db=db, filter_plants=plants_filter)
-    return my_plants
 
 
 
