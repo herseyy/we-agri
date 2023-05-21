@@ -7,6 +7,9 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha3/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-KK94CHFLLe+nY2dmCWGMq91rCGa5gtU4mk92HdvYe+M/SXH301p5ILy+dN9+nJOZ" crossorigin="anonymous">
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha3/dist/js/bootstrap.bundle.min.js" integrity="sha384-ENjdO4Dr2bkBIFxQpeoTz1HIcje39Wm4jDKdf19U8gI4ddQ3GYNS7NTKfAdVQSZe" crossorigin="anonymous"></script>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.2.1/css/all.css" />
+        
         
     <!----======== CSS ======== -->
     <link rel="stylesheet" href="../static/css/profile.css" />
@@ -17,6 +20,7 @@
     <title>User Profile</title> 
 </head>
 <body>
+    <!--  start -->
     <nav class="sidebar close">
         <header>
             <div class="image-text">
@@ -53,12 +57,6 @@
                         </a>
                     </li>
                     <li class="nav-link">
-                        <a onclick="clickHarvest()">
-                            <i class='bx bx-box icon' ></i>
-                            <span class="text nav-text">HARVEST</span>
-                        </a>
-                    </li>
-                    <li class="nav-link">
                         <a onclick="clickSettings()">
                             <i class='bx bx-cog icon'></i>
                             <span class="text nav-text">SETTINGS</span>
@@ -87,6 +85,36 @@
         </div>
 
     </nav>
+
+    <!-- plants section addplant modal -->
+    <div id="addplantModal" class="modal fade" tabindex="-1" role="dialog" aria-labelledby="addplantModalTitle" aria-hidden="true">
+        <div class="modal-dialog modal-dialog-centered" role="document">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="addplantModalTitle">Add plants</h5>
+                </div>
+                <div class="modal-body addplantmodalcontent">
+                    <div class="d-flex addPlants align-self-center">
+                        <label for="addCat" class="align-self-center">Category</label>
+                        <div>
+                            <select name="addCat" id="addCat" class="mx-2 align-self-center" onclick="">
+                                <option value="vegetable">Vegetable</option>
+                                <option value="fruit">Fruit</option>
+                            </select>
+                        </div>
+                    </div>
+                    <div class="d-flex align-self-center">
+                        <label for="addDatePlanted">Date Planted: </label>
+                        <input id="addDatePlanted" type="date" placeholder="Select Date"/>
+                    </div>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+                    <button type="button" class="btn btn-primary">Save</button>
+                </div>
+            </div>
+          </div>
+    </div>
 
     <section class="home">
 
@@ -123,6 +151,27 @@
         <div class="my_plants" id="my_plants">
             MY PLANTS
             <div>
+                <div id="" class="d-flex">
+                    <div>
+                        <button id="addplantBtn" type="button" class="btn btn-primary-outline mx-4 align-self-center" data-bs-toggle="modal" data-bs-target="#addplantModal">Add Plants</button>
+                    </div>
+                    
+                    <div>
+                        <div class="d-flex filterPlants align-self-center">
+                            <label for="userplantfilter" class="ml-2 align-self-center">Filter:</label>
+                            <div>
+                                <select name="userplantfilter" id="userplantfilter" class="mx-2 align-self-center" onclick="">
+                                    <option value="">--</option>
+                                    <option value="vegetable">Vegetable</option>
+                                    <option value="fruit">Fruit</option>
+                                    <option value="true">Harvested</option>
+                                    <option value="false">Pending harvest</option>
+                                    <option value="date">Date Planted</option>
+                                </select>
+                            </div>
+                        </div>
+                    </div>
+                </div>
                 <div>
                     <table id="plantTable"class="table table-responsive-xl">
                         <thead class="thead-primary" style="background-color: #99b19c;">
@@ -130,33 +179,26 @@
                                 <th>#</th>
                                 <th>Name</th>
                                 <th>Category</th>
-                                <th>Temperature (&degC)</th>
-                                <th>Humidity (%)</th>
-                                <th>Rain Tolerance (mm)</th>
-                                <th>Plant Growth (weeks)</th>
-                                <th>Information</th>
+                                <th>Status</th>
+                                <th>Date planted</th>
+                                <th>Estimated Harvest Date</th>
+                                <th>Date Harvested</th>
                             </tr>
                         </thead>
-                        <tbody style="background-color: #EAEFEB;">
+                        <tbody id="myPlantsTable" style="background-color: #EAEFEB;">
                             <tr>
-                                <td>plant_id</td>
+                                <td>i</td>
                                 <td>${name}</td>
                                 <td>${category}</td>
-                                <td>${min_temp} - ${max_temp}</td>
-                                <td>${min_humidity} - ${max_humidity}</td>
-                                <td> ${rain_tolerance}</td>
-                                <td>${planting_time}</td>
-                                <td>${p_info}</td>
+                                <td><button class="btn" disabled>is_harvested</button></td>
+                                <td>${date_planted}</td>
+                                <td> ${min_date} - ${max_date}</td>
+                                <td>${harvest_date}</td>
                               </tr>
                         </tbody>
                     </table>
                 </div>
             </div>
-        </div>
-
-        <div class="harvest" id="harvest">
-            HARVEST
-            <div></div>
         </div>
 
         <div class="settings" id="settings">

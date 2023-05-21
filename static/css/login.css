@@ -235,6 +235,41 @@ form .fields .input-field{
 .btn:hover {
   background-color: #1A4301;
 }
+.loc {
+  width: 50vw;
+  max-width: 35em;
+  background-color: #ffffff;
+  padding: 3em 1.8em;
+  position: absolute;
+  transform: translate(-50%, -50%);
+  top: 30%;
+  left: 25%;
+  border-radius: 0.6em;
+  box-shadow: 0 0.6em 2.5em rgba(0, 7, 70, 0.2);
+}
+#location-details {
+  font-size: 1em;
+  margin: 0.5em 0 1em 0;
+  color: var(--text-color);
+  font-weight: 400;
+}
+.loco-btn {
+   width: 100px;
+  background-color: #73A942;
+  border: none;
+  outline: none;
+  height: 30px;
+  border-radius: 39px;
+  color: #AAD576;
+  text-transform: uppercase;
+  font-weight: 400;
+  margin: 10px 0;
+  cursor: pointer;
+  transition: 0.5s;
+}
+.loco-btn:hover {
+  background-color: #1A4301;
+}
 .panels-container {
   position: absolute;
   height: 100%;

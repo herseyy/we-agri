@@ -206,8 +206,13 @@ header .image-text .profession{
     cursor: pointer;
 }
 
+.bottom-content li {
+    padding: 0 1rem;
+    margin:0 auto;
+}
+
 .menu-links{
-    padding-left: 1rem;
+    padding: 0 1rem;
 }
 
 .toggle-switch .switch{
@@ -446,4 +451,25 @@ body.dark .switch::before{
 
 #my_plants, #harvest, #settings {
     display:none;
+}
+
+#addplantBtn{
+    width: fit-content;
+    height:fit-content;
+} 
+
+#addplantBtn:hover{
+    color: var(--sidebar-color);
+}
+
+.filterPlants label{
+    font-size: xx-large;
+}
+
+.btn {
+    height:fit-content;
+}
+
+.addplantmodalcontent div label{
+    margin-right:3%;
 }
