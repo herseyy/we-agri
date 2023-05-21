@@ -89,10 +89,10 @@
                 </div>
                 <div class="modal-body editProfileModalcontent">
                     <div class="fields">
-                        <div class="input-field">
+<!--                         <div class="input-field">
                             <i class='bx bx-user icon'></i>
                             <input type="text" id="newUsername" placeholder="Enter your new username" />
-                        </div>
+                        </div> -->
                         <div class="input-field">
                             <i class='bx bx-user-circle icon'></i>
                             <input type="first" id="firstname" placeholder="Enter your first name" />
@@ -107,13 +107,13 @@
                         </div>
                         <div loc>
                             <div id="location-details">Click on the 'Get Location' Button</div>
-                            <button class="loco-btn" id="get-location" >Get Location</button>
+                            <button class="loco-btn" id="get-location" >Change loc</button>
                         </div> 
                     </div>
                 </div>
                 <div class="modal-footer">
-                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
-                    <button type="button" class="btn btn-primary">Update</button>
+                    <button onclick="location.href=''" type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+                    <button onclick="update_user_info()" type="button" class="btn btn-primary">Update</button>
                 </div>
             </div>
         </div>
@@ -127,6 +127,11 @@
                     <h5 class="modal-title" id="changepassModalTitle">Change Password</h5>
                 </div>
                 <div class="modal-body changepassModalcontent">
+                    <span class="alert" id = "msg" role="alert"></span>
+                    <div class="input-field">
+                        <i class='bx bx-lock-alt icon'></i>
+                        <input type="password" id="oldPass" placeholder="Enter your old password" />
+                    </div>
                     <div class="input-field">
                         <i class='bx bx-lock-alt icon'></i>
                         <input type="password" id="newPass" placeholder="Enter your new password" />
@@ -137,7 +142,7 @@
                     </div>
                 </div>
                 <div class="modal-footer">
-                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+                    <button onclick="close_pass()" type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
                     <button type="button" class="btn btn-primary" name="passwordupdate" onclick="changepass()">Update</button>
                 </div>
             </div>
@@ -150,31 +155,12 @@
             <div class="d-flex">
                 PROFILE
                 <div>
-                    <button id="editBtn" class="btn" data-bs-toggle="modal" data-bs-target="#editProfileModal">
+                    <button onclick="editBtn()" id="editBtn" class="btn" data-bs-toggle="modal" data-bs-target="#editProfileModal">
                         <i class="fas fa-edit"></i>
                     </button>
                 </div>
             </div>
-            <div class="userData">
-                <!-- <h2 id="usernameProfile">@ ${user}</h2>
-                <div class="data">
-                    <table class="table" >
-                        <tbody>
-                            <tr>
-                                <td>Name:</td>
-                                <td id="fullname">"first_name" + "last_name"</td>
-                            </tr>
-                            <tr>
-                                <td>Birthday:</td>
-                                <td id="bday">"birthday"</td>
-                            </tr>
-                            <tr>
-                                <td>Location:</td>
-                                <td id="locationOutput">[location]</td>
-                            </tr>
-                        </tbody>
-                    </table>
-                </div> -->
+            <div id="profile_info" class="userData">
             </div>
             <div style="font-size: large; margin-top: 5%;">
                 <p>Account Settings</p>
@@ -273,35 +259,35 @@
 
 
     <script>
-        const body = document.querySelector('body'),
-      sidebar = body.querySelector('nav'),
-      toggle = body.querySelector(".toggle"),
-      searchBtn = body.querySelector(".search-box"),
-      modeSwitch = body.querySelector(".toggle-switch"),
-      modeText = body.querySelector(".mode-text");
+            const body = document.querySelector('body'),
+          sidebar = body.querySelector('nav'),
+          toggle = body.querySelector(".toggle"),
+          searchBtn = body.querySelector(".search-box"),
+          modeSwitch = body.querySelector(".toggle-switch"),
+          modeText = body.querySelector(".mode-text");
 
 
-toggle.addEventListener("click" , () =>{
-    sidebar.classList.toggle("close");
-})
+    toggle.addEventListener("click" , () =>{
+        sidebar.classList.toggle("close");
+    })
 
-searchBtn.addEventListener("click" , () =>{
-    sidebar.classList.remove("close");
-})
+    searchBtn.addEventListener("click" , () =>{
+        sidebar.classList.remove("close");
+    })
 
-/* modeSwitch.addEventListener("click" , () =>{
-    body.classList.toggle("dark");
-    
-    if(body.classList.contains("dark")){
-        modeText.innerText = "Light mode";
-    }else{
-        modeText.innerText = "Dark mode";
+    /* modeSwitch.addEventListener("click" , () =>{
+        body.classList.toggle("dark");
         
-    }
-}); */
+        if(body.classList.contains("dark")){
+            modeText.innerText = "Light mode";
+        }else{
+            modeText.innerText = "Dark mode";
+            
+        }
+    }); */
 
     </script>
-     <script src="../static//js/profile.js"></script>
+     <script src="../static/js/profile.js"></script>
 
 </body>
 </html>

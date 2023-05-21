@@ -474,7 +474,11 @@ body.dark .switch::before{
     height:fit-content;
     color:var(--text-color);
 }
+#msg {
+    display: none;
+}
 
 .editProfileModalcontent .fields .input-field, .changepassModalcontent div{
     background-color: var(--primary-color-light);
 }
+

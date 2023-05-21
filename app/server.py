@@ -196,16 +196,45 @@ def create_user(user: schemas.SignUpRequest, db:Session = Depends(get_db)):
     return created_user
     # return crud.format_user(created_user)
 
-# @app.get("/user/{username}", response_model = schemas.UserResponse)
-# def get_current_user(request:Request, )
+@app.get("/user", response_model = schemas.UserResponse)
+def get_current_user(request:Request, db: Session = Depends(get_db)):
+    token = request.cookies.get("access_token")
+    if token is None:
+        raise HTTPException(status_code=status.HTTP_401_UNAUTHORIZED, detail="Unable to verify credentials")
+    else:
+        scheme,_, param = token.partition(" ")
+        user = crud.decode(param, SECRET_KEY, ALGORITHM, db)
+        no_plants = len(user.plants)
+        # print(no_plants)
+        username = user.username
+        return crud.format_user(user)
 
-# @app.get("/user/{username}", response_model = schemas.UserResponse)
-# def get_current_user(username:str, db: Session = Depends(get_db), token: str = Depends(crud.oauth2_scheme)):
-#     user = crud.decode(token, SECRET_KEY, ALGORITHM, db)
-#     no_plants = len(user.plants)
-#     print(no_plants)
-#     username = user.username
-#     return crud.format_user(user)
+@app.patch("/update_user")
+def update_user(request:Request, info: schemas.UserUpdateRequest, db: Session = Depends(get_db)):
+    token = request.cookies.get("access_token")
+    if token is None:
+        raise HTTPException(status_code=status.HTTP_401_UNAUTHORIZED, detail="Unable to verify credentials")
+    else:
+        scheme,_, param = token.partition(" ")
+        user = crud.decode(param, SECRET_KEY, ALGORITHM, db)
+
+        updated_user = crud.update_user(db=db, current_user=user, info=info)
+
+        return crud.format_user(updated_user)
+
+
+@app.patch("/change_pass")
+def change_pass(request:Request, pass_:schemas.UserChangePass, db:Session = Depends(get_db)):
+    token = request.cookies.get("access_token")
+    if token is None:
+        raise HTTPException(status_code=status.HTTP_401_UNAUTHORIZED, detail="Unable to verify credentials")
+    else:
+        scheme,_, param = token.partition(" ")
+        user = crud.decode(param, SECRET_KEY, ALGORITHM, db)
+
+        updated_pass_user = crud.change_pass(db=db, current_user=user, pass_=pass_)
+
+        return updated_pass_user
 
 
 
@@ -218,24 +247,6 @@ def filter_users(user_filter: schemas.UserFilterRequest = Depends(), q: Union[li
     return [crud.format_user(user) for user in users]
 
 
-@app.patch("/update_user")
-def update_user(info: schemas.UserUpdateRequest, db: Session = Depends(get_db)):
-    # print("jwt_token")
-    # print(crud.token_)
-    user = crud.decode(token, SECRET_KEY, ALGORITHM, db)
-
-    updated_user = crud.update_user(db=db, current_user=user, info=info)
-
-    return crud.format_user(updated_user)
-
-
-@app.patch("/change_pass")
-def change_pass(pass_:schemas.UserChangePass, db:Session = Depends(get_db), token:str=Depends(crud.oauth2_scheme)):
-    user = crud.decode(token, SECRET_KEY, ALGORITHM, db)
-
-    updated_pass_user = crud.change_pass(db=db, current_user=user, pass_=pass_)
-
-    return updated_pass_user
 
 
 @app.get("/get_all_user_plants", response_model=list[schemas.UserPlantsResponse])

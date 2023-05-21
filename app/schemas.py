@@ -121,6 +121,8 @@ class SignUpResponse(BaseModel):
 class UserResponse(BaseModel):
 	id: int
 	username: str = None
+	firstname: Optional[str] = None
+	lastname: Optional[str] = None
 	birthday: Optional[datetime.date] = None
 	# hashed_pass: str = None
 	country: str = None
@@ -144,11 +146,13 @@ class UserFilterRequest(BaseModel):
 	is_public: Optional[bool] = None
 
 class UserUpdateRequest(BaseModel):
+	firstname: str = None
+	lastname: str = None
 	birthday: datetime.date = None
 	country: str = None
 	state: str = None
 	city: str = None
-	is_public: bool = None
+	is_public: bool = False
 
 
 class UserChangePass(BaseModel):
