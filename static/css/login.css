@@ -5,12 +5,6 @@
   padding: 0;
   box-sizing: border-box;
 }
-* {
-    padding: 0;
-    margin: 0;
-    box-sizing: border-box;
-    
-  }
 
   html, body {
     height: 100%;
@@ -35,9 +29,10 @@ html {
     -moz-background-size: cover;
     -o-background-size: cover;
     background-size: cover;
-    font-family: 'Proxima Nova';
   }
-
+header {
+  justify-content: center;
+}
   .nav-item > .nav-link{
     color:#117a3d;
     font-family: 'Proxima Nova';
@@ -55,30 +50,6 @@ html {
   #indexcontent{
     color:white;
   }
-
-  .texttitle{
-    font-family: 'Sceageus';
-    background-color:#9ad084;
-    background-image: linear-gradient( #ffffff 70%, rgba(154,0,0,0));
-    background-size: 100%;
-    background-repeat: repeat;
-    -webkit-background-clip: text;
-    -webkit-text-fill-color: transparent; 
-    -moz-background-clip: text;
-    -moz-text-fill-color: transparent;
-    text-align:center;
-    font-size: 8vw;
-    margin-top: 6%;
-  }
-
-  #contentright{
-    display:block;
-    position:absolute;
-    top:60%;
-    right:0%;
-    margin-right:5%;
-  }
-
 body,
 input {
   font-family: "Poppins", sans-serif;
