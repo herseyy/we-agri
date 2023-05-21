@@ -95,7 +95,8 @@ async function getUser(){
       userData.innerHTML = userDisplay;
       
   });
-}
+};
+getUser();
 
 
 

@@ -20,6 +20,9 @@
     font-family: 'Proxima Nova', sans-serif;
  }
 
+:root{
+    scroll-behavior: smooth;
+}
 
 html{
     background-image: url(../images/transparentbg.jpg);
