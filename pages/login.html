@@ -15,23 +15,23 @@
   </head>
     <body>
         <header>
-          <nav class="navbar navbar-expand-lg justify-content-center">
+          <nav class="navbar navbar-expand-lg mx-5 px 3">
             <img id="logo" width="50em" alt="WE-AGRI" src="../static/images/logo ni joao.png" />
-                <button class="navbar-toggler btn" type="button" data-bs-toggle="collapse" data-bs-target="#we-agriNav" aria-controls="we-agriNav" aria-expanded="false" >
+                <button class="navbar-toggler button" type="button" data-bs-toggle="collapse" data-bs-target="#we-agriNav" aria-controls="we-agriNav" aria-expanded="false" >
                     <span class="navbar-toggler-icon" style="background-color: white;"></span>
                 </button>
             <div class="collapse navbar-collapse justify-content-evenly" id="we-agriNav">
                 <ul class="navbar-nav align-items-center">
-                    <li class="nav-item rounded-pill mx-5 px-4">
+                    <li class="nav-item rounded-pill mx-5 px-3">
                       <a class="nav-link" href="index.html">HOME</a>
                     </li>
-                    <li class="nav-item rounded-pill mx-5 px-4">
+                    <li class="nav-item rounded-pill mx-5 px-3">
                       <a class="nav-link" href="forecast.html">FORECAST</a>
                     </li>
-                    <li class="nav-item rounded-pill mx-5 px-4">
+                    <li class="nav-item rounded-pill mx-5 px-3">
                       <a class="nav-link" href="plants.html">PLANTS</a>
                     </li>
-                    <li class="nav-item rounded-pill mx-5 px-4">
+                    <li class="nav-item rounded-pill mx-5 px-3">
                       <a class="nav-link" href="about.html">ABOUT</a>
                     </li>
                     <button type="button" class="btn btn-primary-outline " onclick="location.href='login.html'" >
@@ -41,9 +41,13 @@
             </div>
           </nav>
         </header>
+
     <div class="container">
       <div class="forms-container">
         <div class="signin-signup">
+<<<<<<< HEAD
+          <form action="#" class="sign-in-form">
+=======
           <form method="POST" action="#" class="sign-in-form">
 <!--             {% if msg %}
               <div class="alert alert-success" role="alert">
@@ -55,14 +59,15 @@
                 {{ error }}
               </div>
             {% endfor %} -->
+>>>>>>> 47477d0f36650922c04610f7ea5635b40c408bfd
             <h2 class="title">Sign in</h2>
             <div class="input-field">
               <i class="fas fa-user"></i>
-              <input name="username" type="text" placeholder="Username" />
+              <input type="text" placeholder="Username" />
             </div>
             <div class="input-field">
               <i class="fas fa-lock"></i>
-              <input name="password" type="password" placeholder="Password" />
+              <input type="password" placeholder="Password" />
             </div>
             <input type="submit" value="Login" class="btn solid" />
             <p class="social-text">Or Sign in with social platforms</p>
