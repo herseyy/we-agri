@@ -156,6 +156,10 @@
                                 </div>
                             </div>
                             <div class="col-12 d-flex">
+                                <label for="inputpinfo" class="form-label col-3">Plant Info</label>
+                                <input type="text" class="form-control" id="inputpinfo">
+                            </div>
+                            <div class="col-12 d-flex">
                                 <div class="col-5">
                                     <label for="inputmin_temp" class="form-label">Min. Temp.</label>
                                 <input type="text" class="form-control" id="inputmin_temp">
@@ -201,11 +205,10 @@
                                         <input type="checkbox" name="checkbox" value="true" id="inputrain">
                                     </div>
                                 </div>
-                                
                             </div>
+                            <div id="errormsg" class="col-12"></div>
                             <div class="text-center">
-                              <button type="submit" class="btn btn-success">Submit</button>
-                              <button type="reset" class="btn btn-secondary">Reset</button>
+                              <button type="submit" class="btn btn-success" onclick="createPlants()">Submit</button>
                             </div>
                           </form><!-- Vertical Form -->
             
@@ -216,6 +219,9 @@
             <section id="users">
                 <div class="m-auto">
                     <div>
+                        <div>
+
+                        </div>
                         <table id="plantTable"class="table table-responsive-xl">
                             <thead class="thead-primary" style="background-color: #99b19c;">
                                 <tr class="text-light">

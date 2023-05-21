@@ -40,8 +40,20 @@ function checkbox() {
 }
 
 function createPlants(){
+    var errormsg = document.getElementById('errormsg');
+
     let inpsummer = "";
     let inprain = "";
+    var pname = document.getElementById('inputName').value;
+    var cat = document.getElementById('inputCat').value;
+    var pinfo = document.getElementById('inputpinfo').value;
+    var mintemp = document.getElementById('inputmin_temp').value;
+    var maxtemp = document.getElementById('inputmax_temp').value;
+    var minhum = document.getElementById('inputmin_hum').value;
+    var maxhum = document.getElementById('inputmax_hum').value;
+    var minraintol = document.getElementById('inputmin_raintol').value;
+    var maxraintol = document.getElementById('inputmax_raintol').value;
+    var ptime = document.getElementById('inputp_time').value;
 
     for (i in checkbox()){
         if (checkbox()[i] == "inputsummer") {
@@ -51,6 +63,81 @@ function createPlants(){
             inprain = true
         }
     }
+
+    if(pname == ""){
+        errormsg.innerHTML= "Enter a name"
+    }
+    if(mintemp == ""){
+        errormsg.innerHTML= "Enter minimum temperature"
+    }
+    if(maxtemp == ""){
+        errormsg.innerHTML= "Enter maximum temperature"
+    }
+    if(minhum == ""){
+        errormsg.innerHTML= "Enter minimum humidity"
+    }
+    if(maxhum == ""){
+        errormsg.innerHTML= "Enter maximum humidity"
+    }
+    if(minraintol == ""){
+        errormsg.innerHTML= "Enter minimum rain tolerance"
+    }
+    if(maxraintol == ""){
+        errormsg.innerHTML= "Enter maximum rain tolerance"
+    }
+
+    var inp_obj = {
+        "name": pname,
+        "category": cat,
+        "p_info": pinfo,
+        "min_temp": mintemp,
+        "max_temp": maxtemp,
+        "min_humidity": minhum,
+        "max_humidity": maxhum,
+        "min_rain_tolerance": minraintol,
+        "max_rain_tolerance": maxraintol,
+        "p_time": ptime,
+        "summer": inpsummer,
+        "rainy_season": inprain,
+      };
+
+      fetch('/create_plant', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json'
+        },
+        body: JSON.stringify(inp_obj)
+      })
+        .then(res => res.json())
+        .then(data => {
+          console.log(data)
+          if (data['detail']) {
+            errormsg.innerHTML = data['detail']
+            errormsg.style.visibility = "visible"
+            errormsg.style.width = "100%"
+            errormsg.setAttribute('class', 'alert alert-danger');
+          }
+          else {
+            errormsg.innerHTML = "Success"
+            errormsg.style.visibility = "visible"
+            errormsg.style.width = "100%"
+            errormsg.setAttribute('class', 'alert alert-success');
+    
+            pname = ""; 
+            cat = ""; 
+            pinfo = ""; 
+            mintemp = ""; 
+            maxtemp = ""; 
+            minhum = ""; 
+            maxhum = ""; 
+            minraintol = ""; 
+            maxraintol = ""; 
+            ptime = ""; 
+          }
+        }).catch((error) => {
+          // console.error('Error:', error);
+        });
+    
 }
 
 //users
