@@ -19,7 +19,7 @@
                         <img width="50em" alt="WE-AGRI" src="../static/images/logo ni joao.png" />
                     </li>
                   <li class="nav-item rounded-pill mx-2 px-4 active">
-                    <a class="nav-link" href="index.html">HOME</a>
+                    <a class="nav-link" href="/home">HOME</a>
                   </li>
                   <li class="nav-item rounded-pill mx-2 px-4">
                     <a class="nav-link" href="forecast.html">FORECAST</a>
@@ -33,7 +33,9 @@
                   <li class="nav-item rounded-pill mx-2 px-4">
                     <a class="nav-link" href="about.html">ABOUT</a>
                   </li>
-                  <button type="button" class="btn btn-primary-outline rounded-circle navbtn" onclick="location.href='login.html'" >
+
+                  <!-- onlclick check if may laman cookie hehe -->
+                  <button type="button" class="btn btn-primary-outline rounded-circle navbtn" onclick="check_token()" >
                       <i class="fa-solid fa-user" style="color:#117a3d"></i>
                   </button>
                 </ul>
@@ -55,5 +57,6 @@
                 </button>
             </div>
         </div>
+        <script src="../static/js/index.js"></script>
     </body>
 </html>

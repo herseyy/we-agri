@@ -124,9 +124,45 @@ ALGORITHM = "HS256"  # ito rin
 
 import requests
 
+
+# checking lang if may token
 @app.get("/")
-def index(token:str=Depends(crud.oauth2_scheme)):
+def index(request:Request):
+    token = request.cookies.get("access_token")
+    if token is None:
+        raise HTTPException(status_code=status.HTTP_401_UNAUTHORIZED, detail="Unable to verify credentials")
+        # return {"error": "please log in first"}
+    else:
+        return {"msg": "token exists"}
+        # scheme,_, param = token.partition(" ")
+        # print(scheme)
+        # print(param)
     return {"Hello": "World"}
+
+
+
+
+
+# itooooo
+@app.post("/login/token", tags=["login"])
+def get_token_after_authentication(form_data: OAuth2PasswordRequestForm = Depends(), db: Session = Depends(get_db)):
+    user = db.query(models.User).filter(models.User.username == form_data.username).first()
+
+    if not user:
+        raise HTTPException(status_code=status.HTTP_401_UNAUTHORIZED, detail = "Incorrect username", headers={"WWW-Authenticate": "Bearer"})
+    if not crud.verify_password(form_data.password, user.hashed_pass):
+        raise HTTPException(status_code=status.HTTP_401_UNAUTHORIZED, detail = "Incorrect password", headers={"WWW-Authenticate": "Bearer"})
+    data = {
+        "sub": form_data.username
+    }
+    jwt_token = jwt.encode(data, SECRET_KEY, algorithm=ALGORITHM)
+
+
+    return {"access_token": jwt_token, "token_type": "bearer"}
+
+
+
+
 
 @app.post("/login", tags=["login"])
 def get_token_after_authentication(response: Response, inp_login: schemas.Login, db: Session = Depends(get_db)):
@@ -160,13 +196,26 @@ def create_user(user: schemas.SignUpRequest, db:Session = Depends(get_db)):
     return created_user
     # return crud.format_user(created_user)
 
+# @app.get("/user/{username}", response_model = schemas.UserResponse)
+# def get_current_user(request:Request, )
+
+# @app.get("/user/{username}", response_model = schemas.UserResponse)
+# def get_current_user(username:str, db: Session = Depends(get_db), token: str = Depends(crud.oauth2_scheme)):
+#     user = crud.decode(token, SECRET_KEY, ALGORITHM, db)
+#     no_plants = len(user.plants)
+#     print(no_plants)
+#     username = user.username
+#     return crud.format_user(user)
+
+
+
+
 @app.get("/filter_users", response_model = list[schemas.UserResponse])
 def filter_users(user_filter: schemas.UserFilterRequest = Depends(), q: Union[list[int], None] = Query(default=None), db:Session = Depends(get_db)):
     users = crud.filter_users(db, user_filter, q)
     # for user in users:    
     #     print(crud.format_user(user))
     return [crud.format_user(user) for user in users]
-
 
 
 @app.patch("/update_user")
@@ -242,13 +291,6 @@ def delete_user_plant(plant_id: int, db:Session = Depends(get_db), token:str=Dep
 #     #     print(crud.format_user(user))
 #     return [crud.format_user(user) for user in users]
 
-@app.get("/user/{username}", response_model = schemas.UserResponse)
-def get_current_user(username:str, db: Session = Depends(get_db), token: str = Depends(crud.oauth2_scheme)):
-    user = crud.decode(token, SECRET_KEY, ALGORITHM, db)
-    no_plants = len(user.plants)
-    print(no_plants)
-    username = user.username
-    return crud.format_user(user)
 
 
 # @app.get("/user/{username}/plants", response_model=list[schemas.CurrentUserPlants])
@@ -377,7 +419,20 @@ async def read_file(name:str, db:Session = Depends(get_db)):
 
 
 
+
+
+
+# htmls
+
+@app.get("/home", response_class=HTMLResponse)
+async def submit(request: Request):
+    return templates.TemplateResponse("index.html", {"request": request})
+
 @app.get("/login", response_class=HTMLResponse)
 async def submit(request: Request):
     return templates.TemplateResponse("login.html", {"request": request})
+
+@app.get("/profile", response_class=HTMLResponse)
+async def submit(request: Request):
+    return templates.TemplateResponse("profile.html", {"request": request})
 
