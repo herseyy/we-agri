@@ -56,12 +56,6 @@
                             <span class="text nav-text">MY PLANTS</span>
                         </a>
                     </li>
-                    <li class="nav-link">
-                        <a onclick="clickSettings()">
-                            <i class='bx bx-cog icon'></i>
-                            <span class="text nav-text">SETTINGS</span>
-                        </a>
-                    </li>
 
 
                 </ul>
@@ -86,31 +80,65 @@
 
     </nav>
 
-    <!-- plants section addplant modal -->
-    <div id="addplantModal" class="modal fade" tabindex="-1" role="dialog" aria-labelledby="addplantModalTitle" aria-hidden="true">
+     <!-- profile section editProfile modal -->
+     <div id="editProfileModal" class="modal fade" tabindex="-1" role="dialog" aria-labelledby="editProfileModalTitle" aria-hidden="true">
         <div class="modal-dialog modal-dialog-centered" role="document">
             <div class="modal-content">
                 <div class="modal-header">
-                    <h5 class="modal-title" id="addplantModalTitle">Add plants</h5>
+                    <h5 class="modal-title" id="editProfileModalTitle">Edit Profile</h5>
                 </div>
-                <div class="modal-body addplantmodalcontent">
-                    <div class="d-flex addPlants align-self-center">
-                        <label for="addCat" class="align-self-center">Category</label>
-                        <div>
-                            <select name="addCat" id="addCat" class="mx-2 align-self-center" onclick="">
-                                <option value="vegetable">Vegetable</option>
-                                <option value="fruit">Fruit</option>
-                            </select>
+                <div class="modal-body editProfileModalcontent">
+                    <div class="fields">
+                        <div class="input-field">
+                            <i class='bx bx-user icon'></i>
+                            <input type="text" id="newUsername" placeholder="Enter your new username" />
                         </div>
-                    </div>
-                    <div class="d-flex align-self-center">
-                        <label for="addDatePlanted">Date Planted: </label>
-                        <input id="addDatePlanted" type="date" placeholder="Select Date"/>
+                        <div class="input-field">
+                            <i class='bx bx-user-circle icon'></i>
+                            <input type="first" id="firstname" placeholder="Enter your first name" />
+                        </div>
+                        <div class="input-field">
+                            <i class='bx bx-user-circle icon'></i>
+                            <input type="last" id="lastname" placeholder="Enter your last name" />
+                        </div>
+                        <div class="input-field">
+                            <i class='bx bx-cake icon'></i>
+                            <input type="date" id="birthdate" placeholder="Enter birth date" />
+                        </div>
+                        <div loc>
+                            <div id="location-details">Click on the 'Get Location' Button</div>
+                            <button class="loco-btn" id="get-location" >Get Location</button>
+                        </div> 
                     </div>
                 </div>
                 <div class="modal-footer">
                     <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
-                    <button type="button" class="btn btn-primary">Save</button>
+                    <button type="button" class="btn btn-primary">Update</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+     <!-- profile section changepass modal -->
+     <div id="changepassModal" class="modal fade" tabindex="-1" role="dialog" aria-labelledby="changepassModalTitle" aria-hidden="true">
+        <div class="modal-dialog modal-dialog-centered" role="document">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="changepassModalTitle">Change Password</h5>
+                </div>
+                <div class="modal-body changepassModalcontent">
+                    <div class="input-field">
+                        <i class='bx bx-lock-alt icon'></i>
+                        <input type="password" id="newPass" placeholder="Enter your new password" />
+                    </div>
+                    <div class="input-field">
+                        <i class='bx bx-lock-alt icon'></i>
+                        <input type="password" id="newPassConfirm" placeholder="Confirm your password" />
+                    </div>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+                    <button type="button" class="btn btn-primary" name="passwordupdate" onclick="changepass()">Update</button>
                 </div>
             </div>
           </div>
@@ -119,34 +147,72 @@
     <section class="home">
 
         <div class= "profile" id="profile">
-            PROFILE
+            <div class="d-flex">
+                PROFILE
+                <div>
+                    <button id="editBtn" class="btn" data-bs-toggle="modal" data-bs-target="#editProfileModal">
+                        <i class="fas fa-edit"></i>
+                    </button>
+                </div>
+            </div>
             <div class="userData">
-                <h2>@ ${user}</h2>
+                <!-- <h2 id="usernameProfile">@ ${user}</h2>
                 <div class="data">
                     <table class="table" >
                         <tbody>
                             <tr>
                                 <td>Name:</td>
-                                <td>"first_name" + "last_name"</td>
+                                <td id="fullname">"first_name" + "last_name"</td>
                             </tr>
                             <tr>
                                 <td>Birthday:</td>
-                                <td>"birthday"</td>
+                                <td id="bday">"birthday"</td>
                             </tr>
                             <tr>
                                 <td>Location:</td>
-                                <td>[location]</td>
+                                <td id="locationOutput">[location]</td>
                             </tr>
                         </tbody>
                     </table>
-                </div>
-                <div class="mt-4" style="font-size: small;">
-                    <p>Edit user profile on 'Settings'</p>
-                </div>
-
-
+                </div> -->
+            </div>
+            <div style="font-size: large; margin-top: 5%;">
+                <p>Account Settings</p>
+                <button class="btn" data-bs-toggle="modal" data-bs-target="#changepassModal">
+                    Change Password
+                </button>
             </div>
         </div>
+
+            <!-- plants section addplant modal -->
+            <div id="addplantModal" class="modal fade" tabindex="-1" role="dialog" aria-labelledby="addplantModalTitle" aria-hidden="true">
+                <div class="modal-dialog modal-dialog-centered" role="document">
+                    <div class="modal-content">
+                        <div class="modal-header">
+                            <h5 class="modal-title" id="addplantModalTitle">Add plants</h5>
+                        </div>
+                        <div class="modal-body addplantmodalcontent">
+                            <div class="d-flex addPlants align-self-center">
+                                <label for="addCat" class="align-self-center">Category</label>
+                                <div>
+                                    <select name="addCat" id="addCat" class="mx-2 align-self-center" onclick="">
+                                        <option value="vegetable">Vegetable</option>
+                                        <option value="fruit">Fruit</option>
+                                    </select>
+                                </div>
+                            </div>
+                            <div class="d-flex align-self-center">
+                                <label for="addDatePlanted">Date Planted: </label>
+                                <input id="addDatePlanted" type="date" placeholder="Select Date"/>
+                            </div>
+                        </div>
+                        <div class="modal-footer">
+                            <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+                            <button type="button" class="btn btn-primary">Save</button>
+                        </div>
+                    </div>
+                </div>
+            </div>
 
         <div class="my_plants" id="my_plants">
             MY PLANTS
@@ -201,43 +267,7 @@
             </div>
         </div>
 
-        <div class="settings" id="settings">
-            SETTINGS
-
-        <div class="fields">
-                    <div class="input-field">
-                        <i class='bx bx-user icon'></i>
-                        <input type="text" placeholder="Enter your new username" />
-                    </div>
-                    <div class="input-field">
-                        <i class='bx bx-user-circle icon'></i>
-                        <input type="first" placeholder="Enter your first name" />
-                    </div>
-                    <div class="input-field">
-                        <i class='bx bx-user-circle icon'></i>
-                        <input type="last" placeholder="Enter your last name" />
-                    </div>
-                    <div class="input-field">
-                        <i class='bx bx-cake icon'></i>
-                        <input type="date" placeholder="Enter birth date" />
-                    </div>
-                    <div loc>
-                        <div id="location-details">Click on the 'Get Location' Button</div>
-                        <button class="loco-btn" id="get-location">Get Location</button>
-                    </div>                         
-                    <div class="input-field">
-                        <i class='bx bx-lock-alt icon'></i>
-                        <input type="password" placeholder="Enter your new password" />
-                    </div>
-                    <div class="input-field">
-                        <i class='bx bx-lock-alt icon'></i>
-                        <input type="password" placeholder="Confirm your password" />
-                    </div>
-                
-                <button class="btn">UPDATE</button>
-            </div>   
-        </div>                        
-        </div>
+        
     </section>
 
 
@@ -259,7 +289,7 @@ searchBtn.addEventListener("click" , () =>{
     sidebar.classList.remove("close");
 })
 
-modeSwitch.addEventListener("click" , () =>{
+/* modeSwitch.addEventListener("click" , () =>{
     body.classList.toggle("dark");
     
     if(body.classList.contains("dark")){
@@ -268,7 +298,7 @@ modeSwitch.addEventListener("click" , () =>{
         modeText.innerText = "Dark mode";
         
     }
-});
+}); */
 
     </script>
      <script src="../static//js/profile.js"></script>
