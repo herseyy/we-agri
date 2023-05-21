@@ -129,19 +129,18 @@ def index(token:str=Depends(crud.oauth2_scheme)):
     return {"Hello": "World"}
 
 @app.post("/login", tags=["login"])
-def get_token_after_authentication(response: Response, form_data: OAuth2PasswordRequestForm = Depends(), db: Session = Depends(get_db)):
-    user = db.query(models.User).filter(models.User.username == form_data.username).first()
+def get_token_after_authentication(response: Response, inp_login: schemas.Login, db: Session = Depends(get_db)):
+    user = db.query(models.User).filter(models.User.username == inp_login.username).first()
 
     if not user:
         raise HTTPException(status_code=status.HTTP_401_UNAUTHORIZED, detail = "Incorrect username", headers={"WWW-Authenticate": "Bearer"})
-    if not crud.verify_password(form_data.password, user.hashed_pass):
+    if not crud.verify_password(inp_login.password, user.hashed_pass):
         raise HTTPException(status_code=status.HTTP_401_UNAUTHORIZED, detail = "Incorrect password", headers={"WWW-Authenticate": "Bearer"})
     data = {
-        "sub": form_data.username
+        "sub": inp_login.username
     }
     jwt_token = jwt.encode(data, SECRET_KEY, algorithm=ALGORITHM)
     response.set_cookie(key = "access_token", value = f"Bearer {jwt_token}", httponly = True)
-
 
 
     return {"access_token": jwt_token, "token_type": "bearer"}

@@ -15,23 +15,23 @@
   </head>
     <body>
         <header>
-          <nav class="navbar navbar-expand-lg justify-content-center">
+          <nav class="navbar navbar-expand-lg mx-5 px 3">
             <img id="logo" width="50em" alt="WE-AGRI" src="../static/images/logo ni joao.png" />
-                <button class="navbar-toggler btn" type="button" data-bs-toggle="collapse" data-bs-target="#we-agriNav" aria-controls="we-agriNav" aria-expanded="false" >
+                <button class="navbar-toggler button" type="button" data-bs-toggle="collapse" data-bs-target="#we-agriNav" aria-controls="we-agriNav" aria-expanded="false" >
                     <span class="navbar-toggler-icon" style="background-color: white;"></span>
                 </button>
             <div class="collapse navbar-collapse justify-content-evenly" id="we-agriNav">
                 <ul class="navbar-nav align-items-center">
-                    <li class="nav-item rounded-pill mx-5 px-4">
+                    <li class="nav-item rounded-pill mx-5 px-3">
                       <a class="nav-link" href="index.html">HOME</a>
                     </li>
-                    <li class="nav-item rounded-pill mx-5 px-4">
+                    <li class="nav-item rounded-pill mx-5 px-3">
                       <a class="nav-link" href="forecast.html">FORECAST</a>
                     </li>
-                    <li class="nav-item rounded-pill mx-5 px-4">
+                    <li class="nav-item rounded-pill mx-5 px-3">
                       <a class="nav-link" href="plants.html">PLANTS</a>
                     </li>
-                    <li class="nav-item rounded-pill mx-5 px-4">
+                    <li class="nav-item rounded-pill mx-5 px-3">
                       <a class="nav-link" href="about.html">ABOUT</a>
                     </li>
                     <button type="button" class="btn btn-primary-outline " onclick="location.href='login.html'" >
@@ -41,117 +41,52 @@
             </div>
           </nav>
         </header>
+
     <div class="container">
       <div class="forms-container">
         <div class="signin-signup">
-<<<<<<< HEAD
-          <form method="POST" action="#" class="sign-in-form">
-<!--             {% if msg %}
-              <div class="alert alert-success" role="alert">
-                {{ msg }}
-              </div>
-            {% endif %}
-            {% for error in errors %}
-              <div class="alert alert-danger" role="alert">
-                {{ error }}
-              </div>
-            {% endfor %} -->
-=======
-          <form action="#" class="sign-in-form">
->>>>>>> 29f02afc1039f9b34a0d8c01662d0c1a4b93e4ec
+          <div class="sign-in-form formm">
             <h2 class="title">Sign in</h2>
+            <div class="alert" id = "msg_l" role="alert">
+            </div>
+<!--             <div class="alert alert-success" id = "success_msg" role="alert">
+              
+            </div> -->
             <div class="input-field">
               <i class="fas fa-user"></i>
-              <input name="username" type="text" placeholder="Username" />
+              <input id="username_l"  type="text" placeholder="Username" />
             </div>
             <div class="input-field">
               <i class="fas fa-lock"></i>
-              <input name="password" type="password" placeholder="Password" />
+              <input id="password_l" type="password" placeholder="Password" />
             </div>
-            <input type="submit" value="Login" class="btn solid" />
-            <p class="social-text">Or Sign in with social platforms</p>
-            <div class="social-media">
-              <a href="#" class="social-icon">
-                <i class="fab fa-facebook-f"></i>
-              </a>
-              <a href="#" class="social-icon">
-                <i class="fab fa-twitter"></i>
-              </a>
-              <a href="#" class="social-icon">
-                <i class="fab fa-google"></i>
-              </a>
-              <a href="#" class="social-icon">
-                <i class="fab fa-linkedin-in"></i>
-              </a>
-            </div>
-          </form>
-          <form action="#" class="sign-up-form">
+            <button onclick="btn_login()" id = "btn_login" class = "btn solid">Login
+            </button>
+          </div>
+          <div class="sign-up-form formm">
             <h2 class="title">Sign up</h2>
+            <div class="alert" id = "msg_s" role="alert">
+            </div>
             <div class="input-field">
               <i class="fas fa-user"></i>
-              <input type="text" placeholder="Username" required>
-            </div>
-                                 <!--2nd page to complete registration  --><!-- 
-            <div class="input-field">
-              <i class="fas fa-address-book"></i>
-              <input type="first name" placeholder="First name" required>
-            </div>              
-            <div class="input-field">
-              <i class="fas fa-address-book"></i>
-              <input type="last name" placeholder="Last name" required>
-            </div>   -->
-
-<!--             <div class="input-field">
-              <i class="fas fa-birthday-cake"></i>
-                 <input type="date" placeholder="Enter birth date" required>      
-<<<<<<< HEAD
-           </div> -->
-
-=======
-           </div>
-               <div loc>
-      <div id="location-details">Click on the 'Get Location' Button</div>
-      <button class="loco-btn" id="get-location">Get Location</button>
-    </div> -->
->>>>>>> d529a354773d3f902a14461ef75858b3f8eeb1dc
-<!--             <div class="input-field">
-              <i class="fas fa-map-marker"></i>
-              <input type="province" placeholder="Province" />
-            </div>
-            <div class="input-field">
-              <i class="fas fa-map-marker"></i>
-              <input type="city" placeholder="City" />
-            </div>        -->                           
+              <input id="username_s" type="text" placeholder="Username" required>
+            </div>                     
             <div class="input-field">
               <i class="fas fa-lock"></i>
-              <input type="password" placeholder="Password" required>
+              <input id="password_s" type="password" placeholder="Password" required>
             </div>
             <div class="input-field">
               <i class="fas fa-lock"></i>
-              <input type="password" placeholder="Confirm Password" required>
+              <input id="password_s1" type="password" placeholder="Confirm Password" required>
             </div>
-        <div class="loc">
+            <div class="loc">
                 <h1>Location:</h1>
                 <div id="location-details"></div>
                 <button class="loco-btn" id="get-location">Get</button>
-        </div>                                 
-            <input type="submit" class="btn" value="Sign up" />
-            <p class="social-tex">Or Sign up with social platforms</p>
-            <div class="social-media">
-              <a href="#" class="social-icon">
-                <i class="fab fa-facebook-f"></i>
-              </a>
-              <a href="#" class="social-icon">
-                <i class="fab fa-twitter"></i>
-              </a>
-              <a href="#" class="social-icon">
-                <i class="fab fa-google"></i>
-              </a>
-              <a href="#" class="social-icon">
-                <i class="fab fa-linkedin-in"></i>
-              </a>
-            </div>
-          </form>
+            </div>          
+            <button onclick="btn_signin()" id = "btn_signin" class = "btn solid">Sign-Up
+            </button>                       
+          </div>
         </div>
       </div>
       <div class="panels-container">

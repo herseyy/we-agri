@@ -61,6 +61,11 @@ input {
   overflow: hidden;
 }
 
+#msg{
+  visibility: hidden;
+  width: 100%;
+}
+
 .forms-container {
   position: absolute;
   width: 100%;
@@ -81,7 +86,7 @@ input {
   z-index: 5;
 }
 
-form {
+.formm {
   display: flex;
   align-items: center;
   justify-content: center;
@@ -93,12 +98,12 @@ form {
   grid-row: 1 / 2;
 }
 
-form.sign-up-form {
+.formm.sign-up-form {
   opacity: 0;
   z-index: 1;
 }
 
-form.sign-in-form {
+.formm.sign-in-form {
   z-index: 2;
 }
 
@@ -107,7 +112,7 @@ form.sign-in-form {
   color: #444;
   margin-bottom: 10px;
 }
-form .fields .input-field{
+.formm .fields .input-field{
     justify-content: center;
     width: calc(100% / 3 - 15px);
     flex-direction: column;
@@ -206,7 +211,7 @@ form .fields .input-field{
 }
 
 #location-details {
-  font-size: 1.5em;
+  font-size: 1.2em;
   color: var(--text-color);
   font-weight: 500;
 }
@@ -215,10 +220,11 @@ form .fields .input-field{
   align-items: center;
 }
 .loc h1{
-  font-size: 1.5em;
+  font-size: 1.2em;
 }
 .loco-btn {
-   width: 100px;
+  text-align: center;
+  width: 100px;
   background-color: #73A942;
   border: none;
   outline: none;
@@ -334,12 +340,12 @@ form .fields .input-field{
   left: 25%;
 }
 
-.container.sign-up-mode form.sign-up-form {
+.container.sign-up-mode .formm.sign-up-form {
   opacity: 1;
   z-index: 2;
 }
 
-.container.sign-up-mode form.sign-in-form {
+.container.sign-up-mode .formm.sign-in-form {
   opacity: 0;
   z-index: 1;
 }
@@ -461,7 +467,7 @@ form .fields .input-field{
 }
 
 @media (max-width: 570px) {
-  form {
+  .formm {
     padding: 0 1.5rem;
   }
 

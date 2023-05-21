@@ -89,12 +89,16 @@ class PlantRequest(BaseModel):
 # 	class Config:
 # 		orm_mode = True	
 
+class Login(BaseModel):
+	username: str = None
+	password: str = None
+
 class SignUpRequest(BaseModel):
 	username: str = None
 	# birthday: Optional[datetime.date] = None
 	pass_to_hash: str = None
-	pass_to_hash1: str = None
-	province: str = None
+	country: str = None
+	state: str = None
 	city: str = None
 	is_active: bool = False
 	is_public: bool = True
@@ -102,9 +106,10 @@ class SignUpRequest(BaseModel):
 class SignUpResponse(BaseModel):
 	id: int
 	username: str = None
-	birthday: Optional[datetime.date] = None
+	# birthday: Optional[datetime.date] = None
 	# hashed_pass: str = None
-	province: str = None
+	country: str = None
+	state: str = None
 	city: str = None
 	is_active: bool= False
 	is_public: bool = True
@@ -118,7 +123,8 @@ class UserResponse(BaseModel):
 	username: str = None
 	birthday: Optional[datetime.date] = None
 	# hashed_pass: str = None
-	province: str = None
+	country: str = None
+	state: str = None
 	city: str = None
 	is_active: bool= False
 	is_public: bool = True
@@ -131,14 +137,16 @@ class UserResponse(BaseModel):
 class UserFilterRequest(BaseModel):
 	upperAge: Optional[int] = None 
 	lowerAge: Optional[int] = None
-	province: Optional[str] = None
+	country: Optional[str] = None
+	state: Optional[str] = None
 	city: Optional[str] = None
 	is_active: Optional[bool] = None
 	is_public: Optional[bool] = None
 
 class UserUpdateRequest(BaseModel):
 	birthday: datetime.date = None
-	province: str = None
+	country: str = None
+	state: str = None
 	city: str = None
 	is_public: bool = None
 

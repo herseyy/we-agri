@@ -5,7 +5,7 @@ from sqlalchemy import and_, or_
 from sqlalchemy.exc import IntegrityError
 
 from .models import UserPlants, User, Plant
-from .schemas import SignUpRequest, SignUpResponse, UserResponse, PlantRequest, PlantsResponse, UserFilterRequest, UserUpdateRequest, UserChangePass, CurrentUserPlants, PlantUpdate, PlantFilterRequest, Token, TokenData, UserPlantsRequest, UserPlantUpdate, UserPlantsResponse, UserPlantsFilter, FilterCurrentUserPlants
+from .schemas import SignUpRequest, SignUpResponse, UserResponse, PlantRequest, PlantsResponse, UserFilterRequest, UserUpdateRequest, UserChangePass, CurrentUserPlants, PlantUpdate, PlantFilterRequest, Token, TokenData, UserPlantsRequest, UserPlantUpdate, UserPlantsResponse, UserPlantsFilter, FilterCurrentUserPlants, Login
 # from .server import get_db
 
 from datetime import datetime, date, timedelta
@@ -146,7 +146,8 @@ def create_user(db:Session, user: SignUpRequest):
 			username = user.username,
 			# birthday = user.birthday,
 			hashed_pass = hashed_pass,
-			province = user.province,
+			country = user.country,
+			state = user.state,
 			city = user.city,
 			is_public = user.is_public
 			)
@@ -217,8 +218,10 @@ def filter_users(db:Session, user_filter: UserFilterRequest = None, q: int = Non
 		query = query.filter(
             and_((User.birthday >= lower_day), 
             (User.birthday <= upper_day)))
-	if user_filter.province is not None:
-		query = query.filter(User.province == user_filter.province)
+	if user_filter.country is not None:
+		query = query.filter(User.country == user_filter.country)
+	if user_filter.state is not None:
+		query = query.filter(User.state == user_filter.state)
 	if user_filter.city is not None:
 		query = query.filter(User.city == user_filter.city)
 	if user_filter.is_active is not None:
@@ -423,8 +426,10 @@ def update_user(db: Session, current_user: User, info: UserUpdateRequest):
 
 	if info.birthday != current_user.birthday:
 		current_user.birthday = info.birthday
-	if info.province != current_user.province:
-		current_user.province = info.province
+	if info.state != current_user.state:
+		current_user.state = info.state
+	if info.country != current_user.country:
+		current_user.country = info.country
 	if info.city != current_user.city:
 		current_user.city = info.city
 	if info.is_public != current_user.is_public:
@@ -475,7 +480,8 @@ def format_user(db_user: User):
 		username = db_user.username,
 		birthday = db_user.birthday,
 		# hashed_pass = db_user.hashed_pass,
-		province = db_user.province,
+		country = db_user.country,
+		state = db_user.state,
 		city = db_user.city,
 		is_active = db_user.is_active,
 		is_public = db_user.is_public,
