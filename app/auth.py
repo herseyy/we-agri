@@ -17,12 +17,12 @@ ALGORITHM = "HS256"  # ito rin
 def get_db(request: Request):
     return request.state.db
 
-@router.get("/login")
+@router.get("/loginsss")
 def login(request: Request):
 	return templates.TemplateResponse("login.html", {"request": request})
 
 
-@router.post("/login")
+@router.post("/loginsss")
 async def login(response: Response, request: Request, db:Session=Depends(get_db)):
 	form = await request.form()
 	username = form.get("username")
