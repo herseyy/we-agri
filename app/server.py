@@ -163,13 +163,13 @@ def filter_users(user_filter: schemas.UserFilterRequest = Depends(), q: Union[li
 
 @app.patch("/update_user")
 def update_user(info: schemas.UserUpdateRequest, db: Session = Depends(get_db)):
-    print("jwt_token")
-    print(crud.token_)
-    # user = crud.decode(token, SECRET_KEY, ALGORITHM, db)
+    # print("jwt_token")
+    # print(crud.token_)
+    user = crud.decode(token, SECRET_KEY, ALGORITHM, db)
 
-    # updated_user = crud.update_user(db=db, current_user=user, info=info)
+    updated_user = crud.update_user(db=db, current_user=user, info=info)
 
-    # return crud.format_user(updated_user)
+    return crud.format_user(updated_user)
 
 
 @app.patch("/change_pass")
@@ -217,20 +217,50 @@ def filter_user_plants(user_plant_filter: schemas.UserPlantsFilter = Depends(), 
 
 
 
-
-
-
-
-@app.delete("/delete_user_plant/{plant_id}", response_model=list[schemas.PlantsResponse])
+@app.delete("/delete_user_plant/{plant_id}", response_model=list[schemas.UserPlantsResponse])
 def delete_user_plant(plant_id: int, db:Session = Depends(get_db), token:str=Depends(crud.oauth2_scheme)):
     user = crud.decode(token, SECRET_KEY, ALGORITHM, db)
 
     plants = crud.delete_user_plant(db=db, user_id= user.id, plant_id= plant_id)
 
-    return [crud.format_plants(plant) for plant in plants]
+    return [crud.format_user_plants(plant) for plant in plants]
 
 
-@app.delete("/delete_user/{pass_}")
+
+# @app.get("/filter_users", response_model = list[schemas.UserResponse])
+# def filter_users(user_filter: schemas.UserFilterRequest = Depends(), q: Union[list[int], None] = Query(default=None), db:Session = Depends(get_db)):
+#     users = crud.filter_users(db, user_filter, q)
+#     # for user in users:    
+#     #     print(crud.format_user(user))
+#     return [crud.format_user(user) for user in users]
+
+@app.get("/user/{username}", response_model = schemas.UserResponse)
+def get_current_user(username:str, db: Session = Depends(get_db), token: str = Depends(crud.oauth2_scheme)):
+    user = crud.decode(token, SECRET_KEY, ALGORITHM, db)
+    no_plants = len(user.plants)
+    print(no_plants)
+    username = user.username
+    return crud.format_user(user)
+
+
+# @app.get("/user/{username}/plants", response_model=list[schemas.CurrentUserPlants])
+# def get_current_user_plants(username:str, db: Session = Depends(get_db), token: str = Depends(crud.oauth2_scheme)):
+#     user = crud.decode(token, SECRET_KEY, ALGORITHM, db)
+
+#     my_plants = crud.get_current_user_plants(user=user, db=db)
+#     return my_plants
+
+@app.get("/user/{username}/plants/filter", response_model=list[schemas.CurrentUserPlants])
+def get_current_user_plants(username:str, plants_filter: schemas.FilterCurrentUserPlants = Depends(), db: Session = Depends(get_db), token: str = Depends(crud.oauth2_scheme)):
+    user = crud.decode(token, SECRET_KEY, ALGORITHM, db)
+
+    my_plants = crud.get_current_user_plants_filter(user=user, db=db, filter_plants=plants_filter)
+    return my_plants
+
+
+
+
+@app.delete("/delete_user")
 def delete_user(pass_: str, db: Session = Depends(get_db), token:str=Depends(crud.oauth2_scheme)):
 
     user = crud.decode(token, SECRET_KEY, ALGORITHM, db)
@@ -335,3 +365,5 @@ async def read_file(name:str, db:Session = Depends(get_db)):
     # path = f"{IMAGEDIR}{name}.jpg"
     # print(path)
     return FileResponse(path)
+
+

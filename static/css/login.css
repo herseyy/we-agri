@@ -30,9 +30,7 @@ html {
     -o-background-size: cover;
     background-size: cover;
   }
-header {
-  justify-content: center;
-}
+
   .nav-item > .nav-link{
     color:#117a3d;
     font-family: 'Proxima Nova';
@@ -491,8 +489,10 @@ form .fields .input-field{
     bottom: 28%;
     left: 50%;
   }
-<<<<<<< HEAD
+  
+/*<<<<<<< HEAD
 }
 =======
 }
 >>>>>>> a09e2f308cea4aea5b3056e6a515dbb5b386b75a
+*/

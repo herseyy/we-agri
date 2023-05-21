@@ -55,6 +55,12 @@ async def login(response: Response, request: Request, db:Session=Depends(get_db)
 		return templates.TemplateResponse("login.html", {"request": request, "errors": errors})
 
 
+# @app.get('/cookie')
+# async def cookie(response: Response):
+
+# 	# It work
+# 	response.set_cookie(key="test", value="example")
+# 	return {"result": "ok"}
 # @router.get("/")
 # 
 # @router.post("/")
