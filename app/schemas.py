@@ -22,7 +22,29 @@ class TokenData(BaseModel):
 
 # class Login(BaseModel):
 	
+class UserPlantsResponse(BaseModel):
+	user_id: int = None
+	plant_id: int = None
+	is_harvested: bool = None
+	date_planted: datetime.date = None
+	min_date_estimate_harvest: datetime.date = None
+	max_date_estimate_harvest: datetime.date = None
+	date_harvested: Optional[datetime.date] = None
 
+
+class FilterCurrentUserPlants(BaseModel):
+	category: Optional[str] = None
+	is_harvested: Optional[bool] = None
+
+	
+class CurrentUserPlants(BaseModel):
+	name: str = None
+	category: str = None
+	is_harvested: bool = None
+	date_planted: datetime.date = None
+	min_date_estimate_harvest: datetime.date = None
+	max_date_estimate_harvest: datetime.date = None
+	date_harvested: Optional[datetime.date] = None
 
 
 class PlantsResponse(BaseModel):
@@ -61,15 +83,15 @@ class PlantRequest(BaseModel):
 
 # class UserPlantsRequest(BaseModel):
 
-class CurrentUserPlants(BaseModel):
-	plants: list[PlantsResponse]
+# class CurrentUserPlants(BaseModel):
+# 	plants: list[PlantsResponse]
 
-	class Config:
-		orm_mode = True	
+# 	class Config:
+# 		orm_mode = True	
 
 class SignUpRequest(BaseModel):
 	username: str = None
-	birthday: Optional[datetime.date] = None
+	# birthday: Optional[datetime.date] = None
 	pass_to_hash: str = None
 	province: str = None
 	city: str = None
@@ -99,7 +121,7 @@ class UserResponse(BaseModel):
 	city: str = None
 	is_active: bool= False
 	is_public: bool = True
-	plants: list[PlantsResponse] = []
+	plants: list[UserPlantsResponse] = []
 
 	class Config:
 		orm_mode = True	
@@ -157,16 +179,6 @@ class UserPlantsRequest(BaseModel):
 class UserPlantUpdate(BaseModel):
 	is_harvested: bool = True
 	date_harvested: datetime.date = None
-
-
-class UserPlantsResponse(BaseModel):
-	user_id: int = None
-	plant_id: int = None
-	is_harvested: bool = None
-	date_planted: datetime.date = None
-	min_date_estimate_harvest: datetime.date = None
-	max_date_estimate_harvest: datetime.date = None
-	date_harvested: Optional[datetime.date] = None
 
 
 class UserPlantsFilter(BaseModel):

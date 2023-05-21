@@ -5,7 +5,7 @@ from sqlalchemy import and_, or_
 from sqlalchemy.exc import IntegrityError
 
 from .models import UserPlants, User, Plant
-from .schemas import SignUpRequest, SignUpResponse, UserResponse, PlantRequest, PlantsResponse, UserFilterRequest, UserUpdateRequest, UserChangePass, CurrentUserPlants, PlantUpdate, PlantFilterRequest, Token, TokenData, UserPlantsRequest, UserPlantUpdate, UserPlantsResponse, UserPlantsFilter
+from .schemas import SignUpRequest, SignUpResponse, UserResponse, PlantRequest, PlantsResponse, UserFilterRequest, UserUpdateRequest, UserChangePass, CurrentUserPlants, PlantUpdate, PlantFilterRequest, Token, TokenData, UserPlantsRequest, UserPlantUpdate, UserPlantsResponse, UserPlantsFilter, FilterCurrentUserPlants
 # from .server import get_db
 
 from datetime import datetime, date, timedelta
@@ -143,7 +143,7 @@ def create_user(db:Session, user: SignUpRequest):
 
 		db_user = User(
 			username = user.username,
-			birthday = user.birthday,
+			# birthday = user.birthday,
 			hashed_pass = hashed_pass,
 			province = user.province,
 			city = user.city,
@@ -288,12 +288,12 @@ def delete_user_plant(db: Session, user_id: int, plant_id: int):
 
 	remaining_plants = db.query(UserPlants).filter(UserPlants.user_id == user_id).all()
 
-	remaining_plants_lst = []
-	for i in remaining_plants:
-		# print(i.description)
-		remaining_plants_lst.append(i.description)
-	# print(plants)
-	return remaining_plants_lst
+	# remaining_plants_lst = []
+	# for i in remaining_plants:
+	# 	# print(i.description)
+	# 	remaining_plants_lst.append(i.description)
+	# # print(plants)
+	return remaining_plants
 
 
 def add_user_plant(db: Session, plant_info:UserPlantsRequest, current_user: User, plant_id:int):
@@ -401,6 +401,7 @@ def format_user_plants(db_user_plants: UserPlants):
 	if db_user_plants is None:
 		# print('aaa')
 		return []
+	print(db_user_plants)
 	return UserPlantsResponse(
 		user_id = db_user_plants.user_id,
 		plant_id = db_user_plants.plant_id,
@@ -461,9 +462,12 @@ def format_user(db_user: User):
 	# 	print('a')
 
 	plants = db_user.plants
-	for i in plants:
-	    if plants is not None:
-	    	_plants.append(i.description)
+	# for i in plants:
+	#     if plants is not None:
+	#     	_plants.append(i.description)
+
+
+	    # format_user_plants
 
 	return UserResponse(
 		id = db_user.id,
@@ -474,7 +478,7 @@ def format_user(db_user: User):
 		city = db_user.city,
 		is_active = db_user.is_active,
 		is_public = db_user.is_public,
-		plants = [format_plants(plant) for plant in _plants]
+		plants = [format_user_plants(plant) for plant in plants]
 	    )
 
 
@@ -585,5 +589,49 @@ def delete_plant(db: Session, plant_id: int):
 
 
 
+# def get_current_user_plants(user:User, db: Session):
+# 	my_plants = db.query(UserPlants).filter(UserPlants.user_id == user.id).all()
+# 	lst = []
+# 	for i in my_plants:
+# 		plant_description = db.query(Plant).filter(Plant.id == i.plant_id).first()
+# 		plant_join = CurrentUserPlants(
+# 			name = plant_description.name,
+# 			category = plant_description.category.value,
+# 			is_harvested = i.is_harvested,
+# 			date_planted = i.date_planted,
+# 			min_date_estimate_harvest = i.min_date_estimate_harvest,
+# 			max_date_estimate_harvest = i.max_date_estimate_harvest,
+# 			date_harvested = i.date_harvested
+# 			)
+# 		lst.append(plant_join)
+# 	return lst
 
+def get_current_user_plants_filter(user:User, db: Session, filter_plants: FilterCurrentUserPlants):
+	my_plants = db.query(UserPlants).filter(UserPlants.user_id == user.id)
+
+	if filter_plants.category != None:
+		fil_cat = db.query(Plant).filter(Plant.category == filter_plants.category).all()
+		for i in fil_cat:
+			my_plants = my_plants.filter(UserPlants.plant_id == i.id)
+	if filter_plants.is_harvested != None:
+		my_plants = my_plants.filter(UserPlants.is_harvested == filter_plants.is_harvested)
+
+	lst = []
+	for i in my_plants:
+		plant_description = db.query(Plant).filter(Plant.id == i.plant_id).first()
+
+		# if filter_plants.category != None:
+		# 	plant_description = plant_description.filter()
+
+		plant_join = CurrentUserPlants(
+			name = plant_description.name,
+			category = plant_description.category.value,
+			is_harvested = i.is_harvested,
+			date_planted = i.date_planted,
+			min_date_estimate_harvest = i.min_date_estimate_harvest,
+			max_date_estimate_harvest = i.max_date_estimate_harvest,
+			date_harvested = i.date_harvested
+			)
+		lst.append(plant_join)
+	return lst
 

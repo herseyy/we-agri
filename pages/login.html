@@ -45,7 +45,7 @@
       <div class="forms-container">
         <div class="signin-signup">
           <form method="POST" action="#" class="sign-in-form">
-            {% if msg %}
+<!--             {% if msg %}
               <div class="alert alert-success" role="alert">
                 {{ msg }}
               </div>
@@ -54,7 +54,7 @@
               <div class="alert alert-danger" role="alert">
                 {{ error }}
               </div>
-            {% endfor %}
+            {% endfor %} -->
             <h2 class="title">Sign in</h2>
             <div class="input-field">
               <i class="fas fa-user"></i>
@@ -82,6 +82,16 @@
             </div>
           </form>
           <form action="#" class="sign-up-form">
+<!--             {% if msg %}
+              <div class="alert alert-success" role="alert">
+                {{ msg }}
+              </div>
+            {% endif %}
+            {% for error in errors %}
+              <div class="alert alert-danger" role="alert">
+                {{ error }}
+              </div>
+            {% endfor %} -->
             <h2 class="title">Sign up</h2>
             <div class="input-field">
               <i class="fas fa-user"></i>
