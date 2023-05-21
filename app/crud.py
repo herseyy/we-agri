@@ -139,6 +139,7 @@ def create_user(db:Session, user: SignUpRequest):
 		if user_n:
 			# print('hehe')
 			return None
+
 		hashed_pass = get_hash_password(user.pass_to_hash)
 
 		db_user = User(

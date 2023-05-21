@@ -93,6 +93,7 @@ class SignUpRequest(BaseModel):
 	username: str = None
 	# birthday: Optional[datetime.date] = None
 	pass_to_hash: str = None
+	pass_to_hash1: str = None
 	province: str = None
 	city: str = None
 	is_active: bool = False
