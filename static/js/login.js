@@ -49,3 +49,9 @@ const showLocation = async (position) => {
   locationDiv.innerText = `${data.address.city}, ${data.address.country}`;
 };
 
+
+
+function login_user(){
+  
+  console.log("btn login clicked!")
+}

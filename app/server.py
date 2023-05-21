@@ -8,6 +8,10 @@ from sqlalchemy.orm import Session
 from datetime import datetime, date, timedelta
 # from fastapi.templating import Jinja2Templates
 
+from fastapi.responses import HTMLResponse
+from fastapi.staticfiles import StaticFiles
+from fastapi.templating import Jinja2Templates
+
 from . import crud, models, schemas, owm, auth
 from .database import SessionLocal, engine
 import os
@@ -29,9 +33,6 @@ from fastapi.security import OAuth2PasswordBearer, OAuth2PasswordRequestForm
 import uuid
 
 
-IMAGEDIR = "./static/images/plants/"
-
-
 
 
 
@@ -46,7 +47,9 @@ models.Base.metadata.create_all(bind=engine)
 # Main app object
 app = FastAPI()
 
-
+IMAGEDIR = "./static/images/plants/"
+app.mount("/static", StaticFiles(directory="static"), name="static")
+templates = Jinja2Templates(directory="pages")
 
 app.include_router(auth.router)
 
@@ -79,6 +82,10 @@ async def db_session_middleware(request: Request, call_next):
     finally:
         request.state.db.close()
     return response
+
+
+
+
 
 
 # Db dependency, get db
@@ -121,8 +128,8 @@ import requests
 def index(token:str=Depends(crud.oauth2_scheme)):
     return {"Hello": "World"}
 
-@app.post("/login/token", tags=["login"])
-def get_token_after_authentication(form_data: OAuth2PasswordRequestForm = Depends(), db: Session = Depends(get_db)):
+@app.post("/login", tags=["login"])
+def get_token_after_authentication(response: Response, form_data: OAuth2PasswordRequestForm = Depends(), db: Session = Depends(get_db)):
     user = db.query(models.User).filter(models.User.username == form_data.username).first()
 
     if not user:
@@ -133,6 +140,8 @@ def get_token_after_authentication(form_data: OAuth2PasswordRequestForm = Depend
         "sub": form_data.username
     }
     jwt_token = jwt.encode(data, SECRET_KEY, algorithm=ALGORITHM)
+    response.set_cookie(key = "access_token", value = f"Bearer {jwt_token}", httponly = True)
+
 
 
     return {"access_token": jwt_token, "token_type": "bearer"}
@@ -366,4 +375,10 @@ async def read_file(name:str, db:Session = Depends(get_db)):
     # print(path)
     return FileResponse(path)
 
+
+
+
+@app.get("/login", response_class=HTMLResponse)
+async def submit(request: Request):
+    return templates.TemplateResponse("login.html", {"request": request})
 
