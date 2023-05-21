@@ -1,0 +1,260 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <meta charset="UTF-8">
+        <meta http-equiv="X-UA-Compatible" content="IE=edge">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+        <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha3/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-KK94CHFLLe+nY2dmCWGMq91rCGa5gtU4mk92HdvYe+M/SXH301p5ILy+dN9+nJOZ" crossorigin="anonymous">
+        <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha3/dist/js/bootstrap.bundle.min.js" integrity="sha384-ENjdO4Dr2bkBIFxQpeoTz1HIcje39Wm4jDKdf19U8gI4ddQ3GYNS7NTKfAdVQSZe" crossorigin="anonymous"></script>
+        <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.2.1/css/all.css" />
+        <link href='https://unpkg.com/boxicons@2.1.1/css/boxicons.min.css' rel='stylesheet'>
+
+        <link rel="stylesheet" href="../static/css/admin.css" />
+        
+        <title>WE-AGRI | ADMIN</title>
+    </head>
+    <body>
+        <header id="header" class="header fixed-top d-flex align-items-center justify-content-between">
+
+            <div class="d-flex align-items-center justify-content-between">
+              <a href="index.html" class="logo d-flex align-items-center">
+                <img id="logo" alt="WE-AGRI" src="../static/images/logo ni joao.png" />
+                <span class="d-none d-lg-block">WE-AGRI</span>
+              </a>
+              <i class="fa-solid fa-grip-lines toggle-sidebar-btn"></i>
+            </div><!-- End Logo -->
+            <div>
+                <li class="nav-item dropdown pe-3" style="list-style:none;">
+        
+                  <a class="nav-link nav-profile d-flex align-items-center pe-0" href="#" data-bs-toggle="dropdown">
+                    <span class="d-none d-md-block dropdown-toggle ps-2">U. Name</span>
+                  </a><!-- End Profile Image Icon -->
+        
+                  <ul class="dropdown-menu dropdown-menu-end dropdown-menu-arrow profile">
+                    <li class="dropdown-header">
+                      <h6>admin fullname</h6>
+                      <span>Web Developer</span>
+                    </li>
+                    <li>
+                      <hr class="dropdown-divider">
+                    </li>
+        
+                    <li>
+                      <a class="dropdown-item d-flex align-items-center" href="profile.html">
+                        <i class="fa-solid fa-user-vneck"></i>
+                        <span>My Profile</span>
+                      </a>
+                    </li>
+                    <li>
+                      <hr class="dropdown-divider">
+                    </li>
+        
+                    <li>
+                      <a class="dropdown-item d-flex align-items-center" href="profile.html">
+                        <i class="bi bi-gear"></i>
+                        <span>Account Settings</span>
+                      </a>
+                    </li>
+                    <li>
+                      <hr class="dropdown-divider">
+                    </li>
+        
+                    <li>
+                      <a class="dropdown-item d-flex align-items-center" href="#">
+                        <i class="bi bi-box-arrow-right"></i>
+                        <span>Sign Out</span>
+                      </a>
+                    </li>
+        
+                  </ul><!-- End Profile Dropdown Items -->
+                </li><!-- End Profile Nav -->
+            </div>
+                
+            </nav><!-- End Icons Navigation -->
+        
+          </header><!-- End Header -->
+        <!-- ======= Sidebar ======= -->
+        <aside id="sidebar" class="sidebar">
+
+            <ul class="sidebar-nav" id="sidebar-nav">
+            
+            <li class="nav-item">
+                <a class="nav-link collapsed" onclick="openforms()">
+                    <i class="fa-sharp fa-solid fa-file-lines"></i>
+                    <span>Forms</span>
+                </a>
+            </li>
+
+            <li class="nav-item">
+                <a class="nav-link collapsed" onclick="openusers(); getallusers();">
+                    <i class="fa-solid fa-users"></i>
+                    <span>Users</span>
+                </a>
+            </li>
+
+            <li class="nav-heading">Pages</li>
+
+            <li class="nav-item">
+                <a class="nav-link collapsed" href="profile.html">
+                    <i class="fa-regular fa-user"></i>
+                    <span>Profile</span>
+                </a>
+            </li>
+
+            <li class="nav-item">
+                <a class="nav-link collapsed" href="about.html">
+                    <i class="fa-solid fa-address-card"></i>
+                    <span>About</span>
+                </a>
+            </li>
+
+            <li class="nav-item">
+                <a class="nav-link collapsed" href="login.html">
+                    <i class="fa-solid fa-right-to-bracket"></i>
+                    <span>Login</span>
+                </a>
+            </li>
+
+            <li class="nav-item">
+                <a class="nav-link collapsed" href="plants.html">
+                    <i class='bx bx-leaf'></i>
+                    <span>Plants</span>
+                </a>
+            </li>
+
+            <li class="nav-item">
+                <a class="nav-link collapsed" href="forecast.html">
+                    <i class='bx bx-cloud-drizzle' ></i>
+                    <span>Forecast</span>
+                </a>
+            </li>
+
+            </ul>
+
+        </aside><!-- End Sidebar-->
+        <main id="main" class="main">
+            <section id="forms">
+                <div class="m-auto">
+                    <div class="card">
+                        <div class="card-body">
+                          <h5 class="card-title">Create Plant</h5>
+            
+                          <!-- Vertical Form -->
+                          <form id="createplant" class="row g-3">
+                            <div class="col-12 d-flex">
+                              <label for="inputName" class="form-label col-3">Name</label>
+                              <input type="text" class="form-control" id="inputName">
+                            </div>
+                            <div class="col-12 d-flex">
+                              <div class="mb-1 col-3"><label for="inputCat">Category</label></div>
+                                <div>
+                                    <select name="inputCat" id="inputCat">
+                                        <option value="vegetable">vegetable</option>
+                                        <option value="fruit">fruit</option>
+                                    </select>
+                                </div>
+                            </div>
+                            <div class="col-12 d-flex">
+                                <label for="inputpinfo" class="form-label col-3">Plant Info</label>
+                                <input type="text" class="form-control" id="inputpinfo">
+                            </div>
+                            <div class="col-12 d-flex">
+                                <div class="col-5">
+                                    <label for="inputmin_temp" class="form-label">Min. Temp.</label>
+                                <input type="text" class="form-control" id="inputmin_temp">
+                                </div>
+                                <div class="col-5">
+                                    <label for="inputmax_temp" class="form-label">Max. Temp.</label>
+                                    <input type="text" class="form-control" id="inputmax_temp">
+                                </div>
+                            </div>
+                            <div class="col-12 d-flex">
+                                <div class="col-5">
+                                    <label for="inputmin_hum" class="form-label">Min. Humidity</label>
+                                    <input type="text" class="form-control" id="inputmin_hum">
+                                </div>
+                                <div class="col-5">
+                                    <label for="inputmax_hum" class="form-label">Max. Humidity</label>
+                                    <input type="text" class="form-control" id="inputmax_hum">
+                                </div>
+                            </div>
+                            <div class="col-12 d-flex">
+                                <div class="col-5">
+                                    <label for="inputmin_raintol" class="form-label">Min.Rain Tolerance</label>
+                                    <input type="text" class="form-control" id="inputmin_raintol">
+                                </div>
+                                <div class="col-5">
+                                    <label for="inputmax_raintol" class="form-label">Max.Rain Tolerance</label>
+                                    <input type="text" class="form-control" id="inputmax_raintol">
+                                </div>
+                            </div>
+                            <div class="col-12 d-flex">
+                                    <label for="inputp_time" class="form-label col-3">Planting Time</label>
+                                    <input type="text" class="form-control" id="inputp_time">
+                            </div>
+                            <div class="col-12 d-flex">
+                                <label class="form-label col-3">Season</label>
+                                <div class="col d-flex">
+                                    <div class="mx-3">
+                                        <label for="inputsummer" class="form-label">Summer</label>
+                                        <input type="checkbox" name="checkbox" value="true" id="inputsummer">
+                                    </div>
+                                    <div class="mx-3">
+                                        <label for="inputrain" class="form-label">Rainy</label>
+                                        <input type="checkbox" name="checkbox" value="true" id="inputrain">
+                                    </div>
+                                </div>
+                            </div>
+                            <div id="errormsg" class="col-12"></div>
+                            <div class="text-center">
+                              <button type="submit" class="btn btn-success" onclick="createPlants()">Submit</button>
+                              <button type="reset" class="btn btn-secondary">Reset</button>
+                            </div>
+                          </form><!-- Vertical Form -->
+            
+                        </div>
+                      </div>
+                </div>
+            </section>
+            <section id="users">
+                <div class="m-auto">
+                    <div>
+                        <div>
+
+                        </div>
+                        <table id="plantTable"class="table table-responsive-xl">
+                            <thead class="thead-primary" style="background-color: #99b19c;">
+                                <tr class="text-light">
+                                    <th>id</th>
+                                    <th>Username</th>
+                                    <th>Birthday</th>
+                                    <th>Country</th>
+                                    <th>state</th>
+                                    <th>city</th>
+                                    <th>is_active</th>
+                                    <th>is_public</th>
+                                    <th>plants</th>
+                                </tr>
+                            </thead>
+                            <tbody id="usersTable" style="background-color: #EAEFEB;">
+                                <!-- <tr>
+                                    <td>${id}</td>
+                                    <td>${username}</td>
+                                    <td>${birthday}</td>
+                                    <td>${country}</td>
+                                    <td>${state}</td>
+                                    <td> ${city}</td>
+                                    <td>${is_active}</td>
+                                    <td>${is_public}</td>
+                                    <td>${plants}</td>
+                                  </tr> -->
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+            </section>
+        </main>
+        <script src="../static/js/admin.js"></script>
+    </body>
+</html>
