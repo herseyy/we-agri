@@ -44,6 +44,7 @@
     <div class="container">
       <div class="forms-container">
         <div class="signin-signup">
+<<<<<<< HEAD
           <form method="POST" action="#" class="sign-in-form">
 <!--             {% if msg %}
               <div class="alert alert-success" role="alert">
@@ -55,6 +56,9 @@
                 {{ error }}
               </div>
             {% endfor %} -->
+=======
+          <form action="#" class="sign-in-form">
+>>>>>>> 29f02afc1039f9b34a0d8c01662d0c1a4b93e4ec
             <h2 class="title">Sign in</h2>
             <div class="input-field">
               <i class="fas fa-user"></i>
@@ -82,16 +86,6 @@
             </div>
           </form>
           <form action="#" class="sign-up-form">
-<!--             {% if msg %}
-              <div class="alert alert-success" role="alert">
-                {{ msg }}
-              </div>
-            {% endif %}
-            {% for error in errors %}
-              <div class="alert alert-danger" role="alert">
-                {{ error }}
-              </div>
-            {% endfor %} -->
             <h2 class="title">Sign up</h2>
             <div class="input-field">
               <i class="fas fa-user"></i>
@@ -110,11 +104,16 @@
 <!--             <div class="input-field">
               <i class="fas fa-birthday-cake"></i>
                  <input type="date" placeholder="Enter birth date" required>      
+<<<<<<< HEAD
+           </div> -->
+
+=======
            </div>
                <div loc>
       <div id="location-details">Click on the 'Get Location' Button</div>
       <button class="loco-btn" id="get-location">Get Location</button>
     </div> -->
+>>>>>>> d529a354773d3f902a14461ef75858b3f8eeb1dc
 <!--             <div class="input-field">
               <i class="fas fa-map-marker"></i>
               <input type="province" placeholder="Province" />
@@ -124,17 +123,18 @@
               <input type="city" placeholder="City" />
             </div>        -->                           
             <div class="input-field">
-              <i class="fas fa-envelope"></i>
-              <input type="email" placeholder="Email" required>
-            </div>
-            <div class="input-field">
               <i class="fas fa-lock"></i>
               <input type="password" placeholder="Password" required>
             </div>
             <div class="input-field">
               <i class="fas fa-lock"></i>
               <input type="password" placeholder="Confirm Password" required>
-            </div>                     
+            </div>
+        <div class="loc">
+                <h1>Location:</h1>
+                <div id="location-details"></div>
+                <button class="loco-btn" id="get-location">Get</button>
+        </div>                                 
             <input type="submit" class="btn" value="Sign up" />
             <p class="social-tex">Or Sign up with social platforms</p>
             <div class="social-media">
