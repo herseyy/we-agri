@@ -56,9 +56,9 @@ input {
 .container {
   position: relative;
   width: 100%;
-  background-color: #AAD576;
+  background-color: #cde77f;
   min-height: 100vh;
-  overflow: hidden;
+  overflow: hidden;R
 }
 
 #msg{
@@ -87,15 +87,14 @@ input {
 }
 
 .formm {
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  flex-direction: column;
-  padding: 0rem 5rem;
-  transition: all 0.2s 0.7s;
-  overflow: hidden;
-  grid-column: 1 / 2;
-  grid-row: 1 / 2;
+     display: flex;
+    padding: 0rem 5rem;
+    transition: all 0.2s 0.7s;
+    overflow: hidden;
+    grid-column: 1 / 2;
+    grid-row: 1 / 2;
+    flex-direction: column;
+    align-items: center;
 }
 
 .formm.sign-up-form {
@@ -193,12 +192,12 @@ input {
 
 .btn {
   width: 150px;
-  background-color: #73A942;
+  background-color: #66b348;
   border: none;
   outline: none;
   height: 49px;
   border-radius: 49px;
-  color: #AAD576;
+  color: #ffffff;
   text-transform: uppercase;
   font-weight: 600;
   margin: 10px 0;
@@ -225,12 +224,12 @@ input {
 .loco-btn {
   text-align: center;
   width: 100px;
-  background-color: #73A942;
+  background-color: #66b348;
   border: none;
   outline: none;
   height: 30px;
   border-radius: 39px;
-  color: #AAD576;
+  color: #ffffff;
   text-transform: uppercase;
   font-weight: 400;
   margin: 10px 0;

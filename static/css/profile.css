@@ -359,7 +359,6 @@ body.dark .switch::before{
   box-shadow: 0 0.6em 2.5em rgba(0, 7, 70, 0.2);
 }
 #location-details {
-  font-size: 0.5em;
   margin: 0.5em 0 1em 0;
   color: var(--text-color);
   font-weight: 300;
@@ -458,7 +457,7 @@ body.dark .switch::before{
     height:fit-content;
 } 
 
-#addplantBtn:hover{
+.btn:hover{
     color: var(--sidebar-color);
 }
 
@@ -466,10 +465,16 @@ body.dark .switch::before{
     font-size: xx-large;
 }
 
-.btn {
-    height:fit-content;
+.addplantmodalcontent div label, .editprofilemodalcontent div label{
+    margin-right:3%;
 }
 
-.addplantmodalcontent div label{
-    margin-right:3%;
+.btn{
+    width: fit-content;
+    height:fit-content;
+    color:var(--text-color);
+}
+
+.editProfileModalcontent .fields .input-field, .changepassModalcontent div{
+    background-color: var(--primary-color-light);
 }

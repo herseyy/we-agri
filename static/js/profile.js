@@ -41,146 +41,98 @@ const showLocation = async (position) => {
 
 function clickProfile(){
   document.getElementById('my_plants').style.display='none';
-  document.getElementById('settings').style.display='none'; 
   document.getElementById('profile').style.display='block';
 }
 
 function clickMyPlants(){
   document.getElementById('profile').style.display='none';
-  document.getElementById('settings').style.display='none';
   document.getElementById('my_plants').style.display='block';
 }
 
-function clickSettings(){
-  document.getElementById('profile').style.display='none';
-  document.getElementById('my_plants').style.display='none';
-  document.getElementById('settings').style.display='block';
+//show profile
+async function getUser(){
+  fetch('/user/{username}', {
+    method: 'GET',
+    headers: {
+      'Content-type': 'application/json; charset=UTF-8'
+    },
+    body: JSON.stringify(inp_obj)
+  })
+  .then(res => {
+    return res.json()
+  })  
+  .then(data => {
+    const userData = document.getElementById('userData');
+    /* const  */
+    userData.innerHTML = "";
+  
+      let userDisplay = data.map((object)=> {
+          const {username, birthday, province, city, /* is_active, is_public */} = object;
+  
+          return `
+          <h2 id="usernameProfile">@ ${username}</h2>
+          <div class="data">
+              <table class="table" >
+                  <tbody>
+                      <tr>
+                          <td>Name:</td>
+                          <td id="fullname">"first_name" + "last_name"</td>
+                      </tr>
+                      <tr>
+                          <td>Birthday:</td>
+                          <td id="bday">${birthday}</td>
+                      </tr>
+                      <tr>
+                          <td>Location:</td>
+                          <td id="locationOutput">${city}, ${province}</td>
+                      </tr>
+                  </tbody>
+              </table>
+          </div>`;
+          
+      })/* .catch(error => console.log("ERROR")) */
+  
+      userData.innerHTML = userDisplay;
+      
+  });
 }
- 
-$('.datepicker').datepicker({
-  weekdaysShort: ['Su', 'Mo', 'Tu', 'We', 'Th', 'Fr', 'Sa'],
-  showMonthsShort: true
-})
 
-//datepicker
-// Strings and translations
-monthsFull: ['January', 'February', 'March', 'April', 'May', 'June', 'July', 'August', 'September', 'October',
-'November', 'December'];
-monthsShort: ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec'];
-weekdaysFull: ['Sunday', 'Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Saturday'];
-weekdaysShort: ['Sun', 'Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat'];
-showMonthsShort: undefined;
-showWeekdaysFull: undefined;
 
-// Buttons
-today: 'Today';
-clear: 'Clear';
-close: 'Close';
 
-// Accessibility labels
-labelMonthNext: 'Next month';
-labelMonthPrev: 'Previous month';
-labelMonthSelect: 'Select a month';
-labelYearSelect: 'Select a year';
+//edit profile
+const changepass_url = "http://127.0.0.1:8000/change_pass";
 
-// Formats
-format: 'd mmmm, yyyy';
-formatSubmit: undefined;
-hiddenPrefix: undefined;
-hiddenSuffix: '_submit';
-hiddenName: undefined;
+async function changepass(){
+  $("#changepassModal").find("button[name=passwordupdate]").on("click", function() {
+    const user_update_url = "/update/" + id
+    console.log(user_update_url)
 
-// Editable input
-editable: undefined;
+    let newPass = document.getElementById('newPass').value;
+    let newPassConfirm = document.getElementById('newPassConfirm').value;
 
-// Dropdown selectors
-selectYears: undefined;
-selectMonths: undefined;
+    var inp_obj = {}
 
-// First day of the week
-firstDay: undefined;
+    
+    if (newPass != "") {
+      inp_obj = Object.assign({"new_pass1": new_password}, inp_obj)
+    }
+    if (newPassConfirm != "") {
+      inp_obj = Object.assign({"new_pass2": newPassConfirm}, inp_obj)
+    } 
+    console.log(inp_obj)
 
-// Date limits
-min: undefined;
-max: undefined;
-
-// Disable dates
-disable: undefined;
-
-// Root picker container
-container: undefined;
-
-// Hidden input container
-containerHidden: undefined;
-
-// Close on a user action
-closeOnSelect: true;
-closeOnClear: true;
-
-// Events
-onStart: undefined;
-onRender: undefined;
-onOpen: undefined;
-onClose: undefined;
-onSet: undefined;
-onStop: undefined;
-
-// Classes
-klass: {
-
-  // The element states
-  input: 'picker__input';
-  active: 'picker__input--active';
-
-  // The root picker and states *
-  picker: 'picker';
-  opened: 'picker--opened';
-  focused: 'picker--focused';
-
-  // The picker holder
-  holder: 'picker__holder';
-
-  // The picker frame, wrapper, and box
-  frame: 'picker__frame';
-  wrap: 'picker__wrap';
-  box: 'picker__box';
-
-  // The picker header
-  header: 'picker__header';
-
-  // Month navigation
-  navPrev: 'picker__nav--prev';
-  navNext: 'picker__nav--next';
-  navDisabled: 'picker__nav--disabled';
-
-  // Month & year labels
-  month: 'picker__month';
-  year: 'picker__year';
-
-  // Month & year dropdowns
-  selectMonth: 'picker__select--month';
-  selectYear: 'picker__select--year';
-
-  // Table of dates
-  table: 'picker__table';
-
-  // Weekday labels
-  weekdays: 'picker__weekday';
-
-  // Day states
-  day: 'picker__day';
-  disabled: 'picker__day--disabled';
-  selected: 'picker__day--selected';
-  highlighted: 'picker__day--highlighted';
-  now: 'picker__day--today';
-  infocus: 'picker__day--infocus';
-  outfocus: 'picker__day--outfocus';
-
-  // The picker footer
-  footer: 'picker__footer';
-
-  // Today, clear, & close buttons
-  buttonClear: 'picker__button--clear';
-  buttonClose: 'picker__button--close';
-  buttonToday: 'picker__button--today';
-}
+    fetch('/change_pass', {
+      method: 'PATCH',
+      headers: {
+        'Content-type': 'application/json; charset=UTF-8'
+      },
+      body: JSON.stringify(inp_obj)
+    })
+    .then(res => res.json())
+    .then(data => {
+      console.log(data)
+    })
+    .catch(error => console.log("ERROR")) 
+    location.href = "/update_user";
+  });
+};
