@@ -253,6 +253,51 @@ def get_current_user_plants(request:Request, plants_filter: schemas.FilterCurren
 
 
 
+@app.patch("/update_user_plant/{plant_id}", response_model=schemas.UserPlantsResponse)
+def update_user_plant(request:Request, plant_id: int, plant_info: schemas.UserPlantUpdate, db:Session = Depends(get_db)):
+    token = request.cookies.get("access_token")
+    if token is None:
+        raise HTTPException(status_code=status.HTTP_401_UNAUTHORIZED, detail="Unable to verify credentials")
+    else:
+        scheme,_, param = token.partition(" ")
+        user = crud.decode(param, SECRET_KEY, ALGORITHM, db)
+
+        plant = crud.update_user_plant(db=db, plant_info=plant_info, current_user= user, plant_id= plant_id)
+
+        return crud.format_user_plants(plant)
+
+
+
+@app.post("/add_user_plant/{plant_id}")
+def add_user_plant(request:Request, plant_id: int, plant_info: schemas.UserPlantsRequest, db:Session = Depends(get_db)):
+    token = request.cookies.get("access_token")
+    if token is None:
+        raise HTTPException(status_code=status.HTTP_401_UNAUTHORIZED, detail="Unable to verify credentials")
+    else:
+        scheme,_, param = token.partition(" ")
+        user = crud.decode(param, SECRET_KEY, ALGORITHM, db)
+
+        plants = crud.add_user_plant(db=db, plant_info=plant_info, current_user= user, plant_id= plant_id)
+
+        message = {
+            "message": "user already has this plant"
+        }
+
+        if plants is False:
+            return {"message": "No user found"}
+
+        if plants is None or plants == []:
+            return message
+
+        return [crud.format_plants(plant) for plant in plants] 
+
+
+
+
+
+
+
+
 
 
 
@@ -279,18 +324,18 @@ def get_all_user_plants(db: Session = Depends(get_db)):
     # return [crud.format_plants(plant) for plant in plants]
     return [crud.format_user_plants(plant) for plant in user_plants]
 
-@app.get("/filter_user_plants", response_model=list[schemas.UserPlantsResponse])
-def filter_user_plants(user_plant_filter: schemas.UserPlantsFilter = Depends(), db:Session = Depends(get_db), token:str=Depends(crud.oauth2_scheme)):
+# @app.get("/filter_user_plants", response_model=list[schemas.UserPlantsResponse])
+# def filter_user_plants(user_plant_filter: schemas.UserPlantsFilter = Depends(), db:Session = Depends(get_db), token:str=Depends(crud.oauth2_scheme)):
 
-    user = crud.decode(token, SECRET_KEY, ALGORITHM, db)
+#     user = crud.decode(token, SECRET_KEY, ALGORITHM, db)
 
-    # user_plants = db.query(models.UserPlants).filter(models.UserPlants.user_id == user.id).all()
-    filtered_user_plants = crud.filter_user_plants(user=user, db=db, user_plant_filter=user_plant_filter)
-    # print(user_plants)
-    # plants = crud.get_user_plants(db=db, user_plants=user_plants)
+#     # user_plants = db.query(models.UserPlants).filter(models.UserPlants.user_id == user.id).all()
+#     filtered_user_plants = crud.filter_user_plants(user=user, db=db, user_plant_filter=user_plant_filter)
+#     # print(user_plants)
+#     # plants = crud.get_user_plants(db=db, user_plants=user_plants)
 
-    # return [crud.format_plants(plant) for plant in plants]
-    return [crud.format_user_plants(plant) for plant in filtered_user_plants]
+#     # return [crud.format_plants(plant) for plant in plants]
+#     return [crud.format_user_plants(plant) for plant in filtered_user_plants]
 
 
 
@@ -344,32 +389,9 @@ def delete_user(pass_: str, db: Session = Depends(get_db), token:str=Depends(cru
 
     return mess
 
-@app.post("/add_user_plant/{plant_id}")
-def add_user_plant(plant_id: int, plant_info: schemas.UserPlantsRequest, db:Session = Depends(get_db), token:str=Depends(crud.oauth2_scheme)):
-    user = crud.decode(token, SECRET_KEY, ALGORITHM, db)
-
-    plants = crud.add_user_plant(db=db, plant_info=plant_info, current_user= user, plant_id= plant_id)
-
-    message = {
-        "message": "user already has this plant"
-    }
-
-    if plants is False:
-        return {"message": "No user found"}
-
-    if plants is None or plants == []:
-        return message
-
-    return [crud.format_plants(plant) for plant in plants]  
+ 
     
 
-@app.patch("/update_user_plant/{plant_id}", response_model=schemas.UserPlantsResponse)
-def update_user_plant(plant_id: int, plant_info: schemas.UserPlantUpdate, db:Session = Depends(get_db), token:str=Depends(crud.oauth2_scheme)):
-    user = crud.decode(token, SECRET_KEY, ALGORITHM, db)
-
-    plant = crud.update_user_plant(db=db, plant_info=plant_info, current_user= user, plant_id= plant_id)
-
-    return crud.format_user_plants(plant)
 
 
 ##### PLANTS

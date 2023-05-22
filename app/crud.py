@@ -5,7 +5,7 @@ from sqlalchemy import and_, or_
 from sqlalchemy.exc import IntegrityError
 
 from .models import UserPlants, User, Plant
-from .schemas import SignUpRequest, SignUpResponse, UserResponse, PlantRequest, PlantsResponse, UserFilterRequest, UserUpdateRequest, UserChangePass, CurrentUserPlants, PlantUpdate, PlantFilterRequest, Token, TokenData, UserPlantsRequest, UserPlantUpdate, UserPlantsResponse, UserPlantsFilter, FilterCurrentUserPlants, Login
+from .schemas import SignUpRequest, SignUpResponse, UserResponse, PlantRequest, PlantsResponse, UserFilterRequest, UserUpdateRequest, UserChangePass, CurrentUserPlants, PlantUpdate, PlantFilterRequest, Token, TokenData, UserPlantsRequest, UserPlantUpdate, UserPlantsResponse, FilterCurrentUserPlants, Login
 # from .server import get_db
 
 from datetime import datetime, date, timedelta
@@ -334,21 +334,35 @@ def add_user_plant(db: Session, plant_info:UserPlantsRequest, current_user: User
 	print(min_date_plant)
 	print(max_date_plant)
 
-
+	today = date.today()
+	if today > max_date_plant:
+		is_harvested = True
+	else:
+		is_harvested = False
 	# to check if yung user is may plant na na yun
 	plants_old = db.query(UserPlants).filter(UserPlants.user_id == current_user.id).all()
 	# print(plants_old)
 	for i in plants_old:
 		if plant_id == i.plant_id:
 			return None
-
-	db_plants = UserPlants(
-		user_id = current_user.id,
-		plant_id = plant_id,
-		is_harvested = False,
-		date_planted = plant_info.date_planted,
-		min_date_estimate_harvest = min_date_plant,
-		max_date_estimate_harvest = max_date_plant
+	if is_harvested == True:
+		db_plants = UserPlants(
+			user_id = current_user.id,
+			plant_id = plant_id,
+			is_harvested = is_harvested,
+			date_planted = plant_info.date_planted,
+			min_date_estimate_harvest = min_date_plant,
+			max_date_estimate_harvest = max_date_plant,
+			date_harvested = max_date_plant
+		)
+	else:
+		db_plants = UserPlants(
+			user_id = current_user.id,
+			plant_id = plant_id,
+			is_harvested = is_harvested,
+			date_planted = plant_info.date_planted,
+			min_date_estimate_harvest = min_date_plant,
+			max_date_estimate_harvest = max_date_plant,
 		)
 	db.add(db_plants)
 	db.commit()
@@ -383,11 +397,14 @@ def update_user_plant(db: Session, plant_info:UserPlantsRequest, current_user: U
 	return updated_user_plant
 
 
-def filter_user_plants(user: User, db:Session, user_plant_filter: UserPlantsFilter = None):
+def filter_user_plants(user: User, db:Session, user_plant_filter: FilterCurrentUserPlants = None):
 	query = db.query(UserPlants).filter(UserPlants.user_id == user.id)
 
+	print(user_plant_filter.category)
 	if user_plant_filter.is_harvested != None:
 		query = query.filter(UserPlants.is_harvested == user_plant_filter.is_harvested)
+	if user_plant_filter.category != None:
+		query = query.filter(UserPlants.category.value == user_plant_filter.category)
 	return query.all()
 
 def format_plants(db_plant: Plant):
@@ -634,8 +651,13 @@ def get_current_user_plants_filter(user:User, db: Session, filter_plants: Filter
 
 	if filter_plants.category != None:
 		fil_cat = db.query(Plant).filter(Plant.category == filter_plants.category).all()
-		for i in fil_cat:
-			my_plants = my_plants.filter(UserPlants.plant_id == i.id)
+		id_cat = []
+		for j in fil_cat:
+			id_cat.append(j.id)
+		print(id_cat)
+		my_plants = db.query(UserPlants).filter(UserPlants.plant_id.in_(id_cat))
+		# db_session.query(Star).filter(Star.star_type.in_(['Nova', 'Planet']))
+
 	if filter_plants.is_harvested != None:
 		my_plants = my_plants.filter(UserPlants.is_harvested == filter_plants.is_harvested)
 
@@ -647,6 +669,7 @@ def get_current_user_plants_filter(user:User, db: Session, filter_plants: Filter
 		# 	plant_description = plant_description.filter()
 
 		plant_join = CurrentUserPlants(
+			id = plant_description.id,
 			name = plant_description.name,
 			category = plant_description.category.value,
 			is_harvested = i.is_harvested,
