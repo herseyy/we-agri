@@ -1,15 +1,31 @@
-(function() {
+ (function() {
     "use strict";
- /**
-   * Sidebar toggle
-   */
-  if (select('.toggle-sidebar-btn')) {
-    on('click', '.toggle-sidebar-btn', function(e) {
-      select('body').classList.toggle('toggle-sidebar')
-    })
-  }
 
-})
+    const select = (el, all = false) => {
+      el = el.trim()
+      if (all) {
+        return [...document.querySelectorAll(el)]
+      } else {
+        return document.querySelector(el)
+      }
+    }
+
+    const on = (type, el, listener, all = false) => {
+      if (all) {
+        select(el, all).forEach(e => e.addEventListener(type, listener))
+      } else {
+        select(el, all).addEventListener(type, listener)
+      }
+    }
+
+    if (select('.toggle-sidebar-btn')) {
+      on('click', '.toggle-sidebar-btn', function(e) {
+        select('body').classList.toggle('toggle-sidebar')
+      })
+    }
+
+}) ();
+
 
 /* hide other sections  */
 
@@ -143,7 +159,52 @@ function createPlants(){
 //users
 const user_url = 'http://127.0.0.1:8000/filter_users';
 
+  let q = document.getElementById('q').value;
+  let upperAge = document.getElementById('upperAge').value;
+  let lowerAge = document.getElementById('lowerAge').value;
+  let country = document.getElementById('country').value;
+  let state = document.getElementById('state').value;
+  let city = document.getElementById('city').value;
+  let isactive = document.getElementById('isactive').value;
+  let ispublic = document.getElementById('ispublic').value;
+
 function getallusers(){
+  var inp_obj = {}
+    
+  if (q != ""){
+      inp_obj = Object.assign({"q":q}, inp_obj)
+  }
+  if (upperAge != ""){
+      inp_obj = Object.assign({"upperAge":upperAge}, inp_obj)
+  }
+  if (lowerAge != ""){
+      inp_obj = Object.assign({"lowerAge":lowerAge}, inp_obj)
+  }
+  if (country != ""){
+      inp_obj = Object.assign({"country":country}, inp_obj)
+  }
+  if (state != ""){
+      inp_obj = Object.assign({"state":state}, inp_obj)
+  }
+  if (city != ""){
+      inp_obj = Object.assign({"city":city}, inp_obj)
+  }
+  if (isactive != ""){
+      inp_obj = Object.assign({"is_active":isactive}, inp_obj)
+  }
+  if (ispublic != ""){
+      inp_obj = Object.assign({"is_public":ispublic}, inp_obj)
+  }
+  
+  console.log(inp_obj)
+
+  let query = Object.keys(inp_obj)
+        .map(k =>encodeURIComponent(inp_obj[k]) + '=' + encodeURIComponent(k))
+        .join('&');
+    
+        const filterusers_url = "http://127.0.0.1:8000/filter_users?" + query
+        console.log(filterusers_url)
+
     fetch(user_url)
     .then(res => {
         return res.json()
