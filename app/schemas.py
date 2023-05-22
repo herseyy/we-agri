@@ -38,6 +38,7 @@ class FilterCurrentUserPlants(BaseModel):
 
 	
 class CurrentUserPlants(BaseModel):
+	id: int = None
 	name: str = None
 	category: str = None
 	is_harvested: bool = None
@@ -194,8 +195,8 @@ class UserPlantUpdate(BaseModel):
 	date_harvested: datetime.date = None
 
 
-class UserPlantsFilter(BaseModel):
-	is_harvested: Optional[bool] = None
+# class UserPlantsFilter(BaseModel):
+# 	is_harvested: Optional[bool] = None
 
 
 # <<<<<<< HEAD

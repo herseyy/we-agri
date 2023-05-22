@@ -204,26 +204,37 @@
         <div class="my_plants" id="my_plants">
             MY PLANTS
             <div>
+                <div>
+                    <button id="addplantBtn" type="button" class="btn btn-primary-outline mx-4 align-self-center" data-bs-toggle="modal" data-bs-target="#addplantModal" onclick="fetch_plants()">Add Plants</button>
+                </div>
                 <div id="" class="d-flex">
                     <div>
-                        <button id="addplantBtn" type="button" class="btn btn-primary-outline mx-4 align-self-center" data-bs-toggle="modal" data-bs-target="#addplantModal">Add Plants</button>
+                        <button id="search_btn" type="button" class="btn btn-primary-outline mx-4 align-self-center" onclick="get_current_user_plants()">Search</button>
                     </div>
                     
                     <div>
                         <div class="d-flex filterPlants align-self-center">
-                            <label for="userplantfilter" class="ml-2 align-self-center">Filter:</label>
+                            <label for="userplantfilter" class="ml-2 align-self-center">Category:</label>
                             <div>
-                                <select name="userplantfilter" id="userplantfilter" class="mx-2 align-self-center" onclick="">
+                                <select name="userplantfiltercat" id="userplantfiltercat" class="mx-2 align-self-center">
                                     <option value="">--</option>
                                     <option value="vegetable">Vegetable</option>
                                     <option value="fruit">Fruit</option>
+                                </select>
+                            </div>
+                            <label for="userplantfilter" class="ml-2 align-self-center">is harvested:</label>
+                            <div>
+                                <select name="userplantfilteri_h" id="userplantfilteri_h" class="mx-2 align-self-center" onclick="">
+                                    <option value="">--</option>
                                     <option value="true">Harvested</option>
                                     <option value="false">Pending harvest</option>
-                                    <option value="date">Date Planted</option>
                                 </select>
                             </div>
                         </div>
                     </div>
+                </div>
+                <div>
+                    <h2 id="total_plants">Total Plants: <span id="spn_plnts"></span></h2>
                 </div>
                 <div>
                     <table id="plantTable"class="table table-responsive-xl">
@@ -239,7 +250,7 @@
                             </tr>
                         </thead>
                         <tbody id="myPlantsTable" style="background-color: #EAEFEB;">
-                            <tr>
+<!--                             <tr>
                                 <td>i</td>
                                 <td>${name}</td>
                                 <td>${category}</td>
@@ -247,7 +258,7 @@
                                 <td>${date_planted}</td>
                                 <td> ${min_date} - ${max_date}</td>
                                 <td>${harvest_date}</td>
-                              </tr>
+                            </tr> -->
                         </tbody>
                     </table>
                 </div>

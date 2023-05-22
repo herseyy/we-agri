@@ -207,7 +207,7 @@ function get_current_user(){
   fetch("/user")
     .then(response => response.json())
     .then(data => {
-      console.log(data)
+      // console.log(data)
 
       var profile_info = document.getElementById("profile_info")
       profile_info.innerHTML = ""
@@ -316,10 +316,121 @@ function update_user_info(){
 
 
 function get_current_user_plants() {
-  fetch("/user/plants/filter")
+
+  var cat = document.getElementById("userplantfiltercat").value
+  var is_harvested = document.getElementById("userplantfilteri_h").value
+
+  // console.log(cat)
+  // console.log(is_harvested)
+
+  inp_obj = {}
+
+  if (cat != "") {
+    inp_obj = Object.assign({"category": cat}, inp_obj)
+  }
+
+  if (is_harvested != ""){
+        inp_obj = Object.assign({"is_harvested":is_harvested}, inp_obj)
+    }
+
+  let query = Object.keys(inp_obj)
+               .map(k => encodeURIComponent(k) + '=' + encodeURIComponent(inp_obj[k]))
+               .join('&');
+
+
+  const filter_url = "/user/plants/filter?" + query
+
+  // console.log(filter_url)
+  
+
+  fetch(filter_url)
   .then(response => response.json())
   .then(data => {
-    console.log(data)
+    // console.log(data)
+
+    parent = document.getElementById('myPlantsTable')
+    parent.innerHTML = ""
+    document.getElementById("spn_plnts").innerHTML = data.length
+    i = 0
+    j = 0
+    k = 0
+    l = 0
+
+    let today = new Date().toISOString().slice(0, 10)
+
+    // console.log(today)
+
+    let plantDisplay = data.map((object)=> {
+      // console.log(object)
+      i ++
+      status = ''
+
+      if (object.is_harvested == false) {      
+        if (today < object.min_date_estimate_harvest) {
+          j ++
+          status = "not yet"
+          var btn_ = `<button onclick="btn_click(this.id)" id="${object.id}" class="btn disabled">${status}</button>`
+        }
+        else if (today >= object.min_date_estimate_harvest && today <= object.max_date_estimate_harvest) {
+          k ++
+          status = "ready"
+          // console.log("ready")
+
+          // dapat blue itoooooo
+          var btn_ = `<button onclick="btn_click(this.id)" id="${object.id}" class="btn btn-primary">${status}</button>`
+        }
+        else if (today > object.max_date_estimate_harvest) {
+
+          inp_obj = {
+            "is_harvested": true,
+            "date_harvested": object.max_date_estimate_harvest
+          }
+
+          fetch(`/update_user_plant/${object.id}`, {
+            method: 'PATCH',
+            headers: {
+              'Content-type': 'application/json; charset=UTF-8'
+            },
+            body: JSON.stringify(inp_obj)
+          })
+          .then(res => res.json())
+          .then(data => {
+            console.log(data)
+
+          })
+          .catch(error => console.log("ERROR"))
+          get_current_user_plants()
+
+          status = "harvested"
+          l ++
+          var btn_ = `<button onclick="btn_click(this.id)" id="${object.id}" class="btn btn-success">${status}</button>`
+        }
+      }
+      else {
+        status = "harvested"
+        l ++
+        var btn_ = `<button onclick="btn_click(this.id)" id="${object.id}" class="btn btn-success">${status}</button>`
+      }
+
+
+
+      // console.log(object)
+      return `
+              <tr>
+                <td>${i}</td>
+                <td>${object.name}</td>
+                <td>${object.category}</td>
+                <td>${btn_}</td>
+                <td>${object.date_planted}</td>
+                <td> ${object.min_date_estimate_harvest
+                  } - ${object.max_date_estimate_harvest
+                  }</td>
+                <td>${object.date_harvested}</td>
+              </tr>
+            `
+    })
+    parent.innerHTML = plantDisplay;
+    // document.getElementById("")
   })
   .catch((error) => {
       console.error('Error:', error);
@@ -327,3 +438,57 @@ function get_current_user_plants() {
 }
 
 get_current_user_plants()
+
+
+function btn_click(clicked_id) {
+  // console.log(document.getElementById(clicked_id).innerHTML)
+  btn_innerhtml = document.getElementById(clicked_id).innerHTML
+  if (btn_innerhtml == "harvested") {
+    console.log("already harvested")
+  }
+  else if (btn_innerhtml == "ready") {
+    let today = new Date().toISOString().slice(0, 10)
+
+    // console.log(today)
+    inp_obj = {
+      "is_harvested": true,
+      "date_harvested": today
+    }
+
+    update_url = `/update_user_plant/${clicked_id}`
+
+
+    fetch(update_url, {
+      method: 'PATCH',
+      headers: {
+        'Content-type': 'application/json; charset=UTF-8'
+      },
+      body: JSON.stringify(inp_obj)
+    })
+    .then(res => res.json())
+    .then(data => {
+      console.log(data)
+
+    })
+    .catch(error => console.log("ERROR"))
+    get_current_user_plants()
+    // document.getElementById(clicked_id).innerHTML = "aaa"
+    // console.log(document.getElementById(clicked_id).innerHTML)
+    // btn_innerhtml = "Harvested"
+    // console.log("lol")
+    // document.getElementById(clicked_id).setAttribute('class', 'btn btn-success');
+  }
+}
+
+
+function fetch_plants() {
+  plants_url = "/filter_plants?"
+
+  fetch(plants_url)
+    .then(response => {
+      return response.json();
+    })
+    .then(data => {
+      console.log(data)
+    })
+}
