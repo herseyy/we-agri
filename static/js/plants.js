@@ -17,6 +17,23 @@ function checkbox() {
 
 //checkbox 
 
+
+function check_token(){
+  fetch("/")
+    .then(response => response.json())
+    .then(data => {
+    console.log(data)
+    if (data['detail']){
+      window.location.href = '../login';
+    }
+    else {
+      window.location.href = '../profile';
+    }
+    }).catch((error) => {
+        console.error('Error:', error);
+      });
+}
+
 function getPlants(){
 
     let fruit = "";
@@ -152,7 +169,7 @@ function getPlants(){
                 </div>
             </div>`;
             
-        })/* .catch(error => console.log("ERROR")) */;
+        }).join('')/* .catch(error => console.log("ERROR")) */;
         document.getElementById('catFruit').value = "";
         document.getElementById('catVeggie').value = "";
         document.getElementById('summerTrue').value = "";
@@ -311,3 +328,5 @@ let autocomplete = (inp, arr) => {
 
   /*initiate the autocomplete function on the "plantSearch" element, and pass along the countries array as possible autocomplete values:*/
   autocomplete(document.getElementById("plantSearch"), plantList);
+
+

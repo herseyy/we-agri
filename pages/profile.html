@@ -16,7 +16,8 @@
     
     <!----===== Boxicons CSS ===== -->
     <link href='https://unpkg.com/boxicons@2.1.1/css/boxicons.min.css' rel='stylesheet'>
-      
+    
+    <link rel="icon" href="../static/images/logo ni joao.png">
     <title>User Profile</title> 
 </head>
 <body>
@@ -63,13 +64,13 @@
 
             <div class="bottom-content">
                 <li class="">
-                    <a href="index.html">
+                    <a href="/home">
                         <i class='bx bx-arrow-back icon'></i>
                         <span class="text nav-text">Back to Home</span>
                     </a>
                 </li>
-                <li class="">
-                    <a href="#">
+                <li class="" onclick="logout()">
+                    <a>
                         <i class='bx bx-log-out icon' ></i>
                         <span class="text nav-text">LOGOUT</span>
                     </a>
@@ -179,15 +180,18 @@
                             <h5 class="modal-title" id="addplantModalTitle">Add plants</h5>
                         </div>
                         <div class="modal-body addplantmodalcontent">
+                            <p id = "msg_add"></p>
                             <div class="d-flex addPlants align-self-center">
                                 <label for="addCat" class="align-self-center">Category</label>
                                 <div>
-                                    <select name="addCat" id="addCat" class="mx-2 align-self-center" onclick="">
+                                    <select name="addCat" id="addCat" class="mx-2 align-self-center">
+                                        <option value="">--</option>
                                         <option value="vegetable">Vegetable</option>
                                         <option value="fruit">Fruit</option>
                                     </select>
                                 </div>
                             </div>
+                            <div id="checklist"></div>
                             <div class="d-flex align-self-center">
                                 <label for="addDatePlanted">Date Planted: </label>
                                 <input id="addDatePlanted" type="date" placeholder="Select Date"/>
@@ -195,7 +199,7 @@
                         </div>
                         <div class="modal-footer">
                             <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
-                            <button type="button" class="btn btn-primary">Save</button>
+                            <button onclick="add_plant()" id="saveBtn" type="button" class="btn btn-primary">Save</button>
                         </div>
                     </div>
                 </div>

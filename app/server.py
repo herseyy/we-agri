@@ -181,6 +181,13 @@ def get_token_after_authentication(response: Response, inp_login: schemas.Login,
 
     return {"access_token": jwt_token, "token_type": "bearer"}
 
+@app.delete("/logout")
+def delete_cookie(request:Request, response: Response, db: Session = Depends(get_db)):
+    token = request.cookies.get("access_token")
+    response.delete_cookie('access_token')
+    return {"msg": "logout"}
+    # print(token)
+
 
 ##### USERS
 
@@ -324,29 +331,6 @@ def get_all_user_plants(db: Session = Depends(get_db)):
     # return [crud.format_plants(plant) for plant in plants]
     return [crud.format_user_plants(plant) for plant in user_plants]
 
-# @app.get("/filter_user_plants", response_model=list[schemas.UserPlantsResponse])
-# def filter_user_plants(user_plant_filter: schemas.UserPlantsFilter = Depends(), db:Session = Depends(get_db), token:str=Depends(crud.oauth2_scheme)):
-
-#     user = crud.decode(token, SECRET_KEY, ALGORITHM, db)
-
-#     # user_plants = db.query(models.UserPlants).filter(models.UserPlants.user_id == user.id).all()
-#     filtered_user_plants = crud.filter_user_plants(user=user, db=db, user_plant_filter=user_plant_filter)
-#     # print(user_plants)
-#     # plants = crud.get_user_plants(db=db, user_plants=user_plants)
-
-#     # return [crud.format_plants(plant) for plant in plants]
-#     return [crud.format_user_plants(plant) for plant in filtered_user_plants]
-
-
-
-# @app.get("/filter_users", response_model = list[schemas.UserResponse])
-# def filter_users(user_filter: schemas.UserFilterRequest = Depends(), q: Union[list[int], None] = Query(default=None), db:Session = Depends(get_db)):
-#     users = crud.filter_users(db, user_filter, q)
-#     # for user in users:    
-#     #     print(crud.format_user(user))
-#     return [crud.format_user(user) for user in users]
-
-
 
 
 
@@ -357,24 +341,6 @@ def delete_user_plant(plant_id: int, db:Session = Depends(get_db), token:str=Dep
     plants = crud.delete_user_plant(db=db, user_id= user.id, plant_id= plant_id)
 
     return [crud.format_user_plants(plant) for plant in plants]
-
-
-
-# @app.get("/filter_users", response_model = list[schemas.UserResponse])
-# def filter_users(user_filter: schemas.UserFilterRequest = Depends(), q: Union[list[int], None] = Query(default=None), db:Session = Depends(get_db)):
-#     users = crud.filter_users(db, user_filter, q)
-#     # for user in users:    
-#     #     print(crud.format_user(user))
-#     return [crud.format_user(user) for user in users]
-
-
-
-# @app.get("/user/{username}/plants", response_model=list[schemas.CurrentUserPlants])
-# def get_current_user_plants(username:str, db: Session = Depends(get_db), token: str = Depends(crud.oauth2_scheme)):
-#     user = crud.decode(token, SECRET_KEY, ALGORITHM, db)
-
-#     my_plants = crud.get_current_user_plants(user=user, db=db)
-#     return my_plants
 
 
 
@@ -432,8 +398,6 @@ def get_api():
 
 
 
-
-
 @app.post("/upload/{name}")
 async def create_upload_file(name:str, file: UploadFile = File(...), db:Session = Depends(get_db)):
 
@@ -475,6 +439,18 @@ async def read_file(name:str, db:Session = Depends(get_db)):
 async def submit(request: Request):
     return templates.TemplateResponse("index.html", {"request": request})
 
+@app.get("/forecast", response_class=HTMLResponse)
+async def submit(request: Request):
+    return templates.TemplateResponse("forecast2.html", {"request": request})
+
+@app.get("/plants", response_class=HTMLResponse)
+async def submit(request: Request):
+    return templates.TemplateResponse("plants.html", {"request": request})
+
+@app.get("/about", response_class=HTMLResponse)
+async def submit(request: Request):
+    return templates.TemplateResponse("about_us.html", {"request": request})
+
 @app.get("/login", response_class=HTMLResponse)
 async def submit(request: Request):
     return templates.TemplateResponse("login.html", {"request": request})
@@ -482,4 +458,12 @@ async def submit(request: Request):
 @app.get("/profile", response_class=HTMLResponse)
 async def submit(request: Request):
     return templates.TemplateResponse("profile.html", {"request": request})
+
+
+
+
+@app.get("/admin", response_class=HTMLResponse)
+async def submit(request: Request):
+    return templates.TemplateResponse("admin.html", {"request": request})
+
 

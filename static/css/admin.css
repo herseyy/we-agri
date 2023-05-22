@@ -348,6 +348,8 @@ main{
   margin-bottom: 3%;
 }
 
+
+
 /* ---------------- forms ----------------- */
 #createplant .col-12 .col-5 {
     margin:0 auto;
@@ -363,23 +365,29 @@ main{
 
 
 /* ---------------- users ----------------- */
-.userFilter{
+
+#search {
+  width:60%; 
+  margin: 0 auto; 
+  background-color: #CDD9CC;
+}
+
+.editUserModalcontent .fields div {
   margin: 3%;
 }
 
-.userFilter h3 {
-  font-size:large;
-  margin-right:3%;
-} 
-
-.userFilter div div {
-  padding:10px;
+.editUserModalcontent .input-field label, .deleteuserModal .input-field label{
+  font-size: 12px;
+  font-weight: 500;
+  color: #2e2e2e;
 }
-
-.userFilter div div label{
-  margin:5px;
-}
-
-.userFilter input[type="number"]{
-  width:50px;
+.editUserModalcontent .input-field input, select, .deleteuserModal .input-field input{
+  outline: none;
+  font-size: 14px;
+  font-weight: 400;
+  color: #333;
+  border-radius: 5px;
+  border: 1px solid #aaa;
+  padding: 0 15px;
+  height: 42px;
 }

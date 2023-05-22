@@ -3,6 +3,8 @@
 <head>
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>We-Agri | About</title>
+    <link rel="icon" href="../static/images/logo ni joao.png">
+    <title>Our Team</title>
     <!-- Font Awesome CDN-->
     <link rel="stylesheet"
           href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css" />
@@ -10,8 +12,9 @@
     <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;500;600&display=swap"
           rel="stylesheet" />
     <!-- Stylesheet -->
-    <link rel="stylesheet" href="../static/css/about us.css"> />
+    <link rel="stylesheet" href="../static/css/about us.css"> 
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha3/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-KK94CHFLLe+nY2dmCWGMq91rCGa5gtU4mk92HdvYe+M/SXH301p5ILy+dN9+nJOZ" crossorigin="anonymous">
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha3/dist/js/bootstrap.bundle.min.js" integrity="sha384-ENjdO4Dr2bkBIFxQpeoTz1HIcje39Wm4jDKdf19U8gI4ddQ3GYNS7NTKfAdVQSZe" crossorigin="anonymous"></script>
 </head>
 <body>
     <nav class="navbar navbar-expand-lg justify-content-center">
@@ -31,9 +34,9 @@
                     <a class="nav-link" href="plants.html">PLANTS</a>
                 </li>
                 <li class="nav-item rounded-pill mx-5 px-4 active">
-                    <a class="nav-link" href="about.html">ABOUT</a>
+                    <a class="nav-link" href="about_us.html">ABOUT</a>
                 </li>
-                <button type="button" class="btn btn-primary-outline " onclick="location.href='login.html'">
+                <button type="button" class="btn btn-primary-outline " onclick="check_token()">
                     <i class="fa-solid fa-user" style="color:#117a3d"></i>
                 </button>
             </ul>
@@ -42,7 +45,7 @@
     <div class="responsive-container-block bigContainer">
         <div class="responsive-container-block Container bottomContainer">
             <div class="ultimateImg">
-                <img class="mainImg" src="abutem.png">
+                <img class="mainImg" src="../static/images/abutem.png">
                 <div class="purpleBox">
                     <p class="purpleText">
                         Lorem ipsum dolor sit amet, consectetur adipiscing elit. Eget purus lectus viverra in semper nec pretium mus.
@@ -68,10 +71,10 @@
         </div>
         <div class="row">
             <!-- Column 1-->
-            <div class="column">
+            <div class="column col-lg-3">
                 <div class="card">
                     <div class="img-container">
-                        <img src="1.jpg" />
+                        <img src="../static/images/1.jpg" />
                     </div>
                     <h3>Hersey Anne Odasco</h3>
                     <p>Founder</p>
@@ -90,10 +93,10 @@
                 </div>
             </div>
             <!-- Column 2-->
-            <div class="column">
+            <div class="column col-lg-3">
                 <div class="card">
                     <div class="img-container">
-                        <img src="2.jpg" />
+                        <img src="../static/images/2.jpg" />
                     </div>
                     <h3>Ciavel Anby Montenegro</h3>
                     <p>Developer</p>
@@ -111,10 +114,10 @@
                 </div>
             </div>
             <!-- Column 3-->
-            <div class="column">
+            <div class="column col-lg-3">
                 <div class="card">
                     <div class="img-container">
-                        <img src="3.jpg" />
+                        <img src="../static/images/3.jpg" />
                     </div>
                     <h3>Joy Susette Domingo</h3>
                     <p>Designer</p>
@@ -132,10 +135,10 @@
                 </div>
             </div>
             <!-- Column 4-->
-            <div class="column">
+            <div class="column col-lg-3">
                 <div class="card">
                     <div class="img-container">
-                        <img src="4.jpg" />
+                        <img src="../static/images/4.jpg" />
                     </div>
                     <h3>Jeff Lawrence Balbuena</h3>
                     <p>Designer</p>
@@ -154,5 +157,6 @@
             </div>
         </div>
     </section>
+    <script src="../static/js/about.js"></script>
 </body>
 </html>
