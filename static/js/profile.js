@@ -449,7 +449,7 @@ function get_current_user_plants() {
                 <td>${object.date_harvested}</td>
               </tr>
             `
-    });
+    }).join('');
     parent.innerHTML = plantDisplay;
     // document.getElementById("")
   })
@@ -544,14 +544,14 @@ function fetch_plants() {
       return response.json();
     })
     .then(data => {
-      console.log(data)
+      // console.log(data)
 
       const checklist = document.getElementById("checklist");
       checklist.innerHTML='';
 
       let plantDisplay = data.map((object)=> {
 
-        console.log(object)
+        // console.log(object)
         return `<input type="radio" id="${object.id}" name="plant" value="${object.name}">
                 <label for="${object.id}">${object.name}</label><br>`;
 // <input type="radio" id="html" name="fav_language" value="HTML">
@@ -560,7 +560,7 @@ function fetch_plants() {
 //   <label for="css">CSS</label><br>
 //   <input type="radio" id="javascript" name="fav_language" value="JavaScript">
 //   <label for="javascript">JavaScript</label>
-      });
+      }).join('');
       checklist.innerHTML = plantDisplay;
       let today = new Date().toISOString().slice(0, 10)
 

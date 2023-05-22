@@ -296,7 +296,7 @@
   display: inline-block;
   margin-top: 12px;
   }
-  #mission .right-side .button input[type="button"] {
+  #mission .right-side .button input[type="button"], input[type="submit"] {
   color: #fff;
   font-size: 18px;
   outline: none;
@@ -307,7 +307,7 @@
   cursor: pointer;
   transition: all 0.3s ease;
   }
-  #mission .button input[type="button"]:hover {
+  #mission .button input[type="button"]:hover, input[type="submit"]:hover {
     background: linear-gradient( 135deg, #205072 10%, #329d9c 100%);
   }
 

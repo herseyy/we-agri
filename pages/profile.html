@@ -18,9 +18,9 @@
     <link href='https://unpkg.com/boxicons@2.1.1/css/boxicons.min.css' rel='stylesheet'>
     
     <link rel="icon" href="../static/images/logo ni joao.png">
-    <title>User Profile</title> 
+    <title>WE-AGRI | Profile</title> 
 </head>
-<body>
+<body style="width:100vw;">
     <!--  start -->
     <nav class="sidebar close">
         <header>
@@ -156,7 +156,7 @@
         <div class= "profile" id="profile">
             <div class="d-flex">
                 PROFILE
-                <div>
+                <div style="margin-left:1%;">
                     <button onclick="editBtn()" id="editBtn" class="btn" data-bs-toggle="modal" data-bs-target="#editProfileModal">
                         <i class="fas fa-edit"></i>
                     </button>
@@ -198,8 +198,8 @@
                             </div>
                         </div>
                         <div class="modal-footer">
-                            <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
-                            <button onclick="add_plant();get_current_user_plants();" id="saveBtn" type="button" class="btn btn-primary">Save</button>
+                            <button onclick="get_current_user_plants()" type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+                            <button onclick="add_plant()" id="saveBtn" type="button" class="btn btn-primary">Save</button>
                         </div>
                     </div>
                 </div>
@@ -207,69 +207,80 @@
 
         <div class="my_plants" id="my_plants">
             MY PLANTS
-            <div>
-                <div>
-                    <button id="addplantBtn" type="button" class="btn btn-primary-outline mx-4 align-self-center" data-bs-toggle="modal" data-bs-target="#addplantModal" onclick="fetch_plants()">Add Plants</button>
-                </div>
-                <div id="" class="d-flex">
-                    <div>
-                        <button id="search_btn" type="button" class="btn btn-primary-outline mx-4 align-self-center" onclick="get_current_user_plants()">Search</button>
+            <div style="width:100vw;">
+                <div class="row d-flex w-75">
+                    <div class="col-lg-3">
+                        
                     </div>
                     
-                    <div>
-                        <div class="d-flex filterPlants align-self-center">
-                            <label for="userplantfilter" class="ml-2 align-self-center">Category:</label>
-                            <div>
-                                <select name="userplantfiltercat" id="userplantfiltercat" class="mx-2 align-self-center">
-                                    <option value="">--</option>
-                                    <option value="vegetable">Vegetable</option>
-                                    <option value="fruit">Fruit</option>
-                                </select>
+                    <div class="col">
+                        <div class="d-flex rounded" style="background:#CDD9CC; padding:1%; width:fit-content;">
+                            <!-- <button id="search_btn" type="button" class="btn btn-primary-outline mx-4 align-self-center" onclick="get_current_user_plants()">
+                                Filter
+                            </button> -->
+
+                            <div class="d-flex filterPlants align-items-center ml-2">
+                                <label for="userplantfilter" class="ml-2 align-self-center">Category:</label>
+                                <div>
+                                    <select name="userplantfiltercat" id="userplantfiltercat" class="mx-2 align-self-center" onclick="get_current_user_plants()">
+                                        <option value="">--</option>
+                                        <option value="vegetable">Vegetable</option>
+                                        <option value="fruit">Fruit</option>
+                                    </select>
+                                </div>
                             </div>
-                            <label for="userplantfilter" class="ml-2 align-self-center">is harvested:</label>
-                            <div>
-                                <select name="userplantfilteri_h" id="userplantfilteri_h" class="mx-2 align-self-center" onclick="">
-                                    <option value="">--</option>
-                                    <option value="true">Harvested</option>
-                                    <option value="false">Pending harvest</option>
-                                </select>
+                            <div class="d-flex filterPlants align-items-center ml-2">
+                                <label for="userplantfilter" class="ml-2 align-self-center">is harvested:</label>
+                                <div>
+                                    <select name="userplantfilteri_h" id="userplantfilteri_h" class="mx-2 align-self-center" onclick="get_current_user_plants()">
+                                        <option value="">--</option>
+                                        <option value="true">Harvested</option>
+                                        <option value="false">Pending harvest</option>
+                                    </select>
+                                </div>
                             </div>
                         </div>
+                        
                     </div>
                 </div>
-                <div>
-                    <h2 id="total_plants">Total Plants: <span id="spn_plnts"></span></h2>
+                <div style="margin:3% auto; width:80%;">
+                    <div class="d-flex">
+                        <h2 id="total_plants">Total Plants: <span id="spn_plnts"></span></h2>
+                        <button id="addplantBtn" type="button" class="btn btn-primary-outline mx-4" style="margin-bottom:1%;" data-bs-toggle="modal" data-bs-target="#addplantModal" onclick="fetch_plants()">
+                            Add Plants
+                        </button>
+                    </div>
+                    <div>
+                        <table id="plantTable"class="table table-responsive-xl">
+                            <thead class="thead-primary" style="background-color: #99b19c;">
+                                <tr class="text-light">
+                                    <th>#</th>
+                                    <th>Name</th>
+                                    <th>Category</th>
+                                    <th>Status</th>
+                                    <th>Date planted</th>
+                                    <th>Estimated Harvest Date</th>
+                                    <th>Date Harvested</th>
+                                </tr>
+                            </thead>
+                            <tbody id="myPlantsTable" style="background-color: #EAEFEB;">
+                            <!-- <tr>
+                                    <td>i</td>
+                                    <td>${name}</td>
+                                    <td>${category}</td>
+                                    <td><button class="btn" disabled>is_harvested</button></td>
+                                    <td>${date_planted}</td>
+                                    <td> ${min_date} - ${max_date}</td>
+                                    <td>${harvest_date}</td>
+                                </tr> -->
+                            </tbody>
+                        </table>
+                    </div>
                 </div>
-                <div>
-                    <table id="plantTable"class="table table-responsive-xl">
-                        <thead class="thead-primary" style="background-color: #99b19c;">
-                            <tr class="text-light">
-                                <th>#</th>
-                                <th>Name</th>
-                                <th>Category</th>
-                                <th>Status</th>
-                                <th>Date planted</th>
-                                <th>Estimated Harvest Date</th>
-                                <th>Date Harvested</th>
-                            </tr>
-                        </thead>
-                        <tbody id="myPlantsTable" style="background-color: #EAEFEB;">
-<!--                             <tr>
-                                <td>i</td>
-                                <td>${name}</td>
-                                <td>${category}</td>
-                                <td><button class="btn" disabled>is_harvested</button></td>
-                                <td>${date_planted}</td>
-                                <td> ${min_date} - ${max_date}</td>
-                                <td>${harvest_date}</td>
-                            </tr> -->
-                        </tbody>
-                    </table>
-                </div>
+                
             </div>
         </div>
 
-        
     </section>
 
 

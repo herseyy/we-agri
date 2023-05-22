@@ -1,0 +1,307 @@
+[1mdiff --cc pages/index.html[m
+[1mindex 017577e,2928eee..0000000[m
+[1m--- a/pages/index.html[m
+[1m+++ b/pages/index.html[m
+[36m@@@ -20,19 -20,19 +20,18 @@@[m
+                          <img width="50em" alt="WE-AGRI" src="../static/images/logo ni joao.png" />[m
+                      </li>[m
+                    <li class="nav-item rounded-pill mx-2 px-4 active">[m
+[31m -                    <a class="nav-link" href="/home">HOME</a>[m
+[32m +                    <a class="nav-link" href="index.html">HOME</a>[m
+                    </li>[m
+                    <li class="nav-item rounded-pill mx-2 px-4">[m
+[31m -                    <a class="nav-link" href="/forecast">FORECAST</a>[m
+[31m -                  </li>[m
+[32m +                    <a class="nav-link" href="forecast2.html">FORECAST</a>[m
+[31m-                   </li>[m
+                    <li class="nav-item rounded-pill1 px-4" style="visibility:hidden; margin:0 10vw; ">[m
+                      <a class="nav-link" href="#">WE-AGRI</a>[m
+                    </li> [m
+                    <li class="nav-item rounded-pill mx-2 px-4">[m
+[31m -                    <a class="nav-link" href="/plants">PLANTS</a>[m
+[32m +                    <a class="nav-link" href="plants.html">PLANTS</a>[m
+                    </li>[m
+                    <li class="nav-item rounded-pill mx-2 px-4">[m
+[31m-                     <a class="nav-link" href="about.html">ABOUT</a>[m
+[31m -                    <a class="nav-link" href="/about">ABOUT</a>[m
+[32m++                    <a class="nav-link" href="about_us.html">ABOUT</a>[m
+                    </li>[m
+  [m
+                    <!-- onlclick check if may laman cookie hehe -->[m
+[36m@@@ -57,8 -58,204 +57,205 @@@[m
+                      view more[m
+                  </button>[m
+              </div>[m
+[32m+           </section>[m
+[32m+             [m
+[32m+           <section id="mission" class="snap" style="background-image: url('../static/images/bgyo.jpg'); padding-bottom: 20px;">[m
+[32m+             <section>[m
+[32m+               <div class="row">[m
+[32m+                   <h2 class="section-heading">OUR MISSION</h2>[m
+[32m+               </div>[m
+[32m+             </section>[m
+[32m+ [m
+[32m+             <div class="row d-flex justify-content-evenly">[m
+[32m+               <div class="column">[m
+[32m+                   <div class="card">[m
+[32m+                       <div class="icon-wrapper">[m
+[32m+                           <i class="fa-sharp fa-solid fa-crosshairs"></i>[m
+[32m+                       </div>[m
+[32m+                       <h3>Mission</h3>[m
+[32m+                       <p>[m
+[32m+                           To promote sustainable earth stewardship, we commit to integrating the principles of sustainable consumption and production, urgent action against climate change, and the protection, restoration, and sustainable use of terrestrial ecosystems. Our mission is to ensure a thriving future by fostering responsible and equitable practices that preserve the planet's resources, mitigate climate change, and safeguard biodiversity.[m
+[32m+                       </p>[m
+[32m+                   </div>[m
+[32m+               </div>[m
+[32m+               <div class="column">[m
+[32m+                   <div class="card">[m
+[32m+                       <div class="icon-wrapper">[m
+[32m+                           <i class="fa-solid fa-bullseye"></i>[m
+[32m+                       </div>[m
+[32m+                       <h3>Purposes</h3>[m
+[32m+                       <p>[m
+[32m+                           Provide a platform that aids farmers in applying climate data and promoting sustainable crop production.[m
+[32m+                           Increase agricultural productivity by reducing risks and strengthening resilience to climate change.[m
+[32m+                           Sharing of benefits arising from agriculture for users and providers ensuring genetic resources its ability to adapt changing climatic and environmental conditions.[m
+[32m+                       </p>[m
+[32m+                   </div>[m
+[32m+               </div>[m
+[32m+               <div class="column">[m
+[32m+                   <div class="card">[m
+[32m+                       <div class="icon-wrapper">[m
+[32m+                           <i class="fas fa-wrench"></i>[m
+[32m+                       </div>[m
+[32m+                       <h3>Tools</h3>[m
+[32m+                       <p>[m
+[32m+                           HTML <br />[m
+[32m+                           CSS <br />[m
+[32m+                           JavaScript <br />[m
+[32m+                           Python <br />[m
+[32m+                           FastAPI <br />[m
+[32m+                           Open Weather Map <br />[m
+[32m+                           Heroku[m
+[32m+                       </p>[m
+[32m+                   </div>[m
+[32m+               </div>[m
+[32m+               <div class="column">[m
+[32m+                   <div class="card">[m
+[32m+                       <div class="icon-wrapper">[m
+[32m+                           <i class="fa-solid fa-infinity"></i>[m
+[32m+                       </div>[m
+[32m+                       <h3>[m
+[32m+                           SDG 12: Responsible Consumption and Production[m
+[32m+                       </h3>[m
+[32m+                       <p>[m
+[32m+                           This goal aims to ensure sustainable consumption and production patterns by reducing waste generation, promoting efficient use of resources, and encouraging industries to adopt sustainable practices. It also seeks to raise awareness about sustainable lifestyles and ensure that consumers have access to information about sustainable products and services.[m
+[32m+                       </p>[m
+[32m+                   </div>[m
+[32m+               </div>[m
+[32m+               <div class="column">[m
+[32m+                   <div class="card">[m
+[32m+                       <div class="icon-wrapper">[m
+[32m+                           <i class="fa-solid fa-eye"></i>[m
+[32m+                       </div>[m
+[32m+                       <h3>SDG 13: Climate Action</h3>[m
+[32m+                       <p>[m
+[32m+                           This goal aims to take urgent and effective action to combat climate change and its impacts. It seeks to strengthen resilience and adaptive capacity to climate-related hazards and natural disasters, and integrate climate change measures into national policies, strategies, and planning.[m
+[32m+                       </p>[m
+[32m+                   </div>[m
+[32m+               </div>[m
+[32m+               <div class="column">[m
+[32m+                   <div class="card">[m
+[32m+                       <div class="icon-wrapper">[m
+[32m+                           <i class="fa-solid fa-tree"></i>[m
+[32m+                       </div>[m
+[32m+                       <h3>SDG 15: Life on Land </h3>[m
+[32m+                       <p>[m
+[32m+                           This goal aims to protect, restore, and promote the sustainable use of terrestrial ecosystems, sustainably manage forests, combat desertification, halt and reverse land degradation, and halt biodiversity loss. It also seeks to ensure the fair and equitable sharing of the benefits arising from the utilization of genetic resources and promote access to and benefit-sharing of information related to genetic resources.[m
+[32m+                       </p>[m
+[32m+                   </div>[m
+[32m+               </div>[m
+[32m+             </div>[m
+[32m+       [m
+[32m+             <section>[m
+[32m+                 <div class="row">[m
+[32m+                     <h2 class="section-heading">FEATURES</h2>[m
+[32m+                 </div>[m
+[32m+             </section>[m
+[32m+       [m
+[32m+             <div class="row">[m
+[32m+                 <!-- Column One -->[m
+[32m+                 <div class="column">[m
+[32m+                     <div class="card">[m
+[32m+                         <div class="icon-wrapper">[m
+[32m+                             <i class="fa-solid fa-user"></i>[m
+[32m+                         </div>[m
+[32m+                         <h3>User Friendly</h3>[m
+[32m+                         <p>[m
+[32m+                             Lorem ipsum dolor sit amet consectetur adipisicing elit. Officiis[m
+[32m+                             asperiores natus ad molestiae aliquid explicabo. Iste eaque quo et[m
+[32m+                             commodi.[m
+[32m+                         </p>[m
+[32m+                         <div class="right-side">[m
+[32m+                             <div class="button">[m
+[32m+                                 <input type="button" value="View More" />[m
+[32m+                             </div>[m
+[32m+                         </div>[m
+[32m+                     </div>[m
+[32m+                 </div>[m
+[32m+               <!-- Column Two -->[m
+[32m+                 <div class="column">[m
+[32m+                   <div class="card">[m
+[32m+                       <div class="icon-wrapper">[m
+[32m+                           <i class="fa-solid fa-cloud"></i>[m
+[32m+                       </div>[m
+[32m+                       <h3>Super Secure</h3>[m
+[32m+                       <p>[m
+[32m+                           Lorem ipsum dolor sit amet consectetur adipisicing elit. Officiis[m
+[32m+                           asperiores natus ad molestiae aliquid explicabo. Iste eaque quo et[m
+[32m+                           commodi.[m
+[32m+                       </p>[m
+[32m+                       <div class="right-side">[m
+[32m+                           <div class="button">[m
+[32m+                               <input type="button" value="View More" />[m
+[32m+                           </div>[m
+[32m+                       </div>[m
+[32m+       [m
+[32m+                     </div>[m
+[32m+                 </div>[m
+[32m+               <!-- Column Three -->[m
+[32m+                 <div class="column">[m
+[32m+                   <div class="card">[m
+[32m+                       <div class="icon-wrapper">[m
+[32m+                           <i class="fa-solid fa-leaf"></i>[m
+[32m+                       </div>[m
+[32m+                       <h3>Quick Support</h3>[m
+[32m+                       <p>[m
+[32m+                           Lorem ipsum dolor sit amet consectetur adipisicing elit. Officiis[m
+[32m+                           asperiores natus ad molestiae aliquid explicabo. Iste eaque quo et[m
+[32m+                           commodi.[m
+[32m+                       </p>[m
+[32m+                     <div class="right-side">[m
+[32m+                       <div class="button">[m
+[32m+                           <input type="button" value="View More" />[m
+[32m+                       </div>[m
+[32m+                     </div>[m
+[32m+                   </div>[m
+[32m+                 </div>[m
+[32m+             </div>[m
+[32m+             <div class="container">[m
+[32m+               <div class="content">[m
+[32m+                   <div class="left-side">[m
+[32m+                       <div class="address details">[m
+[32m+                           <i class="fas fa-map-marker-alt"></i>[m
+[32m+                           <div class="topic">Address</div>[m
+[32m+                           <div class="text-one">Surkhet, NP12</div>[m
+[32m+                           <div class="text-two">Birendranagar 06</div>[m
+[32m+                       </div>[m
+[32m+                       <div class="phone details">[m
+[32m+                           <i class="fas fa-phone-alt"></i>[m
+[32m+                           <div class="topic">Phone</div>[m
+[32m+                           <div class="text-one">+09XX XXX XXXX</div>[m
+[32m+                           <div class="text-two">+09XX XXX XXXX</div>[m
+[32m+                       </div>[m
+[32m+                       <div class="email details">[m
+[32m+                           <i class="fas fa-envelope"></i>[m
+[32m+                           <div class="topic">Email</div>[m
+[32m+                           <div class="text-one">codinglab@gmail.com</div>[m
+[32m+                           <div class="text-two">info.codinglab@gmail.com</div>[m
+[32m+                       </div>[m
+[32m+                   </div>[m
+[32m+                   <div class="right-side">[m
+[32m+                       <div class="topic-text">Send us a message</div>[m
+[32m+                       <p>If you have any work from me or any types of quries related to our site, you can send us a message from here. It's our pleasure to help you.</p>[m
+[32m+                       <form action="#">[m
+[32m+                           <div class="input-box">[m
+[32m+                               <input type="text" placeholder="Enter your name" />[m
+[32m+                           </div>[m
+[32m+                           <div class="input-box">[m
+[32m+                               <input type="text" placeholder="Enter your email" />[m
+[32m+                           </div>[m
+[32m+                           <div class="input-box message-box">[m
+[32m+                               <textarea placeholder="Enter your message"></textarea>[m
+[32m+                           </div>[m
+[32m+                           <div class="button">[m
+[32m+                               <input type="button" value="Send Now" />[m
+[32m+                           </div>[m
+[32m+                       </form>[m
+[32m+                   </div>[m
+[32m+               </div>[m
+[32m+             </div>[m
+[32m+           </section>[m
+          </div>[m
+          <script src="../static/js/index.js"></script>[m
+[32m +        [m
+      </body>[m
+  </html>[m
+[1mdiff --cc pages/login.html[m
+[1mindex 5ff5392,119930d..0000000[m
+[1m--- a/pages/login.html[m
+[1m+++ b/pages/login.html[m
+[36m@@@ -10,7 -11,8 +10,9 @@@[m
+          <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.2.1/css/all.css" />[m
+          <link rel="stylesheet" href="../static/css/index.css">[m
+      <link rel="stylesheet" href="../static/css/login.css" />[m
+[32m +    <title>We-Agri | Sign-in & Sign-up</title>[m
+[32m+     <link rel="icon" href="../static/images/logo ni joao.png">[m
+[32m+     <title>Sign in & Sign up Form</title>[m
+    </head>[m
+      <body>[m
+          <header>[m
+[36m@@@ -27,7 -28,7 +29,8 @@@[m
+  [m
+                      </li>[m
+                      <li class="nav-item rounded-pill mx-3 px-4">[m
+[32m +                      <a class="nav-link" href="forecast2.html">FORECAST</a>[m
+[32m+                       <a class="nav-link" href="/forecast">FORECAST</a>[m
+                      </li>[m
+                    <li class="nav-item rounded-pill1 px-4" style="visibility:hidden; margin:0 10vw; ">[m
+                      <a class="nav-link" href="#">WE-AGRI</a>[m
+[1mdiff --cc static/css/index.css[m
+[1mindex b7dccf1,986f7ea..0000000[m
+[1m--- a/static/css/index.css[m
+[1m+++ b/static/css/index.css[m
+* Unmerged path pages/about us.html
+* Unmerged path pages/about.html
+* Unmerged path pages/about.html
+[1mdiff --git a/pages/forecast2.html b/pages/forecast2.html[m
+[1mindex 24338da..3f08e1a 100644[m
+[1m--- a/pages/forecast2.html[m
+[1m+++ b/pages/forecast2.html[m
+[36m@@ -27,9 +27,6 @@[m
+                   <li class="nav-item rounded-pill mx-2 px-4 active">[m
+                     <a class="nav-link" href="forecast2.html">FORECAST</a>[m
+                   </li>[m
+[31m-                  <li class="nav-item rounded-pill1 px-4" style="visibility:hidden; margin:0 10vw; ">[m
+[31m-                    <a class="nav-link" href="#">WE-AGRI</a>[m
+[31m-                  </li> [m
+                   <li class="nav-item rounded-pill mx-2 px-4">[m
+                     <a class="nav-link" href="plants.html">PLANTS</a>[m
+                   </li>[m
+* Unmerged path pages/index(mission).html
+[1mdiff --git a/pages/plants.html b/pages/plants.html[m
+[1mindex 1bc00b1..f5ea7da 100644[m
+[1m--- a/pages/plants.html[m
+[1m+++ b/pages/plants.html[m
+[36m@@ -20,16 +20,16 @@[m
+             <div class="collapse navbar-collapse justify-content-evenly" id="we-agriNav">[m
+                 <ul class="navbar-nav align-items-center">[m
+                     <li class="nav-item rounded-pill mx-5 px-4">[m
+[31m-                      <a class="nav-link" href="/home">HOME</a>[m
+[32m+[m[32m                      <a class="nav-link" href="index.html">HOME</a>[m
+                     </li>[m
+                     <li class="nav-item rounded-pill mx-5 px-4">[m
+[31m-                      <a class="nav-link" href="/forecast">FORECAST</a>[m
+[32m+[m[32m                      <a class="nav-link" href="forecast2.html">FORECAST</a>[m
+                     </li>[m
+                     <li class="nav-item rounded-pill mx-5 px-4 active">[m
+[31m-                      <a class="nav-link" href="/plants">PLANTS</a>[m
+[32m+[m[32m                      <a class="nav-link" href="plants.html">PLANTS</a>[m
+                     </li>[m
+                     <li class="nav-item rounded-pill mx-5 px-4">[m
+[31m-                      <a class="nav-link" href="/about">ABOUT</a>[m
+[32m+[m[32m                      <a class="nav-link" href="about_us.html">ABOUT</a>[m
+                     </li>[m
+                     <button type="button" class="btn btn-primary-outline " onclick="check_token()" >[m
+                         <i class="fa-solid fa-user" style="color:#117a3d"></i>[m
+* Unmerged path static/css/index(mission).css
