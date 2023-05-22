@@ -259,7 +259,8 @@ function updateuser(){
 
 //delete user 
 function deleteuser(){
-  let pass_ = document.getElementById('pass_').value;
+  
+  /* let pass_ = document.getElementById('pass_').value;
   var msgdelete = document.getElementById('msgdelete');
 
 
@@ -293,5 +294,5 @@ function deleteuser(){
     }
 
   })
-  .catch(error => console.log("ERROR")) ;
+  .catch(error => console.log("ERROR")) ; */
 };
