@@ -370,7 +370,7 @@ def create_plant(plant: schemas.PlantRequest, db:Session = Depends(get_db)):
 @app.get("/filter_plants", response_model = list[schemas.PlantsResponse])
 def filter_plants(plant_filter: schemas.PlantFilterRequest = Depends (), db:Session = Depends(get_db)):
     plants = crud.filter_plants(db=db, plant_filter=plant_filter)
-    print(plants)
+    # print(plants)
     return [crud.format_plants(plant) for plant in plants]
 
 
