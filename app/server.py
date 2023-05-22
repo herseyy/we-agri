@@ -475,6 +475,18 @@ async def read_file(name:str, db:Session = Depends(get_db)):
 async def submit(request: Request):
     return templates.TemplateResponse("index.html", {"request": request})
 
+@app.get("/forecast", response_class=HTMLResponse)
+async def submit(request: Request):
+    return templates.TemplateResponse("forecast2.html", {"request": request})
+
+@app.get("/plants", response_class=HTMLResponse)
+async def submit(request: Request):
+    return templates.TemplateResponse("plants.html", {"request": request})
+
+@app.get("/about", response_class=HTMLResponse)
+async def submit(request: Request):
+    return templates.TemplateResponse("about_us.html", {"request": request})
+
 @app.get("/login", response_class=HTMLResponse)
 async def submit(request: Request):
     return templates.TemplateResponse("login.html", {"request": request})
@@ -482,4 +494,6 @@ async def submit(request: Request):
 @app.get("/profile", response_class=HTMLResponse)
 async def submit(request: Request):
     return templates.TemplateResponse("profile.html", {"request": request})
+
+
 
