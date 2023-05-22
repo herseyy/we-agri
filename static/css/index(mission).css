@@ -6,7 +6,7 @@
 }
 
 body {
-    background-image: url('bgyo.jpg');
+    background-image: url('../static/images/bgyo.jpg');
     background-size: cover;
     background-attachment: fixed;
 }
