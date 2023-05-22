@@ -170,7 +170,7 @@ function getallusers(){
   let city = document.getElementById('city').value;
   let isactive = document.getElementById('isactive').value;
   let ispublic = document.getElementById('ispublic').value;
-  
+
   var inp_obj = {}
     
   if (q != ""){
