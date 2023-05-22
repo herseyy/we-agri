@@ -366,6 +366,11 @@ main{
 
 /* ---------------- users ----------------- */
 
+#search {
+  width:60%; 
+  margin: 0 auto; 
+  background-color: #CDD9CC;
+}
 
 .editUserModalcontent .fields div {
   margin: 3%;
