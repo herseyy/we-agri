@@ -268,7 +268,7 @@
                                     <select name="isactive" id="isactive">
                                         <option value="">--</option>
                                         <option value="true">true</option>
-                                        <option value="false">true</option>
+                                        <option value="false">false</option>
                                     </select>
                                 </div>
                             </div>
@@ -278,7 +278,7 @@
                                     <select name="ispublic" id="ispublic">
                                         <option value="">--</option>
                                         <option value="true">true</option>
-                                        <option value="false">true</option>
+                                        <option value="false">false</option>
                                     </select>
                                 </div>
                             </div>
@@ -290,8 +290,88 @@
                         </div>
                     </div>
                     <div>
-                        
-                        <table id="plantTable"class="table table-responsive-xl">
+                        <!-- ----------delete user modal----------- -->
+                        <div id="deleteuserModal" class="modal fade" tabindex="-1" role="dialog" aria-labelledby="deleteuserModalTitle" aria-hidden="true">
+                            <div class="modal-dialog modal-dialog-centered" role="document">
+                                <div class="modal-content">
+                                    <div class="modal-header">
+                                        <h5 class="modal-title" id="deleteuserModalTitle">Delete User</h5>
+                                    </div>
+                                    <div class="modal-body deleteuserModalcontent" style="margin:0 auto;">
+                                        <span class="alert" id = "msgdelete" role="alert"></span>
+                                        <div class="input-field">
+                                            <i class='bx bx-lock-alt icon'></i>
+                                            <input type="password" id="pass_" placeholder="Enter pass_ to delete" />
+                                        </div>
+                                        
+                                    </div>
+                                    <div class="modal-footer">
+                                        <button onclick="close_pass()" type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+                                        <button type="button" class="btn btn-success" name="passwordupdate" onclick="deleteuser()">Delete</button>
+                                    </div>
+                                </div>
+                              </div>
+                        </div>
+                        <!-- ------------ edit user modal ------------- -->
+                        <div id="editUserModal" class="modal fade" tabindex="-1" role="dialog" aria-labelledby="editUserModalTitle" aria-hidden="true">
+                            <div class="modal-dialog modal-dialog-centered" role="document">
+                                <div class="modal-content">
+                                    <div class="modal-header">
+                                        <h5 class="modal-title" id="editUserModalTitle">Edit Profile</h5>
+                                    </div>
+                                    <div class="modal-body editUserModalcontent">
+                                        <div class="fields">
+                                            <span class="alert" id = "msg_q" role="alert"></span>
+                                            <div class="input-field">
+                                                <i class='bx bx-user-circle icon'></i>
+                                                <input type="text" id="username" placeholder="Enter username" />
+                                            </div>
+                                            <div class="input-field">
+                                                <i class='bx bx-cake icon'></i>
+                                                <input type="date" id="birthdate" placeholder="Enter birth date" />
+                                            </div>
+                                            <div class="input-field">
+                                                <i class='bx bx-world'></i>
+                                                <input type="text" id="editcountry" placeholder="Enter Country" />
+                                            </div>
+                                            <div class="input-field">
+                                                <i class='bx bx-shield' ></i>
+                                                <input type="text" id="editstate" placeholder="Enter State" />
+                                            </div>
+                                            <div class="input-field">
+                                                <i class='bx bx-buildings' ></i>
+                                                <input type="text" id="editcity" placeholder="Enter City" />
+                                            </div>
+                                            <div class="input-field d-flex align-items-center">
+                                                <label for="userispublic" class="form-label mx-3">is_public</label>
+                                                <div>
+                                                    <select name="userispublic" id="userispublic">
+                                                        <option value="true">true</option>
+                                                        <option value="false">false</option>
+                                                    </select>
+                                                </div>
+                                            </div>
+                                            <div class="input-field d-flex align-items-center">
+                                                <label for="userispublic" class="form-label mx-3">is_public</label>
+                                                <div>
+                                                    <select name="userispublic" id="userispublic">
+                                                        <option value="true">true</option>
+                                                        <option value="false">false</option>
+                                                    </select>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="modal-footer">
+                                        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+                                        <button onclick="updateuser()" type="button" class="btn btn-success">Update</button>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- ------------start------------ -->
+                        <table id="plantTable" class="table table-responsive-xl">
                             <thead class="thead-primary" style="background-color: #99b19c;">
                                 <tr class="text-light">
                                     <th>id</th>
@@ -303,6 +383,7 @@
                                     <th>is_active</th>
                                     <th>is_public</th>
                                     <th>plants</th>
+                                    <th>Edit/Delete</th>
                                 </tr>
                             </thead>
                             <tbody id="usersTable" style="background-color: #EAEFEB;">
@@ -316,7 +397,15 @@
                                     <td>${is_active}</td>
                                     <td>${is_public}</td>
                                     <td>${plants}</td>
-                                  </tr> -->
+                                    <td>
+                                        <button class="btn" id="editbtn" data-bs-toggle="modal" data-bs-target="#editUserModal" >
+                                            <i class="fas fa-edit"></i>
+                                        </button>
+                                        <button class="btn" id="deletebtn" data-bs-toggle="modal" data-bs-target="#deleteuserModal">
+                                            <i class="fa-sharp fa-solid fa-trash"></i>
+                                        </button>
+                                    </td>
+                                </tr> -->
                             </tbody>
                         </table>
                     </div>

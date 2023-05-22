@@ -221,7 +221,7 @@ function getallusers(){
             const {id, username, birthday, country, state, city, is_active, is_public, plants} = object;
            
             return `
-                <tr>
+              <tr>
                 <td>${id}</td>
                 <td>${username}</td>
                 <td>${birthday}</td>
@@ -231,12 +231,68 @@ function getallusers(){
                 <td>${is_active}</td>
                 <td>${is_public}</td>
                 <td>${plants}</td>
-                </tr>`;
+                <td>
+                    <button class="btn" id="editbtn" onclick="updateuser()">
+                        <i class="fas fa-edit"></i>
+                    </button>
+                    <button class="btn" id="deletebtn" onclick="deleteuser()">
+                        <i class="fa-sharp fa-solid fa-trash"></i>
+                    </button>
+                </td>
+              </tr>`;
             
         })/* .catch(error => console.log("ERROR")) */;
         
         usersTable.innerHTML = userDisplay;
     })
     
+};/* 
+getallusers(); */
+
+
+
+// update user
+function updateuser(){
+
 };
-getallusers();
+
+
+//delete user 
+function deleteuser(){
+  
+  /* let pass_ = document.getElementById('pass_').value;
+  var msgdelete = document.getElementById('msgdelete');
+
+
+  if (pass_ == ""){
+    msgdelete.innerHTML="Enter pass_ to delete";
+  }
+
+  var inp_obj = {
+    "pass_":pass_,
+  }
+
+  fetch("/delete_user",{
+    method: 'DELETE',
+    headers: {
+      'Content-type': 'application/json; charset=UTF-8'
+    },
+    body: JSON.stringify(inp_obj)
+  })
+  .then(res => res.json())
+  .then(data => {
+    console.log(data)
+    msgdelete.innerHTML = data["status"]
+    msgdelete.style.display = "inline-block"
+    msgdelete.style.width = "100%"
+    if (data["status"] == "success"){
+      // console.log(data["status"])
+      msgdelete.setAttribute('class', 'alert alert-success');
+      document.getElementById("pass_").value = "";
+    } else {
+      msg.setAttribute('class', 'alert alert-danger');
+    }
+
+  })
+  .catch(error => console.log("ERROR")) ; */
+};
