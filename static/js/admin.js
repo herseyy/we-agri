@@ -159,6 +159,9 @@ function createPlants(){
 //users
 const user_url = 'http://127.0.0.1:8000/filter_users';
 
+
+function getallusers(){
+  
   let q = document.getElementById('q').value;
   let upperAge = document.getElementById('upperAge').value;
   let lowerAge = document.getElementById('lowerAge').value;
@@ -167,8 +170,7 @@ const user_url = 'http://127.0.0.1:8000/filter_users';
   let city = document.getElementById('city').value;
   let isactive = document.getElementById('isactive').value;
   let ispublic = document.getElementById('ispublic').value;
-
-function getallusers(){
+  
   var inp_obj = {}
     
   if (q != ""){
@@ -199,8 +201,8 @@ function getallusers(){
   console.log(inp_obj)
 
   let query = Object.keys(inp_obj)
-        .map(k =>encodeURIComponent(inp_obj[k]) + '=' + encodeURIComponent(k))
-        .join('&');
+    .map(k =>encodeURIComponent(k) + '=' + encodeURIComponent(inp_obj[k]))
+    .join('&');
     
         const filterusers_url = "http://127.0.0.1:8000/filter_users?" + query
         console.log(filterusers_url)
