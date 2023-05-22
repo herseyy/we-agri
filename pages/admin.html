@@ -101,7 +101,7 @@
             <li class="nav-heading">Pages</li>
 
             <li class="nav-item">
-                <a class="nav-link collapsed" href="/profile">
+                <a class="nav-link collapsed" onclick="check_token()">
                     <i class="fa-regular fa-user"></i>
                     <span>Profile</span>
                 </a>
@@ -151,7 +151,7 @@
                           <h5 class="card-title">Create Plant</h5>
             
                           <!-- createplant Form -->
-                          <form id="createplant" class="row g-3">
+                          <div id="createplant" class="row g-3">
                             <div class="col-12 d-flex">
                               <label for="inputName" class="form-label col-3">Name</label>
                               <input type="text" class="form-control" id="inputName">
@@ -222,16 +222,16 @@
                                     </div>
                                 </div>
                             </div>
-                            <div class="col-12 d-flex">
+                            <div class="col-12 d-flex" id="add_img">
                                 <label for="imgFile" class="form-label col-3">Add image</label>
                                 <input type="file" id="imgFile" name="imgFile">
                             </div>
-                            <div id="errormsg" class="col-12"></div>
+                            <div id="errormsg" class="col-12 alert alert-danger"></div>
                             <div class="text-center">
-                              <button type="submit" class="btn btn-success" onclick="createPlants()">Submit</button>
+                              <button class="btn btn-success" onclick="createPlants()">Save</button>
                               <button type="reset" class="btn btn-secondary">Reset</button>
                             </div>
-                          </form><!-- createplant Form -->
+                          </div><!-- createplant Form -->
             
                         </div>
                       </div>

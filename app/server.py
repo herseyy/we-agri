@@ -398,8 +398,6 @@ def get_api():
 
 
 
-
-
 @app.post("/upload/{name}")
 async def create_upload_file(name:str, file: UploadFile = File(...), db:Session = Depends(get_db)):
 
