@@ -244,14 +244,25 @@ def change_pass(db: Session, current_user: User, pass_: UserChangePass):
 	if pass_.old_pass is not None and verify_password(pass_.old_pass, current_user.hashed_pass):
 		if pass_.old_pass == pass_.new_pass1:
 			status["status"] = "error new pass can't be the same as old"
+			print("Error old pass == new pass")
 			return status
-		elif pass_.new_pass1 is not None and pass_.new_pass2 == pass_.new_pass1:
+		elif pass_.new_pass1 == "":
+			status["status"] = "Enter new pass"
+			print("Enter new pass")
+			return status
+		elif len(pass_.new_pass1) < 5:
+			status["status"] = "pass too short"
+			print("pass too short")
+			return status
+		elif pass_.new_pass1 != "" and pass_.new_pass2 == pass_.new_pass1:
 			current_user.hashed_pass = get_hash_password(pass_.new_pass1)
 		else:
 			status["status"] = "pass1 != pass2"
+			print("pass!=pass1")
 			return status
 	else:
 		status["status"] = "incorrect old pass"
+		print("incorrect old pass_")
 		return status
 	db.commit()
 
@@ -423,7 +434,10 @@ def update_user(db: Session, current_user: User, info: UserUpdateRequest):
 
 	# if current_user is None:
 		# return current_user
-
+	if info.firstname != current_user.firstname:
+		current_user.firstname = info.firstname
+	if info.lastname != current_user.lastname:
+		current_user.lastname = info.lastname
 	if info.birthday != current_user.birthday:
 		current_user.birthday = info.birthday
 	if info.state != current_user.state:
@@ -478,6 +492,8 @@ def format_user(db_user: User):
 	return UserResponse(
 		id = db_user.id,
 		username = db_user.username,
+		firstname = db_user.firstname,
+		lastname = db_user.lastname,
 		birthday = db_user.birthday,
 		# hashed_pass = db_user.hashed_pass,
 		country = db_user.country,

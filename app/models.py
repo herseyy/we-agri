@@ -23,6 +23,8 @@ class User(Base):
 
     id = Column(Integer, primary_key=True, index=True)
     username = Column(String, unique=True, index=True, nullable=False)
+    firstname = Column(String, nullable=True)
+    lastname = Column(String, nullable=True)
     birthday = Column(Date, nullable=True)
     hashed_pass = Column(String, nullable=False)
     country = Column(String, nullable=False)
