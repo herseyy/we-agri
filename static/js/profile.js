@@ -1,20 +1,20 @@
-function check_token(){
-  fetch("/")
-    .then(response => response.json())
-    .then(data => {
-    console.log(data)
-    if (data['detail']){
-      window.location.href = '../';
-    }
-    else {
-      window.location.href = '../profile';
-    }
-    }).catch((error) => {
-        console.error('Error:', error);
-      });
-}
+// function check_token(){
+//   fetch("/")
+//     .then(response => response.json())
+//     .then(data => {
+//     console.log(data)
+//     if (data['detail']){
+//       window.location.href = '../';
+//     }
+//     else {
+//       window.location.href = '../profile';
+//     }
+//     }).catch((error) => {
+//         console.error('Error:', error);
+//       });
+// }
 
-check_token()
+// check_token()
 
 
 

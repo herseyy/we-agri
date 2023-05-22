@@ -382,7 +382,7 @@ def update_user_plant(db: Session, plant_info:UserPlantsRequest, current_user: U
 
 	user_plant = db.query(UserPlants).filter(UserPlants.user_id == current_user.id)\
 				.filter(UserPlants.plant_id == plant_id).first()
-	print(user_plant)
+	# print(user_plant)
 
 
 	if plant_info.is_harvested != None:
@@ -400,7 +400,7 @@ def update_user_plant(db: Session, plant_info:UserPlantsRequest, current_user: U
 def filter_user_plants(user: User, db:Session, user_plant_filter: FilterCurrentUserPlants = None):
 	query = db.query(UserPlants).filter(UserPlants.user_id == user.id)
 
-	print(user_plant_filter.category)
+	# print(user_plant_filter.category)
 	if user_plant_filter.is_harvested != None:
 		query = query.filter(UserPlants.is_harvested == user_plant_filter.is_harvested)
 	if user_plant_filter.category != None:
@@ -433,7 +433,7 @@ def format_user_plants(db_user_plants: UserPlants):
 	if db_user_plants is None:
 		# print('aaa')
 		return []
-	print(db_user_plants)
+	# print(db_user_plants)
 	return UserPlantsResponse(
 		user_id = db_user_plants.user_id,
 		plant_id = db_user_plants.plant_id,
