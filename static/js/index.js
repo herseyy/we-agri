@@ -13,3 +13,9 @@ function check_token(){
 	      console.error('Error:', error);
 	    });
 }
+
+window.onbeforeunload = () => {
+  for(const form of document.getElementsByTagName('form')) {
+    form.reset();
+  }
+}
