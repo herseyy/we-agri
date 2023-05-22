@@ -480,8 +480,42 @@ function btn_click(clicked_id) {
   }
 }
 
+function add_plant() {
+  id = document.querySelector('input[name="plant"]:checked').id;
+  cat = document.getElementById('addCat').value
+  date = document.getElementById("addDatePlanted").value
+
+  inp_obj = {
+    "is_harvested": false,
+    "date_planted": date
+  }
+  console.log(id)
+  fetch(`/add_user_plant/${id}`, {
+    method: 'POST',
+    headers: {
+      'Content-Type': 'application/json'
+    },
+    body: JSON.stringify(inp_obj)
+  })
+    .then(res => res.json())
+    .then(data => {
+      console.log(data)
+
+    }).catch((error) => {
+      console.error('Error:', error);
+    });
+  document.getElementById("msg_add").innerHTML = "success"
+  let today = new Date().toISOString().slice(0, 10)
+  document.getElementById('addCat').value = ""
+  document.getElementById("addDatePlanted").value = today
+  document.querySelector('input[name="plant"]:checked').checked = false;
+}
+
+
 
 function fetch_plants() {
+
+
   plants_url = "/filter_plants?"
 
   fetch(plants_url)
@@ -490,5 +524,65 @@ function fetch_plants() {
     })
     .then(data => {
       console.log(data)
+
+      const checklist = document.getElementById("checklist");
+      checklist.innerHTML='';
+
+      let plantDisplay = data.map((object)=> {
+
+        console.log(object)
+        return `<input type="radio" id="${object.id}" name="plant" value="${object.name}">
+                <label for="${object.id}">${object.name}</label><br>`
+// <input type="radio" id="html" name="fav_language" value="HTML">
+//   <label for="html">HTML</label><br>
+//   <input type="radio" id="css" name="fav_language" value="CSS">
+//   <label for="css">CSS</label><br>
+//   <input type="radio" id="javascript" name="fav_language" value="JavaScript">
+//   <label for="javascript">JavaScript</label>
+      })
+      checklist.innerHTML = plantDisplay;
+      let today = new Date().toISOString().slice(0, 10)
+
+      document.getElementById('addDatePlanted').value = today
+      document.getElementById("addCat").value = ""
+
     })
 }
+
+
+function listQ(){
+  console.log(this.value)
+  cat = this.value
+  inp_obj = {}
+
+  if (cat != ""){
+    inp_obj = Object.assign({"category":cat}, inp_obj)
+  }
+
+  let query = Object.keys(inp_obj)
+    .map(k =>encodeURIComponent(k) + '=' + encodeURIComponent(inp_obj[k]))
+    .join('&');
+  plants_url = "/filter_plants?" + query 
+
+  fetch(plants_url)
+  .then(response => {
+    return response.json();
+  })
+  .then(data => {
+   console.log(data)
+
+    const checklist = document.getElementById("checklist");
+    checklist.innerHTML='';
+
+    let plantDisplay = data.map((object)=> {
+
+      console.log(object)
+      return `<input type="radio" id="${object.id}" name="plant" value="${object.name}">
+              <label for="${object.id}">${object.name}</label><br>`
+
+    })
+    checklist.innerHTML = plantDisplay;
+  })
+}
+document.getElementById("addCat").onchange = listQ;
+
