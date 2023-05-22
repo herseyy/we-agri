@@ -1,22 +1,3 @@
-<<<<<<< HEAD
-function check_token(){
-  fetch("/")
-    .then(response => response.json())
-    .then(data => {
-    console.log(data)
-    if (data['detail']){
-      window.location.href = '../';
-    }
-    else {
-      window.location.href = '../profile';
-    }
-    }).catch((error) => {
-        console.error('Error:', error);
-      });
-};
-
-check_token();
-=======
 // function check_token(){
 //   fetch("/")
 //     .then(response => response.json())
@@ -34,7 +15,6 @@ check_token();
 // }
 
 // check_token()
->>>>>>> f6c09ed1d0efccb6a940b35878178ca094017314
 
 
 

@@ -226,8 +226,6 @@ function getPlants(){
   let summer = "";
   let rainy = "";
   let psearch = document.getElementById('plantSearch').value;
-  let ptime_range = document.getElementById('p_time').value;
-  var split = ptime_range.split(',');
 
   for (i in checkbox()){
       // console.log(checkbox()[i])
@@ -254,12 +252,6 @@ function getPlants(){
 
   if (psearch != ""){
       inp_obj = Object.assign({"name":psearch}, inp_obj)
-  }
-  if (ptime_range != ""){
-      inp_obj = Object.assign({"upper_p_time":split[1]}, inp_obj)
-  }
-  if (ptime_range != ""){
-      inp_obj = Object.assign({"lower_p_time":split[0]}, inp_obj)
   }
   if (rainy != ""){
       inp_obj = Object.assign({"rainy_season":rainy}, inp_obj)
