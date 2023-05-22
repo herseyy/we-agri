@@ -10,7 +10,7 @@
 
 :root{
     /* ===== Colors ===== */
-    --body-color: #D9D9CC;
+    --body-color: #CDD9CC;
     --sidebar-color: #73A942;
     --primary-color: #1A4301;
     --primary-color-light: #F6F5FF;
@@ -91,7 +91,7 @@ a {
     transition: all 0.5s;
     z-index: 997;
     height: 60px;
-    box-shadow: 0px 2px 20px rgba(217, 217, 204, 0.1);
+    box-shadow: 0px 2px 20px rgba(16, 16, 16, 0.1);
     background-color: var(--sidebar-color);
     padding-left: 20px;
     /* Toggle Sidebar Button */
@@ -217,7 +217,7 @@ a {
       margin-left: 300px;
     }
   }
-  
+
   @media (max-width: 1199px) {
     .toggle-sidebar .sidebar {
       left: 0;
@@ -289,10 +289,6 @@ a {
     color: var(--sidebar-color);
   }
   
-  .sidebar-nav .nav-link:not(.collapsed) .bi-chevron-down {
-    transform: rotate(180deg);
-  }
-  
   .sidebar-nav .nav-content {
     padding: 5px 0 0 0;
     margin: 0;
@@ -326,6 +322,8 @@ a {
     background-color: var(--sidebar-color);
   }
 
+/* -------------- main css --------------- */
+
 main #users {
     display:none;
 }
@@ -336,10 +334,52 @@ main #forms{
 
 main{
     margin-top:60px;
-    padding:5%;
+    padding:2% 5%;
     background:var(--body-color);
 }
 
+
+.sectionTitle {
+  font-weight:700;
+  color:green;
+}
+
+.sectionHeader {
+  margin-bottom: 3%;
+}
+
+/* ---------------- forms ----------------- */
 #createplant .col-12 .col-5 {
     margin:0 auto;
+}
+
+#createplant div label {
+  margin-right:10px;
+}
+
+#createplant input[type="number"]{
+  width:150px;
+}
+
+
+/* ---------------- users ----------------- */
+.userFilter{
+  margin: 3%;
+}
+
+.userFilter h3 {
+  font-size:large;
+  margin-right:3%;
+} 
+
+.userFilter div div {
+  padding:10px;
+}
+
+.userFilter div div label{
+  margin:5px;
+}
+
+.userFilter input[type="number"]{
+  width:50px;
 }
