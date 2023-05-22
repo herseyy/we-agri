@@ -365,26 +365,7 @@ main{
 
 
 /* ---------------- users ----------------- */
-.userFilter{
-  margin: 3%;
-}
 
-.userFilter h3 {
-  font-size:large;
-  margin-right:3%;
-} 
-
-.userFilter div div {
-  padding:10px;
-}
-
-.userFilter div div label{
-  margin:5px;
-}
-
-.userFilter input[type="number"]{
-  width:50px;
-}
 
 .editUserModalcontent .fields div {
   margin: 3%;
