@@ -259,5 +259,39 @@ function updateuser(){
 
 //delete user 
 function deleteuser(){
+  let pass_ = document.getElementById('pass_').value;
+  var msgdelete = document.getElementById('msgdelete');
 
+
+  if (pass_ == ""){
+    msgdelete.innerHTML="Enter pass_ to delete";
+  }
+
+  var inp_obj = {
+    "pass_":pass_,
+  }
+
+  fetch("/delete_user",{
+    method: 'DELETE',
+    headers: {
+      'Content-type': 'application/json; charset=UTF-8'
+    },
+    body: JSON.stringify(inp_obj)
+  })
+  .then(res => res.json())
+  .then(data => {
+    console.log(data)
+    msgdelete.innerHTML = data["status"]
+    msgdelete.style.display = "inline-block"
+    msgdelete.style.width = "100%"
+    if (data["status"] == "success"){
+      // console.log(data["status"])
+      msgdelete.setAttribute('class', 'alert alert-success');
+      document.getElementById("pass_").value = "";
+    } else {
+      msg.setAttribute('class', 'alert alert-danger');
+    }
+
+  })
+  .catch(error => console.log("ERROR")) ;
 };
