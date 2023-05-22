@@ -1,3 +1,4 @@
+<<<<<<< HEAD
 function check_token(){
   fetch("/")
     .then(response => response.json())
@@ -15,6 +16,25 @@ function check_token(){
 };
 
 check_token();
+=======
+// function check_token(){
+//   fetch("/")
+//     .then(response => response.json())
+//     .then(data => {
+//     console.log(data)
+//     if (data['detail']){
+//       window.location.href = '../';
+//     }
+//     else {
+//       window.location.href = '../profile';
+//     }
+//     }).catch((error) => {
+//         console.error('Error:', error);
+//       });
+// }
+
+// check_token()
+>>>>>>> f6c09ed1d0efccb6a940b35878178ca094017314
 
 
 
@@ -449,7 +469,7 @@ function get_current_user_plants() {
                 <td>${object.date_harvested}</td>
               </tr>
             `
-    }).join('');
+    });
     parent.innerHTML = plantDisplay;
     // document.getElementById("")
   })
@@ -560,7 +580,7 @@ function fetch_plants() {
 //   <label for="css">CSS</label><br>
 //   <input type="radio" id="javascript" name="fav_language" value="JavaScript">
 //   <label for="javascript">JavaScript</label>
-      }).join('');
+      });
       checklist.innerHTML = plantDisplay;
       let today = new Date().toISOString().slice(0, 10)
 
