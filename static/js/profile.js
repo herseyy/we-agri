@@ -586,3 +586,21 @@ function listQ(){
 }
 document.getElementById("addCat").onchange = listQ;
 
+
+
+// remove cookies
+function logout() {
+  fetch("/logout", {
+    method: 'DELETE',
+    headers: {
+      'Content-type': 'application/json; charset=UTF-8'
+    },
+    body: JSON.stringify(inp_obj)
+  })
+  .then(res => res.json())
+  .then(data => {
+    console.log(data)
+    window.location.href = '../login';
+  })
+  .catch(error => console.log("ERROR")) 
+}
