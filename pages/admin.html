@@ -12,6 +12,7 @@
 
         <link rel="stylesheet" href="../static/css/admin.css" />
         
+        <link rel="icon" href="../static/images/logo ni joao.png">
         <title>WE-AGRI | ADMIN</title>
     </head>
     <body class="">
@@ -241,63 +242,81 @@
                     <div class="sectionHeader">
                         <h1 class="sectionTitle">Users</h1>
                     </div>
-                    <div id="advsearch" style="width:60%; margin:0 auto;" class=" mb-4 justify-content-center">
-                        <div id="advSearchCollapse" class=" card card-body">
-                            <div class="my-2"><i class="fa-solid fa-filter"></i> Filters</div>
-                            <div id="filterCbox">
-                                <div class="row">
-                                    <div class="col">
-                                        <div class="mb-1"><label for="p_time">Planting Time</label></div>
-                                        <div>
-                                            <select name="p_time" id="p_time" onclick="getPlants()">
-                                                <option value="">--</option>
-                                                <option value="1,6">1-6weeks</option>
-                                                <option value="7,12">7-12weeks</option>
-                                                <option value="13,18">13-18weeks</option>
-                                                <option value="19,24">19-24weeks</option>
-                                                <option value="25,30">25-30weeks</option>
-                                                <option value="31,36">31-36weeks</option>
-                                                <option value="37, 999999">37+ weeks</option>
-                                            </select>
+                    <!-- ----------- search ----------- -->
+                    <div>
+                        <div id="search">
+                            <div class="form form-control" style="background-color: #CDD9CC; border: none;">
+                                <div class="input-group ">
+                                    <input type="text" id="plantSearch" class="form-control" placeholder="   Search Plant..." aria-label="Search"/>
+                                    <button id="searchBtn" type="button" class="btn btn-success" style="margin-right:1%;" onclick="getPlants()">
+                                        <i class="fas fa-search"></i>
+                                    </button>
+                                    <button id="advSearchbtn" type="button" class="btn btn-outline-success " data-bs-toggle="collapse" data-bs-target="#advSearchCollapse" aria-hidden="false" aria-controls="advSearchCollapse">
+                                        Advanced Search 
+                                    </button>
+                                </div>
+                            </div>
+                            <div id="plantsearchList"></div>
+                        </div>
+                        <div id="advsearch" style="width:60%; margin:0 auto;" class=" mb-4 justify-content-center">
+                            <div id="advSearchCollapse" class="collapse card card-body">
+                                <div class="my-2"><i class="fa-solid fa-filter"></i> Filters</div>
+                                <div id="filterCbox">
+                                    <div class="row">
+                                        <div class="col">
+                                            <div class="mb-1"><label for="p_time">Planting Time</label></div>
+                                            <div>
+                                                <select name="p_time" id="p_time" onclick="getPlants()">
+                                                    <option value="">--</option>
+                                                    <option value="1,6">1-6weeks</option>
+                                                    <option value="7,12">7-12weeks</option>
+                                                    <option value="13,18">13-18weeks</option>
+                                                    <option value="19,24">19-24weeks</option>
+                                                    <option value="25,30">25-30weeks</option>
+                                                    <option value="31,36">31-36weeks</option>
+                                                    <option value="37, 999999">37+ weeks</option>
+                                                </select>
+                                            </div>
+                                            
+                                        </div>
+                                        <div class="col">
+                                            <div class="mb-1">Season</div>
+                                                <div class="form-check">
+                                                    <label class="form-check-label" for="summerTrue"></label>
+                                                        <input class="form-check-input" type="checkbox" value="true" id="summerTrue" name="checkbox"  onclick="getPlants()" >
+                                                            Summer
+                                                    </label>
+                                                </div>
+                                                <div class="form-check">
+                                                    <label class="form-check-label" for="rainyTrue"></label>
+                                                        <input class="form-check-input" type="checkbox" value="true" id="rainyTrue" name="checkbox"  onclick="getPlants()">
+                                                            Rainy
+                                                    </label>
+                                                </div>
+                                        </div>
+                                        <div class="col">
+                                            <div class="mt-2 mb-1">Category</div>
+                                                <div class="form-check">
+                                                    <label class="form-check-label" for="catFruit"></label>
+                                                        <input class="form-check-input" type="checkbox" value="fruit" id="catFruit"name="checkbox"  onclick="getPlants()">
+                                                            Fruits
+                                                    </label>
+                                                </div>
+                                                <div class="form-check">
+                                                    <label class="form-check-label" for="catVeggie"></label>
+                                                        <input class="form-check-input" type="checkbox" value="vegetable" id="catVeggie" name="checkbox"  onclick="getPlants()">
+                                                            Vegetables
+                                                    </label>
+                                                </div>
                                         </div>
                                         
                                     </div>
-                                    <div class="col">
-                                        <div class="mb-1">Season</div>
-                                            <div class="form-check">
-                                                <label class="form-check-label" for="summerTrue"></label>
-                                                    <input class="form-check-input" type="checkbox" value="true" id="summerTrue" name="checkbox"  onclick="getPlants()" >
-                                                        Summer
-                                                </label>
-                                            </div>
-                                            <div class="form-check">
-                                                <label class="form-check-label" for="rainyTrue"></label>
-                                                    <input class="form-check-input" type="checkbox" value="true" id="rainyTrue" name="checkbox"  onclick="getPlants()">
-                                                        Rainy
-                                                </label>
-                                            </div>
-                                    </div>
-                                    <div class="col">
-                                        <div class="mt-2 mb-1">Category</div>
-                                            <div class="form-check">
-                                                <label class="form-check-label" for="catFruit"></label>
-                                                    <input class="form-check-input" type="checkbox" value="fruit" id="catFruit"name="checkbox"  onclick="getPlants()">
-                                                        Fruits
-                                                </label>
-                                            </div>
-                                            <div class="form-check">
-                                                <label class="form-check-label" for="catVeggie"></label>
-                                                    <input class="form-check-input" type="checkbox" value="vegetable" id="catVeggie" name="checkbox"  onclick="getPlants()">
-                                                        Vegetables
-                                                </label>
-                                            </div>
-                                    </div>
                                     
                                 </div>
-                                
-                            </div>
-                        </div>   
+                            </div>   
+                        </div>
                     </div>
+                    
                     <div>
                         <!-- ----------delete userplant modal----------- -->
                         <div id="deleteuserModal" class="modal fade" tabindex="-1" role="dialog" aria-labelledby="deleteuserModalTitle" aria-hidden="true">
@@ -418,30 +437,29 @@
                             <thead class="thead-primary" style="background-color: #99b19c;">
                                 <tr class="text-light">
                                     <th>id</th>
-                                    <th>Username</th>
-                                    <th>Birthday</th>
-                                    <th>Country</th>
-                                    <th>state</th>
-                                    <th>city</th>
-                                    <th>is_active</th>
-                                    <th>is_public</th>
-                                    <th>plants</th>
+                                    <th>Name</th>
+                                    <th>Category</th>
+                                    <th>Info</th>
+                                    <th>Temp</th>
+                                    <th>Humidity</th>
+                                    <th>Rain Tolerance</th>
+                                    <th>Plant Growth</th>
+                                    <th>Season</th>
                                     <th>Edit/Delete</th>
                                 </tr>
                             </thead>
                             <tbody id="usersTable" style="background-color: #EAEFEB;">
-                                <tr>
+                                <!-- <tr>
                                     <td>${id}</td>
-                                    <td>${username}</td>
-                                    <td>${birthday}</td>
-                                    <td>${country}</td>
-                                    <td>${state}</td>
-                                    <td> ${city}</td>
-                                    <td>${is_active}</td>
-                                    <td>${is_public}</td>
-                                    <td id="plantcol">  <!-- ${plants} --> 
-                                        <div class="plants"> [${name}, ${category}]</div>
-                                    </td>
+                                    <td>${name}</td>
+                                    <td>${category}</td>
+                                    <td>${p_info}</td>
+                                    <td>${min-temp} - ${max-temp}</td>
+                                    <td> ${min_humidity} - ${max_humidity}</td>
+                                    <td>${min_rain_tolerance} - ${max_rain_tolerance}</td>
+                                    <td>${min_planting_time} - ${max_planting_time}</td>
+                                    <td>${summer}</td>
+                                    <td>${rainy_season}</td>
                                     <td>
                                         <button class="btn" id="editbtn" data-bs-toggle="modal" data-bs-target="#editUserModal" >
                                             <i class="fas fa-edit"></i>
@@ -450,7 +468,7 @@
                                             <i class="fa-sharp fa-solid fa-trash"></i>
                                         </button>
                                     </td>
-                                </tr>
+                                </tr> -->
                             </tbody>
                         </table>
                     </div>

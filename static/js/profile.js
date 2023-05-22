@@ -449,7 +449,7 @@ function get_current_user_plants() {
                 <td>${object.date_harvested}</td>
               </tr>
             `
-    })
+    }).join('');
     parent.innerHTML = plantDisplay;
     // document.getElementById("")
   })

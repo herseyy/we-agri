@@ -169,7 +169,7 @@ function getPlants(){
                 </div>
             </div>`;
             
-        })/* .catch(error => console.log("ERROR")) */;
+        }).join('')/* .catch(error => console.log("ERROR")) */;
         document.getElementById('catFruit').value = "";
         document.getElementById('catVeggie').value = "";
         document.getElementById('summerTrue').value = "";

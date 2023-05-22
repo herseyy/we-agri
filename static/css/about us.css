@@ -1,9 +1,25 @@
+@import url('https://fonts.googleapis.com/css2?family=Montserrat&display=swap');
+
+@font-face {
+    font-family: "Proxima Nova";
+    src: url(../fonts/ProximaNovaAltBold.otf);
+}
+@font-face {
+    font-family: "Proxima Nova Reg";
+    src: url(../fonts/ProximaNova-Regular.otf);
+}
+
 * {
   padding: 0;
   margin: 0;
   box-sizing: border-box;
   font-family: "Proxima Nova", Gotham;
 }
+
+html{
+    overflow-x:hidden;
+}
+
 body {
     justify-content: center;
     align-items: center;

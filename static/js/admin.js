@@ -158,10 +158,10 @@ function createPlants(){
         errormsg.innerHTML= "Enter maximum rain tolerance"
     }
     if(minptime == ""){
-        errormsg.innerHTML= "Enter maximum rain tolerance"
+        errormsg.innerHTML= "Enter minimum planting time"
     }
     if(maxptime == ""){
-        errormsg.innerHTML= "Enter maximum rain tolerance"
+        errormsg.innerHTML= "Enter maximum planting time"
     }
 
     var inp_obj = {
@@ -213,100 +213,9 @@ function createPlants(){
     
 }
 
-//users
-const user_url = 'http://127.0.0.1:8000/filter_users';
+//plants
 
-
-function getallusers(){
-  
-  let q = document.getElementById('q').value;
-  let upperAge = document.getElementById('upperAge').value;
-  let lowerAge = document.getElementById('lowerAge').value;
-  let country = document.getElementById('country').value;
-  let state = document.getElementById('state').value;
-  let city = document.getElementById('city').value;
-  let isactive = document.getElementById('isactive').value;
-  let ispublic = document.getElementById('ispublic').value;
-
-  var inp_obj = {}
-    
-  if (q != ""){
-      inp_obj = Object.assign({"q":q}, inp_obj)
-  }
-  if (upperAge != ""){
-      inp_obj = Object.assign({"upperAge":upperAge}, inp_obj)
-  }
-  if (lowerAge != ""){
-      inp_obj = Object.assign({"lowerAge":lowerAge}, inp_obj)
-  }
-  if (country != ""){
-      inp_obj = Object.assign({"country":country}, inp_obj)
-  }
-  if (state != ""){
-      inp_obj = Object.assign({"state":state}, inp_obj)
-  }
-  if (city != ""){
-      inp_obj = Object.assign({"city":city}, inp_obj)
-  }
-  if (isactive != ""){
-      inp_obj = Object.assign({"is_active":isactive}, inp_obj)
-  }
-  if (ispublic != ""){
-      inp_obj = Object.assign({"is_public":ispublic}, inp_obj)
-  }
-  
-  console.log(inp_obj)
-
-  let query = Object.keys(inp_obj)
-    .map(k =>encodeURIComponent(k) + '=' + encodeURIComponent(inp_obj[k]))
-    .join('&');
-    
-        const filterusers_url = "http://127.0.0.1:8000/filter_users?" + query
-        console.log(filterusers_url)
-
-    fetch(user_url)
-    .then(res => {
-        return res.json()
-      })
-    
-    .then(data =>{
-        // console.log(data)
-        const usersTable = document.getElementById("usersTable");
-        usersTable.innerHTML='';
-
-        let userDisplay = data.map((object)=> {
-            const {id, username, birthday, country, state, city, is_active, is_public, plants} = object;
-           
-            return `
-              <tr>
-                <td>${id}</td>
-                <td>${username}</td>
-                <td>${birthday}</td>
-                <td>${country}</td>
-                <td>${state}</td>
-                <td> ${city}</td>
-                <td>${is_active}</td>
-                <td>${is_public}</td>
-                <td id="plantcol">${plants}</td>
-                <td>
-                    <button class="btn" id="editbtn" onclick="updateuser()">
-                        <i class="fas fa-edit"></i>
-                    </button>
-                    <button class="btn" id="deletebtn" onclick="deleteuser()">
-                        <i class="fa-sharp fa-solid fa-trash"></i>
-                    </button>
-                </td>
-              </tr>`;
-            
-        })/* .catch(error => console.log("ERROR")) */;
-        
-        usersTable.innerHTML = userDisplay;
-    })
-    
-};/* 
-getallusers(); */
-
-
+const allPlants_url = "http://127.0.0.1:8000/filter_plants";
 
 //plant filter 
 
@@ -316,6 +225,7 @@ function getPlants(){
   let vegetable = ""; 
   let summer = "";
   let rainy = "";
+  let psearch = document.getElementById('plantSearch').value;
   let ptime_range = document.getElementById('p_time').value;
   var split = ptime_range.split(',');
 
@@ -339,9 +249,9 @@ function getPlants(){
       }
   }
 
-
   var inp_obj = {}
-  
+  console.log(inp_obj)
+
   if (psearch != ""){
       inp_obj = Object.assign({"name":psearch}, inp_obj)
   }
@@ -369,92 +279,226 @@ function getPlants(){
       }
   };
 
-  // console.log(allPlants_url)
-  
-  let query = Object.keys(inp_obj)
-      .map(k =>encodeURIComponent(k) + '=' + encodeURIComponent(inp_obj[k]))
-      .join('&');
-  
-      const filter_url = "http://127.0.0.1:8000/filter_plants?" + query
-      console.log(filter_url)
 
-  // console.log(inp_obj)
+  document.getElementById("plantSearch")
+  .addEventListener("keyup", function(event) {
+  event.preventDefault();
+  if (event.key === 'Enter') {
+      document.getElementById("searchBtn").click();
+  }
+});
+
+// console.log(allPlants_url)
+
+let query = Object.keys(inp_obj)
+    .map(k =>encodeURIComponent(k) + '=' + encodeURIComponent(inp_obj[k]))
+    .join('&');
+
+    const filter_url = "http://127.0.0.1:8000/filter_plants?" + query
+    console.log(filter_url)
+
+// console.log(inp_obj)
+
+fetch(filter_url)
+.then(res => {
+    return res.json()
+  })
+
+.then(data =>{
+    // console.log(data)
+    const usersTable = document.getElementById("usersTable");
+    usersTable.innerHTML='';
+
+    let userplantDisplay = data.map((object)=> {
+        const {id, name, category, min_temp, max_temp, min_humidity, max_humidity, min_rain_tolerance, max_rain_tolerance, min_planting_time, max_planting_time, rainy_season, summer, p_info} = object;
+        
+        let printSeason;
+            if (summer && rainy_season){
+                printSeason = "Wet and Dry";
+            } else if (summer && !rainy_season){
+                printSeason = "Summer";
+            }else if (!summer && rainy_season){
+                printSeason = "Rainy";
+            }else {
+                printSeason = "Neither";
+            }
+
+        return `
+          <tr>
+            <td>${id}</td>
+            <td>${name}</td>
+            <td>${category}</td>
+            <td>${p_info}</td>
+            <td>${min_temp} - ${max_temp}</td>
+            <td> ${min_humidity} - ${max_humidity}</td>
+            <td>${min_rain_tolerance} - ${max_rain_tolerance}</td>
+            <td>${min_planting_time} - ${max_planting_time}</td>
+            <td>${printSeason}</td>
+            <td>
+                <button class="btn" id="editbtn" data-bs-toggle="modal" data-bs-target="#editUserModal" >
+                    <i class="fas fa-edit"></i>
+                </button>
+                <button class="btn" id="deletebtn" data-bs-toggle="modal" data-bs-target="#deleteuserModal">
+                    <i class="fa-sharp fa-solid fa-trash"></i>
+                </button>
+            </td>
+          </tr>`;
+        
+    }).join('')/* .catch(error => console.log("ERROR")) */;
+    document.getElementById('catFruit').value = "";
+    document.getElementById('catVeggie').value = "";
+    document.getElementById('summerTrue').value = "";
+    document.getElementById('rainyTrue').value = "";
+
+    usersTable.innerHTML = userplantDisplay;
+    
+}) 
+};
+getPlants();
+
+// PLANT SEARCH
+let autocomplete = (inp, arr) => {
+  /*the autocomplete function takes two arguments,
+  the text field element and an array of possible autocompleted values:*/
+  let currentFocus;
+  /*execute a function when someone writes in the text field:*/
+  inp.addEventListener("input", function(e) {
+    let a, //OUTER html: variable for listed content with html-content
+      b, // INNER html: filled with array-Data and html
+      i, //Counter
+      val = this.value;
+
+    /*close any already open lists of autocompleted values*/
+    closeAllLists();
+
+    if (!val) {
+      return false;
+    }
+
+    currentFocus = -1;
+
+    /*create a DIV element that will contain the items (values):*/
+    a = document.createElement("DIV");
+    var parent_div = document.getElementById('plantsearchList');
+
+    a.setAttribute("id", this.id + "autocomplete-list");
+    a.setAttribute("class", "autocomplete-items list-group text-left");
+    
+    /*append the DIV element as a child of the autocomplete container:*/
+    parent_div.appendChild(a);
+
+    /*for each item in the array...*/
+    for (i = 0; i < arr.length; i++) {
+      /*check if the item starts with the same letters as the text field value:*/
+      if (arr[i].substr(0, val.length).toUpperCase() == val.toUpperCase()) {
+        /*create a DIV element for each matching element:*/
+        b = document.createElement("DIV");
+        b.setAttribute("class", "list-group-item list-group-item-action");
+        /*make the matching letters bold:*/
+        b.innerHTML = "<strong>" + arr[i].substr(0, val.length) + "</strong>";
+        b.innerHTML += arr[i].substr(val.length);
+        /*insert a input field that will hold the current array item's value:*/
+        b.innerHTML += "<input type='hidden' value='" + arr[i] + "'>";
+        /*execute a function when someone clicks on the item value (DIV element):*/
+        b.addEventListener("click", function(e) {
+          /*insert the value for the autocomplete text field:*/
+          inp.value = this.getElementsByTagName("input")[0].value;
+          /*close the list of autocompleted values,
+              (or any other open lists of autocompleted values:*/
+          closeAllLists();
+        });
+        a.appendChild(b);
+      }
+    }
+  });
   
-  fetch(filter_url)
+  /*execute a function presses a key on the keyboard:*/
+  inp.addEventListener("keydown", function(e) {
+    var x = document.getElementById(this.id + "autocomplete-list");
+    if (x) x = x.getElementsByTagName("div");
+    if (e.keyCode == 40) {
+      /*If the arrow DOWN key is pressed,
+        increase the currentFocus variable:*/
+      currentFocus++;
+      /*and and make the current item more visible:*/
+      addActive(x);
+    } else if (e.keyCode == 38) {
+      //up
+      /*If the arrow UP key is pressed,
+        decrease the currentFocus variable:*/
+      currentFocus--;
+      /*and and make the current item more visible:*/
+      addActive(x);
+    } else if (e.keyCode == 13) {
+      /*If the ENTER key is pressed, prevent the form from being submitted,*/
+      e.preventDefault();
+      if (currentFocus > -1) {
+        /*and simulate a click on the "active" item:*/
+        if (x) x[currentFocus].click();
+      }
+    }
+  });
+  
+  let addActive = (x) => {
+    /*a function to classify an item as "active":*/
+    if (!x) return false;
+    /*start by removing the "active" class on all items:*/
+    removeActive(x);
+    if (currentFocus >= x.length) currentFocus = 0;
+    if (currentFocus < 0) currentFocus = x.length - 1;
+    /*add class "autocomplete-active":*/
+    x[currentFocus].classList.add("active");
+  }
+  
+  let removeActive = (x) => {
+    /*a function to remove the "active" class from all autocomplete items:*/
+    for (let i = 0; i < x.length; i++) {
+      x[i].classList.remove("active");
+    }
+  }
+  
+  let closeAllLists = (elmnt) => {
+    /*close all autocomplete lists in the document,
+    except the one passed as an argument:*/
+    var x = document.getElementsByClassName("autocomplete-items");
+    for (var i = 0; i < x.length; i++) {
+      if (elmnt != x[i] && elmnt != inp) {
+        x[i].parentNode.removeChild(x[i]);
+      }
+    }
+  }
+  
+  /*execute a function when someone clicks in the document:*/
+  document.addEventListener("click", function(e) {
+    closeAllLists(e.target);
+  });
+  
+};
+
+
+/*An array containing all the plant names in the db:*/
+let plantList = [];
+
+async function getPlantName(){
+  fetch(allPlants_url)
   .then(res => {
       return res.json()
     })
-  
   .then(data =>{
-    getallusers();
-      // console.log(data)
-      const plantcol = document.getElementById("plantcol"); 
-      plantcol.innerHTML='';
 
-      let plantDisplay = data.map((object)=> {
-          const {name, category/* , min_temp, max_temp, min_humidity, max_humidity, min_rain_tolerance, max_rain_tolerance, min_planting_time, max_planting_time, rainy_season, summer, p_info */} = object;
-          
-          
+      let plantNameDisplay = data.map((object)=> {
+          const {name} = object;
+          return {name};
+      })
+      console.log(plantNameDisplay);
+      for (var p of plantNameDisplay){
+          plantList.push(p.name);
+          //console.log(p.name);
+      }
+  });
+  
+}
+getPlantName();
 
-          /* return */ `
-            <div class="plants"> [$ {name}, $ {category}]</div>`
-          
-      })/* .catch(error => console.log("ERROR")) */;
-
-      document.getElementById('catFruit').value = "";
-      document.getElementById('catVeggie').value = "";
-      document.getElementById('summerTrue').value = "";
-      document.getElementById('rainyTrue').value = "";
-
-      /* plantcol.innerHTML = plantDisplay; */
-      
-  }) 
-};
-/* getPlants(); */
-
-
-// update user
-function updateuser(){
-
-};
-
-
-//delete user 
-function deleteuser(){
-
-  /* let pass_ = document.getElementById('pass_').value;
-  var msgdelete = document.getElementById('msgdelete');
-
-
-  if (pass_ == ""){
-    msgdelete.innerHTML="Enter pass_ to delete";
-  }
-
-  var inp_obj = {
-    "pass_":pass_,
-  }
-
-  fetch("/delete_user",{
-    method: 'DELETE',
-    headers: {
-      'Content-type': 'application/json; charset=UTF-8'
-    },
-    body: JSON.stringify(inp_obj)
-  })
-  .then(res => res.json())
-  .then(data => {
-    console.log(data)
-    msgdelete.innerHTML = data["status"]
-    msgdelete.style.display = "inline-block"
-    msgdelete.style.width = "100%"
-    if (data["status"] == "success"){
-      // console.log(data["status"])
-      msgdelete.setAttribute('class', 'alert alert-success');
-      document.getElementById("pass_").value = "";
-    } else {
-      msg.setAttribute('class', 'alert alert-danger');
-    }
-
-  })
-  .catch(error => console.log("ERROR")) ; */
-};
+/*initiate the autocomplete function on the "plantSearch" element, and pass along the countries array as possible autocomplete values:*/
+autocomplete(document.getElementById("plantSearch"), plantList);
