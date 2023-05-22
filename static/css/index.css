@@ -16,6 +16,7 @@
   html{
     overflow-x:hidden;
     scroll-snap-type: y mandatory;
+    scroll-behavior: smooth;
   }
 
 @font-face {
@@ -114,14 +115,14 @@
 
   #mission .column {
     width: 100%;
-    padding: 0 1em 1em 1em;
+    padding: 1em 5%;
     text-align: center;
   }
 
   #mission .card {
     width: 100%;
     height: 100%;
-    padding: 2em 1.5em;
+    padding: 5% 10%;
     background: linear-gradient(#ffffff 50%, #00a26c 50%);
     background-size: 100% 200%;
     background-position: 0 2.5%;
