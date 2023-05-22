@@ -27,6 +27,23 @@
 }) ();
 
 
+function check_token(){
+fetch("/")
+  .then(response => response.json())
+  .then(data => {
+  console.log(data)
+  if (data['detail']){
+    window.location.href = '../login';
+  }
+  else {
+    window.location.href = '../profile';
+  }
+  }).catch((error) => {
+      console.error('Error:', error);
+    });
+}
+
+
 /* hide other sections  */
 
 function openforms(){
@@ -55,6 +72,38 @@ function checkbox() {
     return checked_filter
 }
 
+
+
+// function previewFile() {
+//     const preview = document.querySelector('img');
+//     const file = document.querySelector('input[type=file]').files[0];
+//     const reader = new FileReader();
+//     reader.addEventListener("load", function() {
+//         preview.src = reader.result; // show image in <img> tag
+//         uploadFile(file)
+//     }, false);
+//     if (file) {
+//         reader.readAsDataURL(file);
+//     }
+// }
+
+function uploadFile(name) {
+  const file = document.querySelector('input[type=file]').files[0];
+  var formData = new FormData();
+  formData.append('file', file);
+  fetch(`/upload/${name}`, {
+          method: 'POST',
+          body: formData,
+      })
+      .then(response => {
+          console.log(response);
+      })
+      .catch(error => {
+          console.error(error);
+      });
+}
+
+
 function createPlants(){
     var errormsg = document.getElementById('errormsg');
 
@@ -76,8 +125,14 @@ function createPlants(){
         if (checkbox()[i] == "inputsummer") {
             inpsummer = true
         }
+        else {
+          inpsummer = false
+        }
         if (checkbox()[i] == "inputrain") {
             inprain = true
+        }
+        else {
+          inprain = false
         }
     }
 
@@ -125,6 +180,8 @@ function createPlants(){
         "rainy_season": inprain,
       };
 
+      uploadFile(pname)
+
       fetch('/create_plant', {
         method: 'POST',
         headers: {
@@ -147,17 +204,8 @@ function createPlants(){
             errormsg.style.width = "100%"
             errormsg.setAttribute('class', 'alert alert-success');
     
-            pname = ""; 
-            cat = ""; 
-            pinfo = ""; 
-            mintemp = ""; 
-            maxtemp = ""; 
-            minhum = ""; 
-            maxhum = ""; 
-            minraintol = ""; 
-            maxraintol = ""; 
-            minptime = ""; 
-            maxptime = ""; 
+            window.location.href = '../admin';
+
           }
         }).catch((error) => {
           // console.error('Error:', error);
