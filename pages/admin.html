@@ -291,7 +291,7 @@
                     </div>
                     <div>
                         
-                        <table id="plantTable"class="table table-responsive-xl">
+                        <table id="plantTable" class="table table-responsive-xl">
                             <thead class="thead-primary" style="background-color: #99b19c;">
                                 <tr class="text-light">
                                     <th>id</th>
@@ -303,10 +303,11 @@
                                     <th>is_active</th>
                                     <th>is_public</th>
                                     <th>plants</th>
+                                    <th>Edit/Delete</th>
                                 </tr>
                             </thead>
                             <tbody id="usersTable" style="background-color: #EAEFEB;">
-                                <!-- <tr>
+                                <tr>
                                     <td>${id}</td>
                                     <td>${username}</td>
                                     <td>${birthday}</td>
@@ -316,7 +317,15 @@
                                     <td>${is_active}</td>
                                     <td>${is_public}</td>
                                     <td>${plants}</td>
-                                  </tr> -->
+                                    <td>
+                                        <button class="btn" id="editbtn" onclick="updateuser()">
+                                            <i class="fas fa-edit"></i>
+                                        </button>
+                                        <button class="btn" id="deletebtn" onclick="deleteuser()">
+                                            <i class="fa-sharp fa-solid fa-trash"></i>
+                                        </button>
+                                    </td>
+                                </tr>
                             </tbody>
                         </table>
                     </div>

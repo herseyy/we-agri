@@ -221,7 +221,7 @@ function getallusers(){
             const {id, username, birthday, country, state, city, is_active, is_public, plants} = object;
            
             return `
-                <tr>
+              <tr>
                 <td>${id}</td>
                 <td>${username}</td>
                 <td>${birthday}</td>
@@ -231,12 +231,33 @@ function getallusers(){
                 <td>${is_active}</td>
                 <td>${is_public}</td>
                 <td>${plants}</td>
-                </tr>`;
+                <td>
+                    <button class="btn" id="editbtn" onclick="updateuser()">
+                        <i class="fas fa-edit"></i>
+                    </button>
+                    <button class="btn" id="deletebtn" onclick="deleteuser()">
+                        <i class="fa-sharp fa-solid fa-trash"></i>
+                    </button>
+                </td>
+              </tr>`;
             
         })/* .catch(error => console.log("ERROR")) */;
         
         usersTable.innerHTML = userDisplay;
     })
     
+};/* 
+getallusers(); */
+
+
+
+// update user
+function updateuser(){
+
 };
-getallusers();
+
+
+//delete user 
+function deleteuser(){
+
+};
