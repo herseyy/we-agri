@@ -14,15 +14,17 @@
         
         <title>WE-AGRI | ADMIN</title>
     </head>
-    <body>
+    <body class="">
         <header id="header" class="header fixed-top d-flex align-items-center justify-content-between">
 
             <div class="d-flex align-items-center justify-content-between">
-              <a href="index.html" class="logo d-flex align-items-center">
-                <img id="logo" alt="WE-AGRI" src="../static/images/logo ni joao.png" />
-                <span class="d-none d-lg-block">WE-AGRI</span>
-              </a>
-              <i class="fa-solid fa-grip-lines toggle-sidebar-btn"></i>
+                <a href="index.html" class="logo d-flex align-items-center">
+                    <img id="logo" alt="WE-AGRI" src="../static/images/logo ni joao.png" />
+                    <span class="d-none d-lg-block">WE-AGRI</span>
+                </a>
+                <button class="btn toggle-sidebar-btn">
+                    <i class="fa-solid fa-grip-lines"></i>
+                </button>
             </div><!-- End Logo -->
             <div>
                 <li class="nav-item dropdown pe-3" style="list-style:none;">
@@ -73,7 +75,9 @@
                 
             </nav><!-- End Icons Navigation -->
         
-          </header><!-- End Header -->
+        </header>
+        <!-- End Header -->
+
         <!-- ======= Sidebar ======= -->
         <aside id="sidebar" class="sidebar">
 
@@ -132,15 +136,20 @@
 
             </ul>
 
-        </aside><!-- End Sidebar-->
+        </aside>
+        <!-- End Sidebar-->
+
         <main id="main" class="main">
             <section id="forms">
                 <div class="m-auto">
+                    <div class="sectionHeader">
+                        <h1 class="sectionTitle">Forms</h1>
+                    </div>
                     <div class="card">
                         <div class="card-body">
                           <h5 class="card-title">Create Plant</h5>
             
-                          <!-- Vertical Form -->
+                          <!-- createplant Form -->
                           <form id="createplant" class="row g-3">
                             <div class="col-12 d-flex">
                               <label for="inputName" class="form-label col-3">Name</label>
@@ -160,38 +169,38 @@
                                 <input type="text" class="form-control" id="inputpinfo">
                             </div>
                             <div class="col-12 d-flex">
-                                <div class="col-5">
+                                <div class="col-5 d-flex">
                                     <label for="inputmin_temp" class="form-label">Min. Temp.</label>
-                                <input type="text" class="form-control" id="inputmin_temp">
+                                    <input type="number" oninput="this.value = Math.round(this.value);" min="0" class="form-control" id="inputmin_temp">
                                 </div>
-                                <div class="col-5">
+                                <div class="col-5 d-flex">
                                     <label for="inputmax_temp" class="form-label">Max. Temp.</label>
-                                    <input type="text" class="form-control" id="inputmax_temp">
+                                    <input type="number" oninput="this.value = Math.round(this.value);" min="0" class="form-control" id="inputmax_temp">
                                 </div>
                             </div>
                             <div class="col-12 d-flex">
-                                <div class="col-5">
+                                <div class="col-5 d-flex">
                                     <label for="inputmin_hum" class="form-label">Min. Humidity</label>
-                                    <input type="text" class="form-control" id="inputmin_hum">
+                                    <input type="number" oninput="this.value = Math.round(this.value);" min="0" class="form-control" id="inputmin_hum">
                                 </div>
-                                <div class="col-5">
+                                <div class="col-5 d-flex">
                                     <label for="inputmax_hum" class="form-label">Max. Humidity</label>
-                                    <input type="text" class="form-control" id="inputmax_hum">
+                                    <input type="number" oninput="this.value = Math.round(this.value);" min="0" class="form-control" id="inputmax_hum">
                                 </div>
                             </div>
                             <div class="col-12 d-flex">
-                                <div class="col-5">
+                                <div class="col-5 d-flex">
                                     <label for="inputmin_raintol" class="form-label">Min.Rain Tolerance</label>
-                                    <input type="text" class="form-control" id="inputmin_raintol">
+                                    <input type="number" oninput="this.value = Math.round(this.value);" min="0" class="form-control" id="inputmin_raintol">
                                 </div>
-                                <div class="col-5">
+                                <div class="col-5 d-flex">
                                     <label for="inputmax_raintol" class="form-label">Max.Rain Tolerance</label>
-                                    <input type="text" class="form-control" id="inputmax_raintol">
+                                    <input type="number" oninput="this.value = Math.round(this.value);" min="0" class="form-control" id="inputmax_raintol">
                                 </div>
                             </div>
                             <div class="col-12 d-flex">
                                     <label for="inputp_time" class="form-label col-3">Planting Time</label>
-                                    <input type="text" class="form-control" id="inputp_time">
+                                    <input type="number" oninput="this.value = Math.round(this.value);" min="1" class="form-control" id="inputp_time">
                             </div>
                             <div class="col-12 d-flex">
                                 <label class="form-label col-3">Season</label>
@@ -211,7 +220,7 @@
                               <button type="submit" class="btn btn-success" onclick="createPlants()">Submit</button>
                               <button type="reset" class="btn btn-secondary">Reset</button>
                             </div>
-                          </form><!-- Vertical Form -->
+                          </form><!-- createplant Form -->
             
                         </div>
                       </div>
@@ -219,10 +228,69 @@
             </section>
             <section id="users">
                 <div class="m-auto">
-                    <div>
-                        <div>
-
+                    <div class="sectionHeader">
+                        <h1 class="sectionTitle">Users</h1>
+                    </div>
+                    <div class="userFilter row justify-content-around bg-light p-2 rounded">
+                        <h3 id="filterTitle">Filters: </h3>
+                        <div class="col-10 d-flex my-1">
+                            <div class="col">
+                                <label for="q" class="form-label">##</label>
+                                <input id="q" name="q" type="number" oninput="this.value = Math.round(this.value);" min="0">
+                            </div>
+                            <div class="col">
+                                <label for="upperAge" class="form-label">upper Age</label>
+                                <input id="upperAge" name="upperAge" type="number" oninput="this.value = Math.round(this.value);" min="0">
+                            </div>
+                            <div class="col">
+                                <label for="lowerAge" class="form-label">lower Age</label>
+                                <input id="lowerAge" name="lowerAge" type="number" oninput="this.value = Math.round(this.value);" min="0">
+                            </div>
                         </div>
+                        <div class="col-12 d-flex my-1">
+                            <div class="col d-flex ">
+                                <label for="country" class="form-label">Country</label>
+                                <input type="text" class="form-control" name="country" id="country">
+                            </div>
+                            <div class="col d-flex ">
+                                <label for="state" class="form-label">State</label>
+                                <input type="text" class="form-control" name="state" id="state">
+                            </div>
+                            <div class="col d-flex ">
+                                <label for="city" class="form-label">City</label>
+                                <input type="text" class="form-control" name="city" id="city">
+                            </div>
+                        </div>
+                        <div class="col-8 d-flex my-1">
+                            <div class="col d-flex">
+                                <label for="isactive" class="form-label">is_active</label>
+                                <div>
+                                    <select name="isactive" id="isactive">
+                                        <option value="">--</option>
+                                        <option value="true">true</option>
+                                        <option value="false">true</option>
+                                    </select>
+                                </div>
+                            </div>
+                            <div class="col d-flex">
+                                <label for="ispublic" class="form-label">is_public</label>
+                                <div>
+                                    <select name="ispublic" id="ispublic">
+                                        <option value="">--</option>
+                                        <option value="true">true</option>
+                                        <option value="false">true</option>
+                                    </select>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-12 d-flex my-1 justify-content-around">
+                            <button class="btn btn-success" onclick="getallusers();">
+                                Filter
+                            </button>
+                        </div>
+                    </div>
+                    <div>
+                        
                         <table id="plantTable"class="table table-responsive-xl">
                             <thead class="thead-primary" style="background-color: #99b19c;">
                                 <tr class="text-light">
