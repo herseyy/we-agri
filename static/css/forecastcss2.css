@@ -43,12 +43,22 @@ body {
   transition: filter 0.5s;
 }
 
+.plants_predict{
+  margin: 0 auto;
+  padding: 20px 0;
+	display: block;
+  flex-wrap: wrap;
+  justify-content: space-between;
+  text-align: center;
+
+}
 .Weather {
   width: 80%;
   height: 100%;
   margin: 0 auto;
   padding: 20px 0;
   box-sizing: border-box;
+  overflow-y: visible;
 }
 
 .weather__search {
