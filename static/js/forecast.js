@@ -11,7 +11,7 @@ let forecastBlock = document.querySelector(".weather__forecast");
 let suggestions = document.querySelector("#suggestions");
 
 // API variable
-let weatherAPIKey = "833a87b3be5a98f32e77368383c8a6b3";
+let weatherAPIKey = "2aefe52a593c0d988f240092f4dfa3c6";
 let weatherBaseEndpoint =
   "https://api.openweathermap.org/data/2.5/weather?units=metric&appid=" +
   weatherAPIKey;
@@ -201,7 +201,7 @@ let windInfo = (data) => {
 
 // initial city for cairo
 let init = () => {
-  weatherForCity("Cairo").then(() => (document.body.style.filter = "blur(0)"));
+  weatherForCity("Batangas").then(() => (document.body.style.filter = "blur(0)"));
 };
 
 init();

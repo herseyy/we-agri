@@ -41,7 +41,6 @@ body {
   font-weight: 300;
   font-size: 22px;
   transition: filter 0.5s;
-  filter: blur(15px);
 }
 
 .Weather {
