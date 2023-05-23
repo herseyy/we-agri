@@ -12,97 +12,46 @@ from datetime import datetime, date, timedelta
 from dateutil.relativedelta import relativedelta
 
 
-from fastapi.security import OAuth2PasswordBearer
+from fastapi.security import OAuth2PasswordBearer, HTTPBasic, HTTPBasicCredentials
 from passlib.context import CryptContext
 
-
-# from passlib.context import CryptContext
-# from fastapi.security import OAuth2PasswordBearer, OAuth2PasswordRequestForm
 from jose import JWTError, jwt  
+import secrets
+import os
+from dotenv import load_dotenv
+
+load_dotenv()
+
+security = HTTPBasic()
+
+USERNAMEE = os.getenv("USERNAMEE").encode()
+PASSWORDD = os.getenv("PASSWORDD").encode()
 
 
-# SECRET_KEY = "4882fb01f85938a7b77a1cc157c84a4b3cee06e069ce6bc880235755f190de18"
-# ALGORITHM = "HS256"
-
-# pwd_context = CryptContext(schemes=["bcrypt"], deprecated="auto")
-
-# oauth2_scheme = OAuth2PasswordBearer(tokenUrl="token")
-
-# def get_db(request: Request):
-#     return request.state.db
-
-
-# def get_password_hash(password):
-#     return pwd_context.hash(password)
-
-# def verify_password(plain_password, hashed_password):
-#     return pwd_context.verify(plain_password, hashed_password)
-
-
-
-
-# # di pa tapos
-# def get_user_by_username(db:Session, username_: str):
-# 	user = db.query(User).filter(User.username == username_).first()
-
-# 	if user:
-# 		return user
+def get_current_username(credentials: HTTPBasicCredentials = Depends(security)):
+    current_username_bytes = credentials.username.encode("utf8")
+    correct_username_bytes = USERNAMEE
+    is_correct_username = secrets.compare_digest(
+        current_username_bytes, correct_username_bytes
+    )
+    current_password_bytes = credentials.password.encode("utf8")
+    correct_password_bytes = PASSWORDD
+    is_correct_password = secrets.compare_digest(
+        current_password_bytes, correct_password_bytes
+    )
+    if not (is_correct_username and is_correct_password):
+        raise HTTPException(
+            status_code=status.HTTP_401_UNAUTHORIZED,
+            detail="Incorrect email or password",
+            headers={"WWW-Authenticate": "Basic"},
+        )
+    return credentials.username
 
 
-# def authenticate_user(db:Session, username: str, password: str):
-#     user = get_user_by_username(db, username)
-#     # print(user)
-#     if not user: 
-#         return False
-#     if not verify_password(password, user.hashed_pass):
-#         return False
-#     return user
-
-
-# def create_access_token(data: dict, expires_delta: timedelta or None = None): 
-#     to_encode = data.copy()
-#     if expires_delta:
-#         expire = datetime.utcnow() + expires_delta
-#     else: 
-#         expire = datetime.utcnow() + timedelta(minutes=15)
-    
-#     to_encode.update({"exp": expire})
-#     encoded_jwt = jwt.encode(to_encode, SECRET_KEY, algorithm=ALGORITHM)
-#     return encoded_jwt
-
-
-# async def get_current_user_(token: str = Depends(oauth2_scheme), db:Session = Depends(get_db)):
-#     credential_exception = HTTPException(status_code=status.HTTP_401_UNAUTHORIZED, detail="Could not validate credentials", headers={"WWW-Authenticate": "Bearer"})
-#     try :
-#         payload = jwt.decode(token, SECRET_KEY, algorithms=[ALGORITHM])
-#         username: str = payload.get("sub")
-#         if username is None: 
-#             raise credential_exception
-        
-#         token_data = TokenData(username=username)
-        
-#     except JWTError:
-#         raise credential_exception
-
-#     user = get_user_by_username(db, username_=token_data.username) 
-#     if user is None: 
-#         raise credential_exception
-    
-#     return user
-
-
-# async def get_current_active_user(current_user: UserRequest = Depends(get_current_user)):
-# 	# print(current_user.is_active)
-# 	if not current_user.is_active:
-# 	    raise HTTPException(status_code=400, detail= "Inactive user")
-
-# 	return current_user
 
 
 pwd_context = CryptContext(schemes=["bcrypt"], deprecated="auto")
-
 oauth2_scheme = OAuth2PasswordBearer(tokenUrl="/login/token")
-
 
 def get_hash_password(plain_password):
     return pwd_context.hash(plain_password)
@@ -137,14 +86,12 @@ def create_user(db:Session, user: SignUpRequest):
 	try:
 		user_n = db.query(User).filter(User.username == user.username).first()
 		if user_n:
-			# print('hehe')
 			return None
 
 		hashed_pass = get_hash_password(user.pass_to_hash)
 
 		db_user = User(
 			username = user.username,
-			# birthday = user.birthday,
 			hashed_pass = hashed_pass,
 			country = user.country,
 			state = user.state,
@@ -152,15 +99,6 @@ def create_user(db:Session, user: SignUpRequest):
 			is_public = user.is_public
 			)
 		db.add(db_user)
-		# db.flush()
-
-		# for i in user.plants:
-		# 	db_plants = UserPlants(
-		# 		user_id = db_user.id,
-		# 		plant_id = i
-		# 		)
-		# 	db.add(db_plants)
-		# db.flush()
 		db.commit()
 
 	except IntegrityError:
@@ -173,7 +111,6 @@ def filter_users(db:Session, user_filter: UserFilterRequest = None, q: int = Non
 
 	query = db.query(User)
 
-	# print(query)
 	if user_filter == None:
 		print('a')
 		return query.all()
@@ -189,17 +126,13 @@ def filter_users(db:Session, user_filter: UserFilterRequest = None, q: int = Non
 					ids.append(i.id)
 			else:
 				qry = qry.filter(UserPlants.user_id == i.id)
-				# print(i.id)
 				for j in qry:
 					plants_.append(j.plant_id)
 
-				# print(plants_)
-				# print(q)
 
 				new_list=  all(item in plants_ for item in q)
 				if new_list is True:
-					ids.append(i.id)
-					# print(i.id) 
+					ids.append(i.id) 
 				qry = db.query(UserPlants).join(User)
 				plants_ = []
 
@@ -211,9 +144,7 @@ def filter_users(db:Session, user_filter: UserFilterRequest = None, q: int = Non
 
 	if user_filter.upperAge is not None and user_filter.lowerAge is not None:
 		lower_day = datetime.now() - relativedelta(years = user_filter.upperAge + 1)
-		# print(lower_day)
 		upper_day = datetime.now() - relativedelta(years = user_filter.lowerAge)
-		# print(upper_day)
 
 		query = query.filter(
             and_((User.birthday >= lower_day), 
@@ -228,14 +159,11 @@ def filter_users(db:Session, user_filter: UserFilterRequest = None, q: int = Non
 		query = query.filter(User.is_active == user_filter.is_active)
 	if user_filter.is_public is not None:
 		query = query.filter(User.is_public == user_filter.is_public)
-	# if user_filter.plants is not None:
-		# query = query.filter()
 
 	return query.all()
 
 
 def change_pass(db: Session, current_user: User, pass_: UserChangePass):
-	# current_user = db.query(User).filter(User.id == id).first()
 
 	status = {
 		"status": "success"
@@ -273,26 +201,6 @@ def get_current_user(db: Session, id: int):
 
 	return current_user
 
-# def get_all_user_plants(db: Session):
-# 	all_user_plants = db.query(UserPlants).all()
-
-# 	plants = []
-
-# 	for i in all_user_plants:
-# 		plants.append(i.description)
-
-# 	return plants
-
-# def get_user_plants(db: Session, user_plants: list):
-# 	# user_plants = db.query(UserPlants).filter(UserPlants.user_id == id).all()
-# 	print(user_plants)
-# 	plants = []
-# 	for i in user_plants:
-# 		# print(i.description)
-# 		plants.append(i.description)
-# 	# print(plants)
-# 	return plants
-
 
 def delete_user_plant(db: Session, user_id: int, plant_id: int):
 	plant = db.query(UserPlants)\
@@ -303,28 +211,13 @@ def delete_user_plant(db: Session, user_id: int, plant_id: int):
 
 	remaining_plants = db.query(UserPlants).filter(UserPlants.user_id == user_id).all()
 
-	# remaining_plants_lst = []
-	# for i in remaining_plants:
-	# 	# print(i.description)
-	# 	remaining_plants_lst.append(i.description)
-	# # print(plants)
 	return remaining_plants
 
 
 def add_user_plant(db: Session, plant_info:UserPlantsRequest, current_user: User, plant_id:int):
 
-	# current_user = db.query(User).filter(User.id == user_id).first()
-
-	# if current_user is None:
-	# 	return False
-
-	# print(plant_info.is_harvested)
-	# print(plant_info.date_planted) # 2023-05-16
-
 	plant = db.query(Plant).filter(Plant.id == plant_id).first()
 
-	# print(plant.min_planting_time) # 3
-	# print(plant.max_planting_time) # 5
 	min_planting_time_in_days = plant.min_planting_time * 7
 	max_planting_time_in_days = plant.max_planting_time * 7
 
@@ -339,9 +232,10 @@ def add_user_plant(db: Session, plant_info:UserPlantsRequest, current_user: User
 		is_harvested = True
 	else:
 		is_harvested = False
+
 	# to check if yung user is may plant na na yun
 	plants_old = db.query(UserPlants).filter(UserPlants.user_id == current_user.id).all()
-	# print(plants_old)
+
 	for i in plants_old:
 		if plant_id == i.plant_id:
 			return None
@@ -368,11 +262,10 @@ def add_user_plant(db: Session, plant_info:UserPlantsRequest, current_user: User
 	db.commit()
 
 	plants_new = db.query(UserPlants).filter(UserPlants.user_id == current_user.id).all()
-	# print(plant_)
 
 	plants_1 = []
 	for i in plants_new:
-		# print(i.description)
+
 		plants_1.append(i.description)
 
 	return plants_1
@@ -382,8 +275,6 @@ def update_user_plant(db: Session, plant_info:UserPlantsRequest, current_user: U
 
 	user_plant = db.query(UserPlants).filter(UserPlants.user_id == current_user.id)\
 				.filter(UserPlants.plant_id == plant_id).first()
-	# print(user_plant)
-
 
 	if plant_info.is_harvested != None:
 		user_plant.is_harvested = plant_info.is_harvested
@@ -400,7 +291,6 @@ def update_user_plant(db: Session, plant_info:UserPlantsRequest, current_user: U
 def filter_user_plants(user: User, db:Session, user_plant_filter: FilterCurrentUserPlants = None):
 	query = db.query(UserPlants).filter(UserPlants.user_id == user.id)
 
-	# print(user_plant_filter.category)
 	if user_plant_filter.is_harvested != None:
 		query = query.filter(UserPlants.is_harvested == user_plant_filter.is_harvested)
 	if user_plant_filter.category != None:
@@ -408,9 +298,7 @@ def filter_user_plants(user: User, db:Session, user_plant_filter: FilterCurrentU
 	return query.all()
 
 def format_plants(db_plant: Plant):
-	# print(db_plant)
 	if db_plant is None:
-		# print('aaa')
 		return []
 	return PlantsResponse(
 		id = db_plant.id,
@@ -431,9 +319,7 @@ def format_plants(db_plant: Plant):
 
 def format_user_plants(db_user_plants: UserPlants):
 	if db_user_plants is None:
-		# print('aaa')
 		return []
-	# print(db_user_plants)
 	return UserPlantsResponse(
 		user_id = db_user_plants.user_id,
 		plant_id = db_user_plants.plant_id,
@@ -447,10 +333,6 @@ def format_user_plants(db_user_plants: UserPlants):
 
 def update_user(db: Session, current_user: User, info: UserUpdateRequest):
 
-	# current_user = db.query(User).filter(User.username == username).first()
-
-	# if current_user is None:
-		# return current_user
 	if info.firstname != current_user.firstname:
 		current_user.firstname = info.firstname
 	if info.lastname != current_user.lastname:
@@ -492,19 +374,11 @@ def delete_user(db:Session, user_id: int, pass_: str):
 
 
 def format_user(db_user: User):
-	# print(db_user.plants)
+
 	_plants = []
 
-	# if db_user.plants is None:
-	# 	print('a')
-
 	plants = db_user.plants
-	# for i in plants:
-	#     if plants is not None:
-	#     	_plants.append(i.description)
 
-
-	    # format_user_plants
 
 	return UserResponse(
 		id = db_user.id,
@@ -512,7 +386,6 @@ def format_user(db_user: User):
 		firstname = db_user.firstname,
 		lastname = db_user.lastname,
 		birthday = db_user.birthday,
-		# hashed_pass = db_user.hashed_pass,
 		country = db_user.country,
 		state = db_user.state,
 		city = db_user.city,
@@ -549,7 +422,7 @@ def create_plant(db:Session, plant: PlantRequest):
 
 def filter_plants(db: Session, plant_filter: PlantFilterRequest = None):
 	query = db.query(Plant)
-	# print(plant_filter.name.lower())
+
 	if plant_filter.name is not None:
 		query = query.filter(Plant.name == plant_filter.name.lower())
 	if plant_filter.category is not None:
@@ -613,7 +486,6 @@ def update_plant(db: Session, plant_id: int, info: PlantUpdate):
 def delete_plant(db: Session, plant_id: int):
 	plant_d = db.query(Plant).filter(Plant.id == plant_id).delete()
 	user_plant_d = db.query(UserPlants).filter(UserPlants.plant_id == plant_id).delete()
-	# print(user_plant_d)
 
 	db.commit()
 
@@ -621,30 +493,6 @@ def delete_plant(db: Session, plant_id: int):
 
 	return remaining_plants
 
-
-
-# def add_img_to_db(db:Session, pla)
-
-
-
-
-
-# def get_current_user_plants(user:User, db: Session):
-# 	my_plants = db.query(UserPlants).filter(UserPlants.user_id == user.id).all()
-# 	lst = []
-# 	for i in my_plants:
-# 		plant_description = db.query(Plant).filter(Plant.id == i.plant_id).first()
-# 		plant_join = CurrentUserPlants(
-# 			name = plant_description.name,
-# 			category = plant_description.category.value,
-# 			is_harvested = i.is_harvested,
-# 			date_planted = i.date_planted,
-# 			min_date_estimate_harvest = i.min_date_estimate_harvest,
-# 			max_date_estimate_harvest = i.max_date_estimate_harvest,
-# 			date_harvested = i.date_harvested
-# 			)
-# 		lst.append(plant_join)
-# 	return lst
 
 def get_current_user_plants_filter(user:User, db: Session, filter_plants: FilterCurrentUserPlants):
 	my_plants = db.query(UserPlants).filter(UserPlants.user_id == user.id)
@@ -656,7 +504,6 @@ def get_current_user_plants_filter(user:User, db: Session, filter_plants: Filter
 			id_cat.append(j.id)
 		print(id_cat)
 		my_plants = db.query(UserPlants).filter(UserPlants.plant_id.in_(id_cat))
-		# db_session.query(Star).filter(Star.star_type.in_(['Nova', 'Planet']))
 
 	if filter_plants.is_harvested != None:
 		my_plants = my_plants.filter(UserPlants.is_harvested == filter_plants.is_harvested)
@@ -665,8 +512,6 @@ def get_current_user_plants_filter(user:User, db: Session, filter_plants: Filter
 	for i in my_plants:
 		plant_description = db.query(Plant).filter(Plant.id == i.plant_id).first()
 
-		# if filter_plants.category != None:
-		# 	plant_description = plant_description.filter()
 
 		plant_join = CurrentUserPlants(
 			id = plant_description.id,

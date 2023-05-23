@@ -2,8 +2,11 @@ import requests
 import math
 from datetime import date, datetime, timedelta
 import numpy as np
+from dotenv import load_dotenv
+import os
+load_dotenv()
 
-api_key = "2aefe52a593c0d988f240092f4dfa3c6"    # ilagay sa env
+api_key = os.getenv("API_KEY")
 
 def get_api_data():
 	base_url = "https://api.openweathermap.org/data/2.5/forecast?"

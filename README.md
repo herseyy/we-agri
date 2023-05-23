@@ -24,4 +24,3 @@
 - Python
 - FastAPI
 - Open Weather Map
-- Heroku

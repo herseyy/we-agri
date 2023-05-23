@@ -6,43 +6,25 @@ from typing import Optional, Annotated, Union
 from fastapi.middleware.cors import CORSMiddleware
 from sqlalchemy.orm import Session
 from datetime import datetime, date, timedelta
-# from fastapi.templating import Jinja2Templates
-
 from fastapi.responses import HTMLResponse
 from fastapi.staticfiles import StaticFiles
 from fastapi.templating import Jinja2Templates
 
-from . import crud, models, schemas, owm, auth
+from . import crud, models, schemas, owm
 from .database import SessionLocal, engine
 import os
 from fastapi.responses import FileResponse
+from jose import jwt
+from fastapi.security import OAuth2PasswordBearer, OAuth2PasswordRequestForm, HTTPBasicCredentials
+import requests
 
+from dotenv import load_dotenv
 
-# from fastapi import APIRouter, Depends
-from fastapi.security import OAuth2PasswordBearer, OAuth2PasswordRequestForm
-
-
-
-
-# from passlib.context import CryptContext
-
-# from fastapi.security import OAuth2PasswordBearer, OAuth2PasswordRequestForm
-# from datetime import datetime, timedelta
-
-
-import uuid
-
-
-
+load_dotenv()
 
 
 # Matic nagccreate na ng table
 models.Base.metadata.create_all(bind=engine)
-
-
-# SECRET_KEY = "4882fb01f85938a7b77a1cc157c84a4b3cee06e069ce6bc880235755f190de18"
-# ALGORITHM = "HS256"
-# ACCESS_TOKEN_EXPIRE_MINUTES = 1
 
 # Main app object
 app = FastAPI()
@@ -50,9 +32,6 @@ app = FastAPI()
 IMAGEDIR = "./static/images/plants/"
 app.mount("/static", StaticFiles(directory="static"), name="static")
 templates = Jinja2Templates(directory="pages")
-
-app.include_router(auth.router)
-
 
 origins = [
     "http://localhost.com",
@@ -84,10 +63,6 @@ async def db_session_middleware(request: Request, call_next):
     return response
 
 
-
-
-
-
 # Db dependency, get db
 def get_db(request: Request):
     return request.state.db
@@ -102,27 +77,8 @@ def populate_table():
 populate_table()
 
 
-
-# pwd_context = CryptContext(schemes=["bcrypt"], deprecated="auto")
-
-# oauth2_scheme = OAuth2PasswordBearer(tokenUrl="/login/token")
-
-
-# def get_hash_password(plain_password):
-#     return pwd_context.hash(password)
-
-# def verify_password(plain_password, hash_password):
-#     return pwd_context.verify(plain_password, hash_password)
-
-from jose import jwt
-
-SECRET_KEY = "83e8c4bb007a0fa49d3157792dfaaf94125ff85b5057bbcf306a4980a7383d9b"   #ilagay sa env
-ALGORITHM = "HS256"  # ito rin
-
-
-# jwt_token = ""
-
-import requests
+SECRET_KEY = os.getenv("SECRET_KEY")
+ALGORITHM = os.getenv("ALGORITHM")
 
 
 # checking lang if may token
@@ -299,18 +255,6 @@ def add_user_plant(request:Request, plant_id: int, plant_info: schemas.UserPlant
         return [crud.format_plants(plant) for plant in plants] 
 
 
-
-
-
-
-
-
-
-
-
-
-
-
 @app.get("/filter_users", response_model = list[schemas.UserResponse])
 def filter_users(user_filter: schemas.UserFilterRequest = Depends(), q: Union[list[int], None] = Query(default=None), db:Session = Depends(get_db)):
     users = crud.filter_users(db, user_filter, q)
@@ -441,35 +385,46 @@ async def read_file(name:str, db:Session = Depends(get_db)):
 
 # htmls
 
-@app.get("/home", response_class=HTMLResponse)
+@app.get("/home", response_class=HTMLResponse, include_in_schema=False)
 async def submit(request: Request):
     return templates.TemplateResponse("index.html", {"request": request})
 
-@app.get("/forecast", response_class=HTMLResponse)
+@app.get("/forecast", response_class=HTMLResponse, include_in_schema=False)
 async def submit(request: Request):
     return templates.TemplateResponse("forecast2.html", {"request": request})
 
-@app.get("/plants", response_class=HTMLResponse)
+@app.get("/plants", response_class=HTMLResponse, include_in_schema=False)
 async def submit(request: Request):
     return templates.TemplateResponse("plants.html", {"request": request})
 
-@app.get("/about", response_class=HTMLResponse)
+@app.get("/about", response_class=HTMLResponse, include_in_schema=False)
 async def submit(request: Request):
     return templates.TemplateResponse("about_us.html", {"request": request})
 
-@app.get("/login", response_class=HTMLResponse)
+@app.get("/login", response_class=HTMLResponse, include_in_schema=False)
 async def submit(request: Request):
     return templates.TemplateResponse("login.html", {"request": request})
 
-@app.get("/profile", response_class=HTMLResponse)
+@app.get("/profile", response_class=HTMLResponse, include_in_schema=False)
 async def submit(request: Request):
     return templates.TemplateResponse("profile.html", {"request": request})
 
 
+# WITH HTTP BASIC AUTH
+@app.get("/docs", include_in_schema=False)
+async def get_swagger_documentation(username: str = Depends(crud.get_current_username)):
+    return get_swagger_ui_html(openapi_url="/openapi.json", title="docs")
 
+@app.get("/redoc", include_in_schema=False)
+async def get_redoc_documentation(username: str = Depends(crud.get_current_username)):
+    return get_redoc_html(openapi_url="/openapi.json", title="docs")
 
-@app.get("/admin", response_class=HTMLResponse)
-async def submit(request: Request):
+@app.get("/openapi.json", include_in_schema=False)
+async def openapi(username: str = Depends(crud.get_current_username)):
+    return get_openapi(title=app.title, version=app.version, routes=app.routes)
+
+@app.get("/admin", response_class=HTMLResponse, include_in_schema=False)
+async def submit(request: Request, credentials: HTTPBasicCredentials = Depends(crud.get_current_username)):
     return templates.TemplateResponse("admin.html", {"request": request})
 
 
