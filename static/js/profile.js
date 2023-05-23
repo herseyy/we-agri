@@ -127,8 +127,11 @@ function get_current_user(){
     .then(response => response.json())
     .then(data => {
 
-
-      birthday = convertDate(data.birthday)
+      if (data.birthday != null){
+        birthday = convertDate(data.birthday)
+      } else {
+        birthday = "N/A"
+      }
       // console.log(birthday)
       var profile_info = document.getElementById("profile_info")
       profile_info.innerHTML = ""
@@ -284,7 +287,11 @@ function get_current_user_plants() {
 
     let plantDisplay = data.map((object)=> {
 
-      date_planted = convertDate(object.date_planted)
+      if (object.date_planted != "") {
+        date_planted = convertDate(object.date_planted)
+      } else {
+        date_planted = "N/A"
+      }
       min_date_estimate_harvest = convertDate(object.min_date_estimate_harvest)
       max_date_estimate_harvest = convertDate(object.max_date_estimate_harvest)
 
