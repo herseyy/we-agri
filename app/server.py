@@ -367,6 +367,12 @@ def create_plant(plant: schemas.PlantRequest, db:Session = Depends(get_db)):
     created_plant = crud.create_plant(db=db, plant=plant)
     return crud.format_plants(created_plant)
 
+@app.get("/plant/{plant_id}", response_model = schemas.PlantsResponse)
+def get_plant_by_id(plant_id: int, db:Session = Depends(get_db)):
+    plant = db.query(models.Plant).filter(models.Plant.id == plant_id).first()
+
+    return crud.format_plants(plant)
+
 @app.get("/filter_plants", response_model = list[schemas.PlantsResponse])
 def filter_plants(plant_filter: schemas.PlantFilterRequest = Depends (), db:Session = Depends(get_db)):
     plants = crud.filter_plants(db=db, plant_filter=plant_filter)
@@ -377,8 +383,8 @@ def filter_plants(plant_filter: schemas.PlantFilterRequest = Depends (), db:Sess
 @app.patch("/update_plant/{plant_id}", response_model=schemas.PlantsResponse)
 def update_plant(plant_id: int, info: schemas.PlantUpdate, db:Session = Depends(get_db)):
     plant = crud.update_plant(db=db, plant_id=plant_id, info=info)
-
     return crud.format_plants(plant)
+    
 
 @app.delete("/delete_plant/{plant_id}", response_model=list[schemas.PlantsResponse])
 def delete_plant(plant_id: int, db:Session = Depends(get_db)):

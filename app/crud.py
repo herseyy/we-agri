@@ -592,8 +592,8 @@ def update_plant(db: Session, plant_id: int, info: PlantUpdate):
 		plant.min_humidity = info.min_humidity
 	if info.max_humidity != plant.max_humidity:
 		plant.max_humidity = info.max_humidity
-	if info.rain_tolerance != plant.rain_tolerance:
-		plant.rain_tolerance = info.rain_tolerance
+	if info.min_rain_tolerance != plant.min_rain_tolerance:
+		plant.max_rain_tolerance = info.max_rain_tolerance
 	if info.min_planting_time != plant.min_planting_time:
 		plant.min_planting_time = info.min_planting_time
 	if info.max_planting_time != plant.max_planting_time:

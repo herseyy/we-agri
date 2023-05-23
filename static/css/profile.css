@@ -421,7 +421,7 @@ body.dark .switch::before{
 }
 
 .userData h2{
-    font-weight: 400;
+    font-weight: 600;
     font-size: larger;
 }
 
@@ -463,10 +463,6 @@ body.dark .switch::before{
     color: var(--sidebar-color);
 }
 
-.filterPlants label{
-    font-size: xx-large;
-}
-
 .addplantmodalcontent div label, .editprofilemodalcontent div label{
     margin-right:3%;
 }
@@ -476,6 +472,7 @@ body.dark .switch::before{
     height:fit-content;
     color:var(--text-color);
 }
+
 #msg {
     display: none;
 }
@@ -483,4 +480,3 @@ body.dark .switch::before{
 .editProfileModalcontent .fields .input-field, .changepassModalcontent div{
     background-color: var(--primary-color-light);
 }
-

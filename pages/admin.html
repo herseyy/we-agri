@@ -13,7 +13,7 @@
         <link rel="stylesheet" href="../static/css/admin.css" />
         
         <link rel="icon" href="../static/images/logo ni joao.png">
-        <title>WE-AGRI | ADMIN</title>
+        <title>WE-AGRI | Admin</title>
     </head>
     <body class="">
         <header id="header" class="header fixed-top d-flex align-items-center justify-content-between">
@@ -27,52 +27,7 @@
                     <i class="fa-solid fa-grip-lines"></i>
                 </button>
             </div><!-- End Logo -->
-<!--             <div>
-                <li class="nav-item dropdown pe-3" style="list-style:none;">
-        
-                  <a class="nav-link nav-profile d-flex align-items-center pe-0" href="#" data-bs-toggle="dropdown">
-                    <span class="d-none d-md-block dropdown-toggle ps-2">User</span>
-                  </a>
-        
-                  <ul class="dropdown-menu dropdown-menu-end dropdown-menu-arrow profile">
-                    <li class="dropdown-header">
-                      <h6>User</h6>
-                      <span>Admin</span>
-                    </li>
-                    <li>
-                      <hr class="dropdown-divider">
-                    </li>
-        
-                    <li>
-                      <a class="dropdown-item d-flex align-items-center" href="profile.html">
-                        <i class='bx bx-user-circle' ></i>
-                        <span>My Profile</span>
-                      </a>
-                    </li>
-                    <li>
-                      <hr class="dropdown-divider">
-                    </li>
-        
-                    <li>
-                      <a class="dropdown-item d-flex align-items-center" href="profile.html">
-                        <i class='bx bx-cog' ></i>
-                        <span>Account Settings</span>
-                      </a>
-                    </li>
-                    <li>
-                      <hr class="dropdown-divider">
-                    </li>
-        
-                    <li>
-                      <a class="dropdown-item d-flex align-items-center" href="#">
-                        <i class='bx bx-log-out-circle' ></i>
-                        <span>Sign Out</span>
-                      </a>
-                    </li>
-        
-                  </ul>
-                </li>
-            </div> -->
+
                 
             </nav><!-- End Icons Navigation -->
         
@@ -92,9 +47,9 @@
             </li>
 
             <li class="nav-item">
-                <a class="nav-link collapsed" onclick="openusers(); getallusers();">
+                <a class="nav-link collapsed" onclick="openusers()">
                     <i class="fa-solid fa-users"></i>
-                    <span>Users</span>
+                    <span>Plants</span>
                 </a>
             </li>
 
@@ -167,7 +122,7 @@
                             </div>
                             <div class="col-12 d-flex">
                                 <label for="inputpinfo" class="form-label col-3">Plant Info</label>
-                                <input type="text" class="form-control" id="inputpinfo">
+                                <textarea placeholder="Optional" type="text" class="form-control" id="inputpinfo"></textarea>
                             </div>
                             <div class="col-12 d-flex">
                                 <div class="col-6 d-flex">
@@ -226,10 +181,10 @@
                                 <label for="imgFile" class="form-label col-3">Add image</label>
                                 <input type="file" id="imgFile" name="imgFile">
                             </div>
-                            <div id="errormsg" class="col-12 alert alert-danger"></div>
+                            <div id="errormsg"></div>
                             <div class="text-center">
                               <button class="btn btn-success" onclick="createPlants()">Save</button>
-                              <button type="reset" class="btn btn-secondary">Reset</button>
+                              <button onclick="window.location.href = '../admin';" type="reset" class="btn btn-secondary">Reset</button>
                             </div>
                           </div><!-- createplant Form -->
             
@@ -240,7 +195,7 @@
             <section id="users">
                 <div class="m-auto">
                     <div class="sectionHeader">
-                        <h1 class="sectionTitle">Users</h1>
+                        <h1 class="sectionTitle">Plants</h1>
                     </div>
                     <!-- ----------- search ----------- -->
                     <div>
@@ -263,7 +218,7 @@
                                 <div class="my-2"><i class="fa-solid fa-filter"></i> Filters</div>
                                 <div id="filterCbox">
                                     <div class="row">
-                                        <div class="col-2" style="visibility:hidden;">
+                                        <!-- <div class="col-2" style="visibility:hidden;">
                                             <div class="mb-1"><label for="p_time">Planting Time</label></div>
                                             <div>
                                                 <select name="p_time" id="p_time" onclick="getPlants()">
@@ -278,7 +233,7 @@
                                                 </select>
                                             </div>
                                             
-                                        </div>
+                                        </div> -->
                                         <div class="col">
                                             <div class="mb-1">Season</div>
                                                 <div class="form-check">
@@ -317,25 +272,37 @@
                         </div>
                     </div>
                     
+
+
                     <div>
                         <!-- ----------delete userplant modal----------- -->
                         <div id="deleteuserModal" class="modal fade" tabindex="-1" role="dialog" aria-labelledby="deleteuserModalTitle" aria-hidden="true">
                             <div class="modal-dialog modal-dialog-centered" role="document">
                                 <div class="modal-content">
                                     <div class="modal-header">
-                                        <h5 class="modal-title" id="deleteuserModalTitle">Delete User Plant</h5>
+                                        <h5 class="modal-title" id="delete
+
+                                        ModalTitle">Delete User Plant</h5>
                                     </div>
+                                    <p class="alert alert-success" id="del_msg">Success</p>
                                     <div class="modal-body deleteuserModalcontent" style="margin:0 auto;">
-                                        <span class="alert" id = "msgdelete" role="alert"></span>
+                                        <!-- <span class="alert" id = "msgdelete" role="alert"></span> -->
                                         <div class="input-field">
-                                            <i class='bx bx-lock-alt icon'></i>
-                                            <input type="password" id="pass_" placeholder="Enter plant id to continue" />
+                                            <p>Plant ID: <span id = "del_id"></span></p>
+                                            <p>Name: <span id = "del_name"></span></p>
+                                            <p>Category: <span id = "del_cat"></span></p>
+                                            <p>Info: <span id = "del_info"></span></p>
+                                            <p>Temperature: <span id = "del_temp"></span></p>
+                                            <p>Humidity: <span id = "del_humid"></span></p>
+                                            <p>Rain Tolerance: <span id = "del_rain"></span></p>
+                                            <p>Plant Growth: <span id = "del_p"></span></p>
+                                            <p>Season: <span id = "del_season"></span></p>
                                         </div>
                                         
                                     </div>
                                     <div class="modal-footer">
-                                        <button onclick="close_pass()" type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
-                                        <button type="button" class="btn btn-success" name="deleteplant" onclick="deleteuser()">Delete</button>
+                                        <button onclick="getPlants()" type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+                                        <button type="button" class="btn btn-danger" name="deleteplant" onclick="delete_c()">Delete</button>
                                     </div>
                                 </div>
                               </div>
@@ -346,26 +313,30 @@
                                 <div class="modal-content">
                                     <div class="modal-header">
                                         <h5 class="modal-title" id="editUserModalTitle">Edit User Plants</h5>
+                                        <p>Plant: <span id="plant_id"></span></p>
                                     </div>
                                     <div class="modal-body editUserModalcontent">
                                         <div class="fields">
                                             <span class="alert" id = "msg_q" role="alert"></span>
-                                            <div class="input-field row">
+                                            <div class="input-field row py-0">
                                                 <div class="col-12 d-flex align-items-center">
                                                     <i class='bx bxs-rename' ></i>
                                                     <input type="text" id="editname" class="form-control w-75" placeholder="Enter Name" />
                                                 </div>
                                             </div>
-                                            <div class="input-field row">
+                                            <div class="input-field row py-0">
                                                 <div class="col-12 d-flex align-items-center">
                                                     <i class='bx bx-category' ></i>
-                                                    <input type="date" id="editcategory" class="form-control w-75" placeholder="Enter Category" />
+                                                    <select class="col-9 d-flex align-items-center" id="editcategory" name="editCat">
+                                                        <option value="vegetable">vegetable</option>
+                                                        <option value="fruit">fruit</option>
+                                                    </select>
                                                 </div>
                                             </div>
-                                            <div class="input-field row">
+                                            <div class="input-field row py-0">
                                                 <div class="col-12 d-flex align-items-center">
                                                     <i class='bx bx-info-circle' ></i>
-                                                    <input type="text" id="editpinfo" class="form-control w-75" placeholder="Enter plant info" />
+                                                    <textarea type="text" id="editpinfo" class="form-control w-75" placeholder="Enter plant info"></textarea>
                                                 </div>
                                             </div>
                                             <div class="input-field row">
@@ -426,7 +397,7 @@
                                     </div>
                                     <div class="modal-footer">
                                         <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
-                                        <button onclick="updateuser()" type="button" class="btn btn-success">Update</button>
+                                        <button onclick="update_plant()" type="button" class="btn btn-success">Update</button>
                                     </div>
                                 </div>
                             </div>
@@ -449,26 +420,6 @@
                                 </tr>
                             </thead>
                             <tbody id="usersTable" style="background-color: #EAEFEB;">
-                                <!-- <tr>
-                                    <td>${id}</td>
-                                    <td>${name}</td>
-                                    <td>${category}</td>
-                                    <td>${p_info}</td>
-                                    <td>${min-temp} - ${max-temp}</td>
-                                    <td> ${min_humidity} - ${max_humidity}</td>
-                                    <td>${min_rain_tolerance} - ${max_rain_tolerance}</td>
-                                    <td>${min_planting_time} - ${max_planting_time}</td>
-                                    <td>${summer}</td>
-                                    <td>${rainy_season}</td>
-                                    <td>
-                                        <button class="btn" id="editbtn" data-bs-toggle="modal" data-bs-target="#editUserModal" >
-                                            <i class="fas fa-edit"></i>
-                                        </button>
-                                        <button class="btn" id="deletebtn" data-bs-toggle="modal" data-bs-target="#deleteuserModal">
-                                            <i class="fa-sharp fa-solid fa-trash"></i>
-                                        </button>
-                                    </td>
-                                </tr> -->
                             </tbody>
                         </table>
                     </div>

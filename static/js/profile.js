@@ -1,23 +1,3 @@
-// function check_token(){
-//   fetch("/")
-//     .then(response => response.json())
-//     .then(data => {
-//     console.log(data)
-//     if (data['detail']){
-//       window.location.href = '../';
-//     }
-//     else {
-//       window.location.href = '../profile';
-//     }
-//     }).catch((error) => {
-//         console.error('Error:', error);
-//       });
-// }
-
-// check_token()
-
-
-
 
 let locationButton = document.getElementById("get-location");
 let locationDiv = document.getElementById("location-details");
@@ -77,95 +57,6 @@ function clickMyPlants(){
   document.getElementById('my_plants').style.display='block';
 }
 
-//show profile
-// async function getUser(){
-//   fetch('/user/{username}', {
-//     method: 'GET',
-//     headers: {
-//       'Content-type': 'application/json; charset=UTF-8'
-//     },
-//     body: JSON.stringify(inp_obj)
-//   })
-//   .then(res => {
-//     return res.json()
-//   })  
-//   .then(data => {
-//     const userData = document.getElementById('userData');
-//     /* const  */
-//     userData.innerHTML = "";
-  
-//       let userDisplay = data.map((object)=> {
-//           const {username, birthday, province, city, /* is_active, is_public */} = object;
-  
-//           return `
-//           <h2 id="usernameProfile">@ ${username}</h2>
-//           <div class="data">
-//               <table class="table" >
-//                   <tbody>
-//                       <tr>
-//                           <td>Name:</td>
-//                           <td id="fullname">"first_name" + "last_name"</td>
-//                       </tr>
-//                       <tr>
-//                           <td>Birthday:</td>
-//                           <td id="bday">${birthday}</td>
-//                       </tr>
-//                       <tr>
-//                           <td>Location:</td>
-//                           <td id="locationOutput">${city}, ${province}</td>
-//                       </tr>
-//                   </tbody>
-//               </table>
-//           </div>`;
-          
-//       })/* .catch(error => console.log("ERROR")) */
-  
-//       userData.innerHTML = userDisplay;
-      
-//   });
-// };
-// getUser();
-
-
-
-//edit profile
-// const changepass_url = "http://127.0.0.1:8000/change_pass";
-
-// async function changepass(){
-//   $("#changepassModal").find("button[name=passwordupdate]").on("click", function() {
-//     const user_update_url = "/update/" + id
-//     console.log(user_update_url)
-
-//     let newPass = document.getElementById('newPass').value;
-//     let newPassConfirm = document.getElementById('newPassConfirm').value;
-
-//     var inp_obj = {}
-
-    
-//     if (newPass != "") {
-//       inp_obj = Object.assign({"new_pass1": new_password}, inp_obj)
-//     }
-//     if (newPassConfirm != "") {
-//       inp_obj = Object.assign({"new_pass2": newPassConfirm}, inp_obj)
-//     } 
-//     console.log(inp_obj)
-
-//     fetch('/change_pass', {
-//       method: 'PATCH',
-//       headers: {
-//         'Content-type': 'application/json; charset=UTF-8'
-//       },
-//       body: JSON.stringify(inp_obj)
-//     })
-//     .then(res => res.json())
-//     .then(data => {
-//       console.log(data)
-//     })
-//     .catch(error => console.log("ERROR")) 
-//     location.href = "/update_user";
-//   });
-// };
-
 function changepass() {
   // fetch("/")
   old_pass = document.getElementById("oldPass").value
@@ -214,6 +105,13 @@ function changepass() {
   .catch(error => console.log("ERROR")) 
 }
 
+var months = ["January", "February", "March", "April", "May", "June", "July", "August", "September", "October", "November", "December"];
+
+function convertDate(date_str) {
+  temp_date = date_str.split("-");
+  return months[Number(temp_date[1]) - 1] + " " + temp_date[2] + " " + temp_date[0];
+}
+
 
 function close_pass() {
   msg = document.getElementById("msg").style.display = "none"
@@ -228,8 +126,10 @@ function get_current_user(){
   fetch("/user")
     .then(response => response.json())
     .then(data => {
-      // console.log(data)
 
+
+      birthday = convertDate(data.birthday)
+      // console.log(birthday)
       var profile_info = document.getElementById("profile_info")
       profile_info.innerHTML = ""
 
@@ -244,7 +144,7 @@ function get_current_user(){
                     </tr>
                     <tr>
                         <td>Birthday:</td>
-                        <td id="bday">${data.birthday}</td>
+                        <td id="bday">${birthday}</td>
                     </tr>
                     <tr>
                         <td>Location:</td>
@@ -379,9 +279,20 @@ function get_current_user_plants() {
 
     let today = new Date().toISOString().slice(0, 10)
 
+
     // console.log(today)
 
     let plantDisplay = data.map((object)=> {
+
+      date_planted = convertDate(object.date_planted)
+      min_date_estimate_harvest = convertDate(object.min_date_estimate_harvest)
+      max_date_estimate_harvest = convertDate(object.max_date_estimate_harvest)
+
+      if (object.date_harvested != null) {
+        date_harvested = convertDate(object.date_harvested)
+      } else {
+        date_harvested = "N/A"
+      }
       // console.log(object)
       i ++
       status = ''
@@ -442,15 +353,17 @@ function get_current_user_plants() {
                 <td>${object.name}</td>
                 <td>${object.category}</td>
                 <td>${btn_}</td>
-                <td>${object.date_planted}</td>
-                <td> ${object.min_date_estimate_harvest
-                  } - ${object.max_date_estimate_harvest
+                <td>${date_planted}</td>
+                <td> ${min_date_estimate_harvest
+                  } - ${max_date_estimate_harvest
                   }</td>
-                <td>${object.date_harvested}</td>
+                <td>${date_harvested}</td>
               </tr>
             `
-    });
+    }).join('');
     parent.innerHTML = plantDisplay;
+    document.getElementById("msg_add").innerHTML = ""
+    document.getElementById("msg_add").setAttribute("class", "")
     // document.getElementById("")
   })
   .catch((error) => {
@@ -526,6 +439,7 @@ function add_plant() {
       console.error('Error:', error);
     });
   document.getElementById("msg_add").innerHTML = "success"
+  document.getElementById("msg_add").setAttribute('class', 'alert alert-success');
   let today = new Date().toISOString().slice(0, 10)
   document.getElementById('addCat').value = ""
   document.getElementById("addDatePlanted").value = today
@@ -544,23 +458,17 @@ function fetch_plants() {
       return response.json();
     })
     .then(data => {
-      console.log(data)
+      // console.log(data)
 
       const checklist = document.getElementById("checklist");
       checklist.innerHTML='';
 
       let plantDisplay = data.map((object)=> {
 
-        console.log(object)
-        return `<input type="radio" id="${object.id}" name="plant" value="${object.name}">
-                <label for="${object.id}">${object.name}</label><br>`;
-// <input type="radio" id="html" name="fav_language" value="HTML">
-//   <label for="html">HTML</label><br>
-//   <input type="radio" id="css" name="fav_language" value="CSS">
-//   <label for="css">CSS</label><br>
-//   <input type="radio" id="javascript" name="fav_language" value="JavaScript">
-//   <label for="javascript">JavaScript</label>
-      });
+        // console.log(object)
+        return `<div class="col-4"><input type="radio" id="${object.id}" name="plant" value="${object.name}">
+                <label for="${object.id}">${object.name}</label></div>`;
+      }).join('');
       checklist.innerHTML = plantDisplay;
       let today = new Date().toISOString().slice(0, 10)
 
@@ -598,8 +506,8 @@ function listQ(){
     let plantDisplay = data.map((object)=> {
 
       console.log(object)
-      return `<input type="radio" id="${object.id}" name="plant" value="${object.name}">
-              <label for="${object.id}">${object.name}</label><br>`;
+      return `<div class="col-4"><input type="radio" id="${object.id}" name="plant" value="${object.name}">
+                <label for="${object.id}">${object.name}</label></div>`;
 
     }).join('');
     checklist.innerHTML = plantDisplay;
