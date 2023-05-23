@@ -23,18 +23,76 @@
   src: url(../fonts/OpenSans-Bold.woff) format(woff),
     url(../fonts/OpenSans-Bold.woff2) format(woff2);
   font-weight: 700;
+}* {
+    padding: 0;
+    margin: 0;
+    box-sizing: border-box;
+    
+  }
+
+  :root{
+    scroll-behavior: smooth;
+  }
+
+  html, body {
+    height: 100%;
+  }
+
+  html{
+    overflow-x:hidden;
+    scroll-snap-type: y mandatory;
+    scroll-behavior: smooth;
+  }
+
+@font-face {
+    font-family: "Proxima Nova";
+    src: url(../fonts/ProximaNovaAltBold.otf);
 }
+@font-face {
+    font-family: "Sceageus";
+    src: url(../fonts/Sceageus.otf);
+}
+
+  body{
+    background: url("../images/bg.jpg") no-repeat center fixed;
+    -webkit-background-size: cover;
+    -moz-background-size: cover;
+    -o-background-size: cover;
+    background-size: cover;
+    font-family: 'Proxima Nova';
+  }
+
+  .nav-item > .nav-link{
+    color:#117a3d;
+    font-family: 'Proxima Nova';
+  }
+
+  .nav-item:hover, .nav-item.active{
+    background:#117a3d;
+  }
+
+  .nav-item:hover > .nav-link, .nav-item.active > .nav-link{
+    color:white;
+  }
+
+
+  #indexcontent{
+    color:white;
+  }
+
+  .snap {
+    scroll-snap-align: start;
+  }
 
 body {
   width: 100%;
   height: 100vh;
   margin: 0;
-  background-image: radial-gradient(
-    circle,
-    #1c7fc2 0%,
-    #009cdc 28%,
-    #0d9ade 32%,
-    #011844 100%
+  background-image: linear-gradient(
+    #0f2313 0%,
+    #646a2b 28%,
+    #646a2b 32%,
+    #0f2313 100%
   );
   color: #fff;
   font-family: "Open Sans", Arial, sans-serif;
@@ -46,7 +104,7 @@ body {
 .plants_predict{
   margin: 0 auto;
   padding: 20px 0;
-	display: block;
+	display: ;
   flex-wrap: wrap;
   justify-content: space-between;
   text-align: center;
