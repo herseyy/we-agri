@@ -37,7 +37,8 @@ function check_token(){
 function getPlants(){
 
     let fruit = "";
-    let vegetable = ""; 
+    let vegetable = "";
+    let tree = ""; 
     let summer = "";
     let rainy = "";
     let psearch = document.getElementById('plantSearch').value;/* 
@@ -54,6 +55,10 @@ function getPlants(){
             vegetable = "vegetable"
             // console.log(checkbox()[i])
         }
+        if (checkbox()[i] == "catTree") {
+            tree = "tree"
+            // console.log(checkbox()[i])
+        }
         if (checkbox()[i] == "summerTrue") {
             summer = true
             // console.log(checkbox()[i])
@@ -64,23 +69,6 @@ function getPlants(){
         }
     }
 
-
-    // var catFruit = document.getElementById('catFruit');
-    // var catVeggie = document.getElementById('catVeggie');
-    // var summerTrue = document.getElementById('summerTrue');
-    // var rainyTrue = document.getElementById('rainyTrue');
-
-    // console.log(catFruit.value)
-    // database
-
-    // let fruit = catFruit.value;
-    // let vegetable = catVeggie.value; 
-    // let summer = summerTrue.value;
-    // let rainy = rainyTrue.value;
-    // console.log(fruit)
-    // console.log(vegetable)
-    // console.log(summer)
-    // console.log(rainy)
 
     var inp_obj = {}
     
@@ -99,7 +87,7 @@ function getPlants(){
     if (summer != ""){
         inp_obj = Object.assign({"summer":summer}, inp_obj)
     }
-    if (fruit && vegetable){
+    if (fruit && vegetable && tree){
         // both checked ang category
     }
     else{
@@ -108,6 +96,9 @@ function getPlants(){
         }
         if(vegetable != ""){
             inp_obj = Object.assign({"category":vegetable}, inp_obj)
+        }
+        if(tree != ""){
+            inp_obj = Object.assign({"category":tree}, inp_obj)
         }
     };
 
@@ -172,6 +163,7 @@ function getPlants(){
         }).join('')/* .catch(error => console.log("ERROR")) */;
         document.getElementById('catFruit').value = "";
         document.getElementById('catVeggie').value = "";
+        document.getElementById('catTree').value = "";
         document.getElementById('summerTrue').value = "";
         document.getElementById('rainyTrue').value = "";
 

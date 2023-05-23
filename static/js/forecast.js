@@ -155,11 +155,11 @@ let updateCurrentWeather = (data) => {
       : Math.round(data.main.temp);
 
   let imgID = data.weather[0].id;
-  weatherImages.forEach((obj) => {
-    // if (obj.ids.includes(imgID)) {
-    //   image.src = obj.url;
-    // }
-  });
+  // weatherImages.forEach((obj) => {
+  //   // if (obj.ids.includes(imgID)) {
+  //   //   image.src = obj.url;
+  //   // }
+  // });
 };
 
 // update forecast weather details

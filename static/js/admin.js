@@ -229,7 +229,8 @@ const allPlants_url = "http://127.0.0.1:8000/filter_plants";
 function getPlants(){
 
   let fruit = "";
-  let vegetable = ""; 
+  let vegetable = "";
+  let tree = "";
   let summer = "";
   let rainy = "";
   let psearch = document.getElementById('plantSearch').value;
@@ -242,6 +243,10 @@ function getPlants(){
       }
       if (checkbox()[i] == "catVeggie") {
           vegetable = "vegetable"
+          // console.log(checkbox()[i])
+      }
+      if (checkbox()[i] == "catTree") {
+          tree = "tree"
           // console.log(checkbox()[i])
       }
       if (checkbox()[i] == "summerTrue") {
@@ -266,7 +271,7 @@ function getPlants(){
   if (summer != ""){
       inp_obj = Object.assign({"summer":summer}, inp_obj)
   }
-  if (fruit && vegetable){
+  if (fruit && vegetable && tree){
       // both checked ang category
   }
   else{
@@ -275,6 +280,9 @@ function getPlants(){
       }
       if(vegetable != ""){
           inp_obj = Object.assign({"category":vegetable}, inp_obj)
+      }
+      if(tree != ""){
+          inp_obj = Object.assign({"category":tree}, inp_obj)
       }
   };
 
@@ -347,6 +355,7 @@ fetch(filter_url)
     }).join('')/* .catch(error => console.log("ERROR")) */;
     document.getElementById('catFruit').value = "";
     document.getElementById('catVeggie').value = "";
+    document.getElementById('catTree').value = "";
     document.getElementById('summerTrue').value = "";
     document.getElementById('rainyTrue').value = "";
 
