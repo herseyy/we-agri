@@ -99,6 +99,7 @@ body {
   font-weight: 300;
   font-size: 22px;
   transition: filter 0.5s;
+  overflow: auto;
 }
 
 .plants_predict{
@@ -116,7 +117,6 @@ body {
   margin: 0 auto;
   padding: 20px 0;
   box-sizing: border-box;
-  overflow-y: visible;
 }
 
 .weather__search {
