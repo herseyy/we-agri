@@ -45,9 +45,9 @@
     <div class="Weather">
           <article class="plants_predict">
           <h1>Predicted Plants</h1>
-          <h2 class="plant1">plant1</h2>
-          <h2 class="plant2">plant2</h2>
-          <h2 class="plant3">plant3</h2>
+          <h2 class="plant1" id="p1"></h2>
+          <h2 class="plant2" id="p2"></h2>
+          <h2 class="plant3" id="p3"></h2>
         </article>  
       <input
         type="search"
@@ -62,27 +62,22 @@
       </datalist>
 
       <div class="weather__today">
-        <div class="weather__details">
+        <div class="weather__details cs">
           <h2 class="weaher__city">City</h2>
           <p class="weather__day">Day </p>
           <p class="weather__calendar">7/24/2021</p>
-          <div class="weather__current">
-            <p class="weader__indicatoer weader__indicatoer--humiditiy">
+          <div class="weather__current row">
+            <p class="ds weader__indicatoer weader__indicatoer--humiditiy col">
               <span class="humiditiy-value">50</span>%
             </p>
-            <p class="weader__indicatoer weader__indicatoer--wind">
+            <p class="ds weader__indicatoer weader__indicatoer--wind col">
               <span class="wind-value">West, 5</span>m/s
             </p>
-            <p class="weader__indicatoer weader__indicatoer--pressure">
+            <p class="ds weader__indicatoer weader__indicatoer--pressure col">
               <span class="pressure-value">1050</span>hpa
             </p>
           </div>
         </div>
-        <img
-          src="../static/images/clear-sky.png"
-          alt="clear-sky"
-          class="weather__image"
-        />
         <div class="weather__temperature">
           <span class="temperature-value">+25</span> &deg;C
         </div>

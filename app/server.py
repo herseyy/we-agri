@@ -10,7 +10,7 @@ from fastapi.responses import HTMLResponse
 from fastapi.staticfiles import StaticFiles
 from fastapi.templating import Jinja2Templates
 
-from . import crud, models, schemas, owm
+from . import crud, models, schemas, owm, algo
 from .database import SessionLocal, engine
 import os
 from fastapi.responses import FileResponse
@@ -338,9 +338,45 @@ def delete_plant(plant_id: int, db:Session = Depends(get_db)):
 
 
 
-@app.get("/get_api_data")
-def get_api():
-    return owm.get_api_data()
+@app.get("/predict")
+def get_api(lat:float, lon:float, db:Session = Depends(get_db)):
+    plants = db.query(models.Plant).all()
+    x_train = []
+    y_train = []
+    for i in plants:
+        y_train.append(i.name)
+        # print(round(i.min_temp), round(i.max_temp))
+        interval_t = (i.max_temp - i.min_temp) / 4
+
+        interval_h = (i.max_humidity - i.min_humidity) / 4
+        lst=[]
+
+        # temp
+        for j in range(5):
+            lst.append(i.min_temp)
+            i.min_temp = i.min_temp + interval_t
+        # humid
+        for k in range(5):
+            lst.append(i.min_humidity)
+            i.min_humidity = i.min_humidity + interval_h
+
+        if (i.summer == True):
+            lst.append(1)
+        else:
+            lst.append(0)
+        if (i.rainy_season == True):
+            lst.append(1)
+        else:
+            lst.append(0)
+
+        x_train.append(lst)
+
+    # print(x_train)
+    # print(y_train)
+    x_test = [owm.get_api_data(lat, lon)]
+    predicted = algo.predict_KNN(x_train, y_train, x_test)
+    print(predicted)
+    return ({"plant": i} for i in predicted)
 
 
 # Ang ginagawa lang neto, sinasabe na yung response format ay galing sa schema na Symptoms
@@ -428,3 +464,7 @@ async def submit(request: Request, credentials: HTTPBasicCredentials = Depends(c
     return templates.TemplateResponse("admin.html", {"request": request})
 
 
+@app.get("/testing")
+def testing():
+
+    return
