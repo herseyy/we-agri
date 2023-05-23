@@ -1,3 +1,7 @@
+// require('dotenv').config()
+// const api_key = process.env.API_KEY;
+// console.log(api_key)
+
 let searchInp = document.querySelector(".weather__search");
 let city = document.querySelector(".weaher__city");
 let day = document.querySelector(".weather__day");
@@ -10,6 +14,7 @@ let temperaature = document.querySelector(".temperature-value");
 let forecastBlock = document.querySelector(".weather__forecast");
 let suggestions = document.querySelector("#suggestions");
 
+
 // API variable
 let weatherAPIKey = "2aefe52a593c0d988f240092f4dfa3c6";
 let weatherBaseEndpoint =
@@ -20,46 +25,87 @@ let forecastBaseEndpoint =
   "https://api.openweathermap.org/data/2.5/forecast?units=metric&appid=" +
   weatherAPIKey;
 let cityBaseEndpoint = "https://api.teleport.org/api/cities/?search=";
+let cityToLongLat = "http://api.openweathermap.org/geo/1.0/direct?"
 
 // arrey for images
 let weatherImages = [
   {
-    url: "images/clear-sky.png",
+    url: "../images/clear-sky.png",
     ids: [800],
   },
   {
-    url: "images/broken-clouds.png",
+    url: "../images/broken-clouds.png",
     ids: [803, 804],
   },
   {
-    url: "images/few-clouds.png",
+    url: "../images/few-clouds.png",
     ids: [801],
   },
   {
-    url: "images/mist.png",
+    url: "../images/mist.png",
     ids: [701, 711, 721, 731, 741, 751, 761, 762, 771, 781],
   },
   {
-    url: "images/rain.png",
+    url: "../images/rain.png",
     ids: [500, 501, 502, 503, 504],
   },
   {
-    url: "images/scattered-clouds.png",
+    url: "./Images/scattered-clouds.png",
     ids: [802],
   },
   {
-    url: "images/shower-rain.png",
+    url: "../images/shower-rain.png",
     ids: [520, 521, 522, 531, 300, 301, 302, 310, 311, 312, 313, 314, 321],
   },
   {
-    url: "images/snow.png",
+    url: "../images/snow.png",
     ids: [511, 600, 601, 602, 611, 612, 613, 615, 616, 620, 621, 622],
   },
   {
-    url: "images/thunderstorm.png",
+    url: "../images/thunderstorm.png",
     ids: [200, 201, 202, 210, 211, 212, 221, 230, 231, 232],
   },
 ];
+
+
+function getCityLoc(cityString) {
+  fetch(`${cityToLongLat}q=${cityString}&limit=1&appid=${weatherAPIKey}`)
+    .then(response => response.json())
+    .then(data => {
+      console.log(data)
+      console.log(data[0].lon)
+      console.log(data[0].lat)
+
+      inp_obj = {
+        lat: data[0].lat,
+        lon: data[0].lon
+      }
+      
+      let query = Object.keys(inp_obj)
+        .map(k =>encodeURIComponent(k) + '=' + encodeURIComponent(inp_obj[k]))
+        .join('&');
+    
+      const weurl = "http://127.0.0.1:8000/get_api_data?" + query
+      // console.log(weurl)
+      fetch(weurl)
+        .then(response => response.json())
+        .then(data => {
+          console.log(data)
+        }).catch((error) => {
+        console.error('Error:', error);
+      });
+
+    }).catch((error) => {
+        console.error('Error:', error);
+      });
+}
+
+window.onbeforeunload = () => {
+  for(const form of document.getElementsByTagName('form')) {
+    form.reset();
+  }
+}
+
 
 //  API Connection for weathet today seaction
 let getWeatherByCityName = async (cityString) => {
@@ -101,6 +147,7 @@ let getForecastByCityID = async (id) => {
 
 let weatherForCity = async (city) => {
   let weather = await getWeatherByCityName(city);
+  getCityLoc(city)
   if (!weather) {
     return;
   }
