@@ -33,6 +33,10 @@ a {
     text-decoration: none;
   }
 
+#del_msg {
+  display: none;
+}
+
 .pagetitle {
     margin-bottom: 10px;
   }
@@ -373,7 +377,7 @@ main{
 }
 
 .editUserModalcontent .fields div {
-  margin: 3%;
+  margin: 1%;
 }
 
 .editUserModalcontent .input-field label, .deleteuserModal .input-field label{
@@ -381,7 +385,7 @@ main{
   font-weight: 500;
   color: #2e2e2e;
 }
-.editUserModalcontent .input-field input, select, .deleteuserModal .input-field input{
+.editUserModalcontent .input-field input, select, .deleteuserModal .input-field input, textarea{
   outline: none;
   font-size: 14px;
   font-weight: 400;

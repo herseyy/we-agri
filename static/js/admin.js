@@ -136,32 +136,41 @@ function createPlants(){
         }
     }
 
-    if(pname == ""){
-        errormsg.innerHTML= "Enter a name"
-    }
-    if(mintemp == ""){
-        errormsg.innerHTML= "Enter minimum temperature"
-    }
-    if(maxtemp == ""){
-        errormsg.innerHTML= "Enter maximum temperature"
-    }
-    if(minhum == ""){
-        errormsg.innerHTML= "Enter minimum humidity"
-    }
-    if(maxhum == ""){
-        errormsg.innerHTML= "Enter maximum humidity"
-    }
-    if(minraintol == ""){
-        errormsg.innerHTML= "Enter minimum rain tolerance"
-    }
-    if(maxraintol == ""){
-        errormsg.innerHTML= "Enter maximum rain tolerance"
+    if(maxptime == ""){
+        errormsg.innerHTML= "Enter maximum planting time"
+        errormsg.setAttribute("class", "col-12 alert alert-danger")
     }
     if(minptime == ""){
         errormsg.innerHTML= "Enter minimum planting time"
+        errormsg.setAttribute("class", "col-12 alert alert-danger")
     }
-    if(maxptime == ""){
-        errormsg.innerHTML= "Enter maximum planting time"
+    if(maxraintol == ""){
+        errormsg.innerHTML= "Enter maximum rain tolerance"
+        errormsg.setAttribute("class", "col-12 alert alert-danger")
+    }
+    if(mintemp == ""){
+        errormsg.innerHTML= "Enter minimum temperature"
+        errormsg.setAttribute("class", "col-12 alert alert-danger")
+    }
+    if(maxtemp == ""){
+        errormsg.innerHTML= "Enter maximum temperature"
+        errormsg.setAttribute("class", "col-12 alert alert-danger")
+    }
+    if(minhum == ""){
+        errormsg.innerHTML= "Enter minimum humidity"
+        errormsg.setAttribute("class", "col-12 alert alert-danger")
+    }
+    if(maxhum == ""){
+        errormsg.innerHTML= "Enter maximum humidity"
+        errormsg.setAttribute("class", "col-12 alert alert-danger")
+    }
+    if(minraintol == ""){
+        errormsg.innerHTML= "Enter minimum rain tolerance"
+        errormsg.setAttribute("class", "col-12 alert alert-danger")
+    }
+    if(pname == ""){
+        errormsg.innerHTML= "Enter a name"
+        errormsg.setAttribute("class", "col-12 alert alert-danger")
     }
 
     var inp_obj = {
@@ -193,17 +202,15 @@ function createPlants(){
         .then(data => {
           console.log(data)
           if (data['detail']) {
-            errormsg.innerHTML = data['detail']
-            errormsg.style.visibility = "visible"
-            errormsg.style.width = "100%"
-            errormsg.setAttribute('class', 'alert alert-danger');
+            return 0
           }
           else {
             errormsg.innerHTML = "Success"
             errormsg.style.visibility = "visible"
             errormsg.style.width = "100%"
             errormsg.setAttribute('class', 'alert alert-success');
-    
+
+
             window.location.href = '../admin';
 
           }
@@ -300,10 +307,11 @@ fetch(filter_url)
     // console.log(data)
     const usersTable = document.getElementById("usersTable");
     usersTable.innerHTML='';
+    i=0
 
     let userplantDisplay = data.map((object)=> {
         const {id, name, category, min_temp, max_temp, min_humidity, max_humidity, min_rain_tolerance, max_rain_tolerance, min_planting_time, max_planting_time, rainy_season, summer, p_info} = object;
-        
+        i++
         let printSeason;
             if (summer && rainy_season){
                 printSeason = "Wet and Dry";
@@ -317,7 +325,7 @@ fetch(filter_url)
 
         return `
           <tr>
-            <td>${id}</td>
+            <td>${i}</td>
             <td>${name}</td>
             <td>${category}</td>
             <td>${p_info}</td>
@@ -327,10 +335,10 @@ fetch(filter_url)
             <td>${min_planting_time} - ${max_planting_time}</td>
             <td>${printSeason}</td>
             <td>
-                <button class="btn" id="editbtn" data-bs-toggle="modal" data-bs-target="#editUserModal" >
+                <button onclick="edit(${id})" class="btn" id="editbtn" data-bs-toggle="modal" data-bs-target="#editUserModal" >
                     <i class="fas fa-edit"></i>
                 </button>
-                <button class="btn" id="deletebtn" data-bs-toggle="modal" data-bs-target="#deleteuserModal">
+                <button onclick="delete_plant(${id})" class="btn" id="deletebtn" data-bs-toggle="modal" data-bs-target="#deleteuserModal">
                     <i class="fa-sharp fa-solid fa-trash"></i>
                 </button>
             </td>
@@ -482,7 +490,7 @@ async function getPlantName(){
           const {name} = object;
           return {name};
       })
-      console.log(plantNameDisplay);
+      // console.log(plantNameDisplay);
       for (var p of plantNameDisplay){
           plantList.push(p.name);
           //console.log(p.name);
@@ -494,3 +502,150 @@ getPlantName();
 
 /*initiate the autocomplete function on the "plantSearch" element, and pass along the countries array as possible autocomplete values:*/
 autocomplete(document.getElementById("plantSearch"), plantList);
+
+
+
+function edit(id) {
+  fetch(`/plant/${id}`)
+  .then(response => response.json())
+  .then(data => {
+    // console.log(data)
+    document.getElementById("plant_id").innerHTML = id
+    document.getElementById("editname").value = data.name
+    document.getElementById("editcategory").value = data.category
+    document.getElementById("editpinfo").value = data.p_info
+    document.getElementById("editmintemp").value = data.min_temp
+    document.getElementById("editmaxtemp").value = data.max_temp
+    document.getElementById("editminhum").value = data.min_humidity
+    document.getElementById("editmaxhum").value = data.max_humidity
+    document.getElementById("editminraintol").value = data.min_rain_tolerance
+    document.getElementById("editmaxraintol").value = data.max_rain_tolerance
+    document.getElementById("editminptime").value = data.min_planting_time
+    document.getElementById("editmaxptime").value = data.max_planting_time
+
+    if (data.summer == true){
+      document.getElementById("editsummer").checked = true;
+    }
+    else {
+      document.getElementById("editsummer").checked = false;
+    }
+    if (data.rainy_season == true){
+      document.getElementById("editrain").checked = true;
+    }
+    else{
+      document.getElementById("editrain").checked = true;
+    }
+
+  }).catch((error) => {
+    console.error("Error:", error);
+  })
+}
+
+function update_plant(){
+
+  id = document.getElementById("plant_id").innerHTML
+
+  name = document.getElementById("editname").value
+  category = document.getElementById("editcategory").value
+  p_info = document.getElementById("editpinfo").value
+  min_temp = document.getElementById("editmintemp").value
+  max_temp = document.getElementById("editmaxtemp").value
+  min_humid = document.getElementById("editminhum").value
+  max_humid = document.getElementById("editmaxhum").value
+  min_rain_tol = document.getElementById("editminraintol").value
+  max_rain_tol = document.getElementById("editmaxraintol").value
+  min_p_time = document.getElementById("editminptime").value
+  max_p_time = document.getElementById("editmaxptime").value
+  // summer = document.getElementById("editsummer").value
+  // rainy_season = document.getElementById("editrain").value
+
+
+  if (document.getElementById("editsummer").checked == true){
+    summer = true
+  } else {
+    summer = false
+  }
+  if (document.getElementById("editrain").checked == true){
+    rainy_season = true
+  } else {
+    rainy_season = false
+  }
+
+  inp_obj = {
+    "name": name,
+    "category": category,
+    "p_info": p_info,
+    "min_temp": min_temp,
+    "max_temp": max_temp,
+    "min_humidity": min_humid,
+    "max_humidity": max_humid,
+    "min_rain_tolerance": min_rain_tol,
+    "max_rain_tolerance": max_rain_tol,
+    "min_planting_time": min_p_time,
+    "max_planting_time": max_p_time,
+    "summer": summer,
+    "rainy_season": rainy_season
+  }
+
+  fetch(`/update_plant/${id}`, {
+    method: 'PATCH',
+    headers: {
+      'Content-type': 'application/json; charset=UTF-8'
+    },
+    body: JSON.stringify(inp_obj)
+  })
+  .then(res => res.json())
+  .then(data => {
+    console.log(data)
+    getPlants()
+  })
+  .catch(error => console.log("ERROR"))
+
+}
+
+function delete_plant(id){
+  fetch(`/plant/${id}`)
+  .then(response => response.json())
+  .then(data => {
+    // console.log(data)
+    document.getElementById("del_id").innerHTML = id
+    document.getElementById("del_name").innerHTML = data.name
+    document.getElementById("del_cat").innerHTML = data.category
+    document.getElementById("del_info").innerHTML = data.p_info
+    document.getElementById("del_temp").innerHTML = `${data.min_temp} - ${data.max_temp}`
+    document.getElementById("del_humid").innerHTML = `${data.min_humidity} - ${data.min_humidity}`
+    document.getElementById("del_rain").innerHTML = `${data.min_rain_tolerance} - ${data.max_rain_tolerance}`
+    document.getElementById("del_p").innerHTML = `${data.min_planting_time} - ${data.min_planting_time}`
+
+    if (data.summer == true && data.rainy_season == true)
+      document.getElementById("del_season").innerHTML = "Wet and Dry"
+    else if (data.summer == true) {
+      document.getElementById("del_season").innerHTML = "Summer"
+    } else {
+      document.getElementById("del_season").innerHTML = "Rainy"
+    }
+
+  }).catch((error) => {
+    console.error("Error:", error);
+  })
+}
+
+function delete_c(){
+  id = document.getElementById("del_id").innerHTML
+  id_ = Number(id)
+  // console.log(typeof id_)
+  // console.log(id)
+  fetch(`/delete_plant/${id_}`, {
+    method: 'DELETE',
+    headers: {
+      'Content-type': 'application/json; charset=UTF-8'
+    },
+    // body: JSON.stringify(inp_obj)
+  })
+  .then(res => res.json())
+  .then(data => {
+    console.log(data)
+    document.getElementById("del_msg").style.display = "block";
+  })
+  .catch(error => console.log("ERROR")) 
+}
