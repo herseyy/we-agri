@@ -104,6 +104,14 @@ body {
   overflow: auto;
 }
 
+.cs {
+  width: 60%;
+}
+
+.ds {
+  text-align: center;
+}
+
 .plants_predict{
   margin: 0 auto;
   padding: 20px 0;
