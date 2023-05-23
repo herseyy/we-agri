@@ -303,7 +303,8 @@ a {
     }
 
     .text-blk.headingText {
-        text-align: center;
+        white-space: nowrap;
+        text-overflow: ellipsis;
     }
 
     .allText.aboveText {
